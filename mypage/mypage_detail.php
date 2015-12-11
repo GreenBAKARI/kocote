@@ -1,1 +1,2 @@
-<php echo "helloくコ:彡";?>
+<?php echo "helloくコ:彡";?>
+
