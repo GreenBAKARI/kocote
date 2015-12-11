@@ -1,4 +1,4 @@
-<?php echo "helloくコ:彡";
+<?php echo "mypage_detail.php";
 /* * *
  * * *
  * * */
