@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <html>
 <head><title>mypage_detail.php</title></head>
 <body>
@@ -45,6 +46,8 @@
 //
 ?>
 
+=======
+>>>>>>> d6705ca8848252eec1cda3bc8c69a9f57aa0baa9
 <table border="1">
 <tr><th>名前</th><th>価格</th></tr>
 <?php
@@ -57,6 +60,9 @@
   }
 ?>
 </table>
+<<<<<<< HEAD
 
 </body>
 </html>
+=======
+>>>>>>> d6705ca8848252eec1cda3bc8c69a9f57aa0baa9
