@@ -42,7 +42,8 @@
 // if ($close_flag){
 //     print('<p>切断に成功しました。</p>');
 // }
-// ?>
+//
+?>
 
 <table border="1">
 <tr><th>名前</th><th>価格</th></tr>
