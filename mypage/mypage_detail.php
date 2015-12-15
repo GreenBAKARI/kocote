@@ -1,13 +1,15 @@
 <html>
-<head><title>mypage_detail.php</title></head>
+<head>
+<title>mypage_detail.php</title>
+</head>
 <body>
 
 <?php
-//phpinfo();
-//$link = mysql_connect ( 'c:\xampp\mysql', 'user', 'pass' );
+// phpinfo();
+// $link = mysql_connect ( 'c:\xampp\mysql', 'user', 'pass' );
 
 // if (! $link) {
-// 	die ( '接続失敗です。' . mysql_error () );
+// die ( '接続失敗です。' . mysql_error () );
 // }
 
 // print('<p>接続に成功しました。</p>');
@@ -40,25 +42,49 @@
 // $close_flag = mysql_close($link);
 
 // if ($close_flag){
-//     print('<p>切断に成功しました。</p>');
+// print('<p>切断に成功しました。</p>');
 // }
 //
 ?>
 
 <table border="1">
-<tr><th>名前</th><th>価格</th></tr>
+		<tr>
+			<th>名前</th>
+			<th>価格</th>
+		</tr>
 <?php
-  $pdo = new PDO("mysql:dbname=men", "root");
-  $st = $pdo->query("SELECT * FROM udon");
-  while ($row = $st->fetch()) {
-    $name = htmlspecialchars($row['name']);
-    $price = htmlspecialchars($row['price']);
-    echo "<tr><td>$name</td><td>$price 円</td></tr>";
-  }
+//表示
+$data_source_name = 'mysql:dbname=hogehoge';
+$user = 'root';
+$pdo = new PDO ($data_source_name, $user); // PDO:PHP Data Objects； どのデータベースを使っているか隠蔽
+$st = $pdo->query("SELECT * FROM hoge"); // すべて表示
+while ($row = $st->fetch()) { // PDOStatementクラスのfetchメソッドで導出表の先頭から一行ずつ順番に取得
+	$name = htmlspecialchars ($row ['name']);
+	$price = htmlspecialchars ($row ['price']);
+	echo "<tr><td>$name</td><td>$price 円</td></tr>";
+}
+
+if(!(empty($_POST['name']) && empty($_POST['price']))) {
+$st = $pdo->prepare("INSERT INTO hoge VALUES(?, ?)"); // 名前 価格 挿入
+$st->execute(array($_POST['name'], $_POST['price']));
+} else {
+echo "zero";
+}
 ?>
 </table>
-<<<<<<< HEAD
+
+	<form action="mypage_detail.php" method="post">
+		name<br> <input type="text" name="name"><br> price<br> <input
+			type="text" name="price"><br> <br> <input type="submit" value="送信">
+
+	</form>
+	<form action="mypage_detail.php" method="get">
+		<input type="submit" value="削除">
+	</form>
 
 </body>
 </html>
+
+<?php
+?>
 
