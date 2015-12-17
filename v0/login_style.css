@@ -1,0 +1,28 @@
+body{
+  background: linear-gradient(#6FC0D1, #7CC691);
+  background-size: cover;
+  margin-right: auto;
+}
+
+form{
+  font-size: 130%;
+  font-weight: bold;
+  color:#ffffff;
+}
+
+#title{
+  font-size: 160%;
+}
+
+#logo {
+  vertical-align: middle;
+  max-width: 1300px;
+  min-width: 1000px;
+}
+
+/*
+body {
+  background: linear-gradient(-45deg, rgba(246, 255, 0, .8), rgba(255, 0, 161, .8)),
+  background-size: cover;
+}
+*/
