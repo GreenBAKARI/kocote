@@ -51,24 +51,26 @@
 			<th>名前</th>
 			<th>価格</th>
 		</tr>
-// <?php
-// //表示
-// $data_source_name = 'mysql:dbname=hogehoge';
-// $user = 'root';
-// $pdo = new PDO ($data_source_name, $user); // PDO:PHP Data Objects； どのデータベースを使っているか隠蔽
-// $st = $pdo->query("SELECT * FROM hoge"); // SQL@すべて表示
-// while ($row = $st->fetch()) { // PDOStatementクラスのfetchメソッドで導出表の先頭から一行ずつ順番に取得
-// 	$name = htmlspecialchars ($row ['name']);
-// 	$price = htmlspecialchars ($row ['price']);
-// 	echo "<tr><td>$name</td><td>$price 円</td></tr>";
-// }
+<?php
+//表示
+$data_source_name = 'mysql:dbname=hogehoge';
+$user = 'root';
+$pdo = new PDO ($data_source_name, $user); // PDO:PHP Data Objects； どのデータベースを使っているか隠蔽
+$st = $pdo->query("SELECT * FROM hoge"); // SQL@すべて表示
+while ($row = $st->fetch()) { // PDOStatementクラスのfetchメソッドで導出表の先頭から一行ずつ順番に取得
+	$name = htmlspecialchars ($row ['name']);
+	$price = htmlspecialchars ($row ['price']);
+	echo "<tr><td>$name</td><td>$price 円</td></tr>";
+}
 
-// if(!(empty($_POST['name']) && empty($_POST['price']))) { // 未入力回避
-// $st = $pdo->prepare("INSERT INTO hoge VALUES(?, ?)"); // SQL@名前 価格 挿入
-// $st->execute(array($_POST['name'], $_POST['price']));
-// }
-// ?>
+if(!(empty($_POST['name']) && empty($_POST['price']))) { // 未入力回避
+$st = $pdo->prepare("INSERT INTO hoge VALUES(?, ?)"); // SQL@名前 価格 挿入
+$st->execute(array($_POST['name'], $_POST['price']));
+}
+?>
 </table>
+<<<<<<< HEAD
+=======
 
 	<form action="mypage_detail.php" method="post">
 		name<br> <input type="text" name="name"><br> price<br> <input
@@ -88,7 +90,7 @@ if ( !$link ) {
 } else {print('<p>接続に成功しました。</p>');}
 
 // データベースを選択
-$db_selected = mysql_select_db ( 'greenbakari' , $link);
+$db_selected = mysql_select_db ( 'hogehoge' , $link);
 if ( !$db_selected ) {
     die ( 'データベース選択失敗です。' . mysql_error() );
 } else {
@@ -155,6 +157,7 @@ if (count($_POST) > 0 && isset($_POST["submit"])){
 	}
 }
 ?>
+>>>>>>> 4e731f9cc7c25b8bcd960f648f32c8283234179c
 
 </body>
 </html>
