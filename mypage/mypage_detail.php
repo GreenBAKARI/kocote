@@ -57,7 +57,6 @@
   }
 ?>
 </table>
-<<<<<<< HEAD
 
 </body>
 </html>
