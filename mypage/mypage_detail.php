@@ -77,6 +77,9 @@
 	<form action="mypage_detail.php" method="get">
 		<input type="submit" value="削除">
 	</form>
+
+<!-- サンプルここまで -->
+
 <?php
 // 罫線
 print "<hr>";
