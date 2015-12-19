@@ -1,12 +1,10 @@
-<!--掲示板詳細 -->
 <?php
 //変数に各種設定を代入(ここを書き換えると他のデータベースにも接続できる)
 $url = "localhost";
 $user = "root";
 $pass = "kappaebisen";
 $db = "bulletin";
-//掲示板の選択(とりあえず)
-$bbs_id = 1;
+$pf_name = "pf";
 
 //MySQLへ接続
 //成功したら接続IDが、失敗したらfalse(0)が返る。
@@ -15,16 +13,12 @@ $link = mysql_connect($url, $user, $pass) or die("MySQLへの接続に失敗し�
 //データベースの選択
 $sdb = mysql_select_db($db, $link) or die("データベースの選択に失敗しました。");
 
+$pf_name = "pf".$_GET['bb_id'];
+
 //クエリの送信
-if($bbs_id == 1){
-$sql = "SELECT * FROM pf";
-  $result = mysql_query($sql, $link);
-}else if($bbs_id == 2){
-  $sql = "SELECT * FROM pf2";
-    $result = mysql_query($sql, $link);
-}else{
-    die("クエリの送信に失敗しました。<br />SQL:".$sql);
-}
+$sql = "SELECT * FROM $pf_name";
+$result = mysql_query($sql, $link) or die("お探しの掲示板は消去されたか、書き込みがありません。<br />");
+
 //結果セットの行数を取得する
 $rows = mysql_num_rows($result);
 
@@ -49,22 +43,20 @@ mysql_free_result($result);
 mysql_close($link) or die("MySQL切断に失敗しました。");
  ?>
 
-
-<html>
-<head>
-  <title>掲示板詳細</title>
-</head>
-<body>
-  投稿フォームテーブルに接続...掲示板ID<?=$bbs_id?><br />
-  この投稿フォームテーブルの行数:<?=$rows?><br />
-
-  <h3>書き込み表示</h3>
-  <?=$msg?>
-  <table width = "600" border = "0">
-    <tr bgcolor = "##cae12e">
-      <td>掲示板ID</td> <td>ユーザID</td> <td>コメント番号</td> <td>投稿内容</td> <td>投稿日時</td>
-     </tr>
-    <?=$temp_html?>
-  </table>
-</body>
-</html>
+ <html>
+ <head>
+   <title>掲示板詳細</title>
+ </head>
+ <body>
+   <div align="center">
+   <h3>書き込み表示</h3>
+   <?=$msg?>
+   <table width = "600" border = "0">
+     <tr bgcolor = "##cae12e">
+       <td>掲示板ID</td> <td>ユーザID</td> <td>コメント番号</td> <td>投稿内容</td> <td>投稿日時</td>
+      </tr>
+     <?=$temp_html?>
+   </table>
+ </div>
+ </body>
+ </html>
