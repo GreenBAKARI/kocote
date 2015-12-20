@@ -52,9 +52,11 @@ if (! $sql_result_pev = mysql_query ( 'SELECT * FROM ev, pev WHERE ev.EVENT_ID=p
 if (! $sql_result_fev = mysql_query ( 'SELECT * FROM ev, fev WHERE ev.EVENT_ID=fev.EVENT_ID' ))
 	die ( 'クエリ失敗。' . mysql_error () );
 
-	// アイコン画像
+// ヘッダ画像
 $ua = mysql_fetch_assoc ( $sql_result_ua );
-echo '<img src="./img_get.php?id=' . $ua ['USER_ID'] . '"/>';
+echo '<img src="./img_get.php?id=' . $ua ['USER_ID'] . '&img=' . 'HEADER_IMAGE' . '"/>';
+// アイコン画像
+echo '<img src="./img_get.php?id=' . $ua ['USER_ID'] . '&img=' . 'ICON_IMAGE' . '"/>';
 
 /* ▽ 名前・性別・名前の表記 ▽ */
 /* 名前 */
@@ -101,22 +103,22 @@ echo "</select></p>";
 echo ("<p>興味・関心のある分野" . "<br>");
 echo ('<form method="post" action="mypage_conf.php">');
 $interest = array (
-		"アニメ	",
-		"映画		",
-		"音楽		",
-		"カメラ	",
-		"グルメ	",
-		"ゲーム	",
-		"スポーツ	",
-		"釣り		",
-		"天体観測	",
-		"動物		",
-		"読書		",
-		"乗り物	",
-		"ファッション	",
-		"漫画		",
-		"料理		",
-		"旅行		"
+		"アニメ",
+		"映画	",
+		"音楽	",
+		"カメラ",
+		"グルメ",
+		"ゲーム",
+		"スポーツ",
+		"釣り	",
+		"天体観測",
+		"動物	",
+		"読書	",
+		"乗り物",
+		"ファッション",
+		"漫画	",
+		"料理	",
+		"旅行	"
 );
 foreach ( $interest as $key => $value ) {
 	echo '<input type="checkbox" name="interest" value="' . $value . '"';
@@ -155,7 +157,7 @@ while ( $fev = mysql_fetch_assoc ( $sql_result_fev ) )
 	echo $fev ['EVENT_START'] . " " . $fev ['EVENT_TITLE'] . '<br>';
 echo '</p>';
 /* △ お気に入り登録しているイベント △ */
-mysql_close($link);
+mysql_close ( $link );
 ?>
 <!-- 本体end-->
 
