@@ -1,64 +1,127 @@
 <?php
   $user_id = 0;
-  $event_title = $_POST['event_title'];
-  echo $_POST['event_title'];
-  echo $event_title;
-  $date = date("Y-m-d H:i:s",strtotime("now"));
+  $event_title= $_POST['event_title'];
+  $event_category = $_POST['event_category'];
+  $event_month = $_POST['event_month'];
+  $event_date = $_POST['event_date'];
+  $start_hour = $_POST['start_hour'];
+  $finish_hour = $_POST['finish_hour'];
+  $holding_place = $_POST['holding_place'];
+  $limit_month = $_POST['limit_month'];
+  $limit_date = $_POST['limit_date'];
+  $limit_hour = $_POST['limit_hour'];
+  $holding_comment = $_POST['holding_comment'];
+  $event_detail = $_POST['event_detail'];
 
   if (isset($_POST["insert"]) == true) {
-  $event_title = $_POST['event_title'];
-  echo "$date<br />";
-  echo $event_title;
-  if($event_title === NULL){
-        echo "ない<br />";
+    $event_title = $_POST['e_title'];
+    $event_category = $_POST['e_category'];
+    switch ($event_category) {
+      case '全て':
+      $category = 1;
+      break;
+      case "グルメ/フェスティバル":
+      $category = 2;
+      break;
+      case "芸術/エンタメ":
+      $category = 3;
+      break;
+      case "交流/スポーツ":
+      $category = 4;
+      break;
+      case "地域復興/福祉":
+      $category = 5;
+      break;
+      case "就活/キャリア":
+      $category = 6;
+      break;
+      default:
+      $category = 1;
     }
-  echo $_POST['$event_title'];
-  echo "8<br />";
-  
- //データベース接続
-  $conn = mysql_connect('localhost', 'root', 'root');
-  if (!$conn) {
-  die("データベース接続失敗");
+    $event_month = $_POST['e_month'];
+    $event_date = $_POST['e_date'];
+    $start_hour = $_POST['s_hour'];
+    $finish_hour = $_POST['f_hour'];
+    $holding_place = $_POST['h_place'];
+    $limit_month = $_POST['l_month'];
+    $limit_date = $_POST['l_date'];
+    $limit_hour = $_POST['l_hour'];
+    $holding_comment = $_POST['h_comment'];
+    $event_detail = $_POST['e_detail'];
+    $update_date = date("Y-m-d H:i:s",strtotime("now"));
+    $event_year = date("Y");
+    if (strtotime($update_date) >= strtotime(date("$event_year-$event_month-$event_date $start_hour:00:00"))) {
+    ++$event_year;
+    }
+    $event_start = date("$event_year-$event_month-$event_date $start_hour:00:00");
+    $event_finish = date("$event_year-$event_month-$event_date $finish_hour:00:00");
+    $limit_year = date("Y");
+    if (strtotime($update_date) >= strtotime(date("$limit_year-$limit_month-$limit_date $limit_hour:00:00"))) {
+    ++$limit_year;
+    }
+    $participation_deadline = date("$limit_year-$limit_month-$limit_date $limit_hour:00:00");
+    
+/*
+echo "$event_month<br />";
+echo "$event_date<br />";
+echo "$start_hour<br />";
+echo "$finish_hour<br />";
+echo "$event_start<br />";
+echo "$event_finish<br />";*/
+    //データベース接続
+    $conn = mysql_connect('localhost', 'root', 'root');
+    if (!$conn) {
+      die("データベース接続失敗");
+    }
+    //データベース選択
+    mysql_select_db('greenbakari') or die("データベース選択失敗");
+    //文字コード指定
+    mysql_set_charset('utf8');
+
+    //オートコミットを0に設定
+    $sql = "SET AUTOCOMMIT = 0";
+    mysql_query($sql);
+
+    //トランザクション開始
+    $sql = "BEGIN";
+    mysql_query($sql);
+
+    //最後のイベントIDを取得
+    $sql = "SELECT COUNT(*) FROM EV";
+    $new = mysql_query($sql);
+    while ($new_id = mysql_fetch_array($new)) {
+      $id = ++$new_id['COUNT(*)'];
+    }
+    //INSERT文発行
+    $sql = "INSERT INTO EV(EVENT_ID, USER_ID, EVENT_TITLE, CATEGORY, EVENT_START, EVENT_FINISH, HOLDING_PLACE, PARTICIPATION_DEADLINE, HOLDING_COMMENT, EVENT_DETAIL, UPDATE_DATE) VALUES($id, $user_id, '$event_title', $category, '$event_start', '$event_finish', '$holding_place', '$participation_deadline', '$holding_comment', '$event_detail', '$update_date')";
+    $res = mysql_query($sql);
+
+    if ($res) {
+    //成功時はコミットする
+      $sql = "COMMIT";
+      mysql_query($sql, $conn);
+      //echo "コミットしました";
+    } else {
+      //失敗時はロールバックする
+      $sql = "ROLLBACK";
+      mysql_query($sql, $conn);
+      //echo "ロールバックしました";
+    }
+
+    //mysql切断
+    mysql_close($conn);
+
+    //ページ遷移
+    header( "Location: http://localhost/" );
   }
-  //データベース選択
-  mysql_select_db('greenbakari') or die("データベース選択失敗");
-  //文字コード指定
-  mysql_set_charset('utf8');
+?>
 
-  //オートコミットを0に設定
-  $sql = "SET AUTOCOMMIT = 0";
-  mysql_query($sql);
 
-  //トランザクション開始
-  $sql = "BEGIN";
-  mysql_query($sql);
+<!--
+↑制御
+↓表示
+-->
 
-  //最後のイベントIDを取得
-  $sql = "SELECT COUNT(*) FROM EV";
-  $new = mysql_query($sql);
-  while ($new_id = mysql_fetch_array($new)) {
-  $id = ++$new_id['COUNT(*)'];
-  }
-  //INSERT文発行
-  $sql = "INSERT INTO EV(EVENT_ID, USER_ID, EVENT_TITLE) VALUES($id, $user_id, '$event_title')";
-  $res = mysql_query($sql);
-
-  if ($res) {
-  //成功時はコミットする
-  $sql = "COMMIT";
-  mysql_query($sql, $conn);
-  echo "コミットしました";
-  } else {
-  //失敗時はロールバックする
-  $sql = "ROLLBACK";
-  mysql_query($sql, $conn);
-  echo "ロールバックしました";
-  }
-
-  //mysql切断
-  mysql_close($conn);
-  } 
-  ?>
 
 
 <html>
@@ -73,7 +136,7 @@
 <div id="headerArea"></div>
 <div id="footerArea"></div>
 
-<form id="loginForm" name="loginForm" action="" method="POST">
+ 
   <!-- <?php echo $errorMessage ?> -->
 
 <div id = "box">
@@ -92,28 +155,28 @@
 <br><br><br>
 
 <label for="event_title" style="margin-left:-10%">イベントタイトル*：</label>
-<input type="text" id="event_title" name="event_title" disabled="disabled" value="<?php echo $event_title ?>"></input>
+<input type="text" id="event_title" name="event_title" disabled="disabled" value="<?php echo $_POST['event_title']?>"></input>
 <br><br><br>
 
-<label for="event_comment" style="margin-left:-2%">主催者コメント：</label>
+<label for="holding_comment" style="margin-left:-2%">主催者コメント：</label>
 <textarea disabled="disabled" rows="3" cols="40">
 <?php
-echo $_POST["event_comment"];
+echo $_POST["holding_comment"];
 ?>
 </textarea>
-<!--textarea name="event_comment" rows="3" cols="40"></textarea-->
+<!--textarea name="holding_comment" rows="3" cols="40"></textarea-->
 <br><br><br>
 
   <label for="month" style="margin-left:-9%">開催日*：</label>
   <?php
   echo "<SELECT>\n";
-  if($_POST['month'] == 0){echo "<OPTION value=0 >----</OPTION>\n";}
-  else{echo "<OPTION value=" . $_POST["month"] . " >" . $_POST["month"] . "月</OPTION>\n";}
+  if($_POST['event_month'] == 0){echo "<OPTION value=0 >----</OPTION>\n";}
+  else{echo "<OPTION value=" . $_POST["event_month"] . " >" . $_POST["event_month"] . "月</OPTION>\n";}
   echo "</SELECT>";
   echo "&nbsp;&nbsp;";
   echo "<SELECT>\n";
-  if($_POST['date'] == 0){echo "<OPTION value=0 >----</OPTION>\n";}
-  else{echo "<OPTION value=" . $_POST["date"] . " >" . $_POST["date"] . "日</OPTION>\n";}
+  if($_POST['event_date'] == 0){echo "<OPTION value=0 >----</OPTION>\n";}
+  else{echo "<OPTION value=" . $_POST["event_date"] . " >" . $_POST["event_date"] . "日</OPTION>\n";}
   echo "</SELECT>";
   ?>
   <br><br><br>
@@ -132,8 +195,8 @@ echo $_POST["event_comment"];
   ?>
   <br><br><br>
 
-  <label for="event_place" style="margin-left:-7%">開催場所*：</label>
-  <input type="text" id="event_place" name="event_place" disabled="disabled" value="<?php echo $_POST["event_place"]?>"></input>
+  <label for="holding_place" style="margin-left:-7%">開催場所*：</label>
+  <input type="text" id="holding_place" name="holding_place" disabled="disabled" value="<?php echo $_POST["holding_place"]?>"></input>
     <br><br><br>
 
   <label for="time" style="margin-left:-10%">参加応募締め切り*：</label>
@@ -156,8 +219,8 @@ echo $_POST["event_comment"];
   <br><br><br>
 
   <label for="time" style="margin-left:-7%">分類*：</label>
-  <select name="time">
-  <option><?php echo $_POST["time"]?></option>
+  <select name="category">
+  <option><?php echo $_POST["event_category"]?></option>
   
   <!--option value="全て">全て</option>
   <option value="グルメ/フェスティバル">グルメ/フェスティバル</option>
@@ -177,8 +240,21 @@ echo $_POST["event_detail"];
   <br><br><br>
 
   <!--input type="reset" id="delete" name="delete" value="クリアする"-->
+  
+  <form id="loginForm" name="loginForm" action="" method="POST">
+  <input type="hidden" name="e_title" value="<?php echo $event_title; ?>">
+  <input type="hidden" name="e_category" value="<?php echo $_POST['event_category']; ?>">
+  <input type="hidden" name="e_month" value="<?php echo $_POST['event_month']; ?>">
+  <input type="hidden" name="e_date" value="<?php echo $_POST['event_date']; ?>">
+  <input type="hidden" name="s_hour" value="<?php echo $_POST['start_hour']; ?>">
+  <input type="hidden" name="f_hour" value="<?php echo $_POST['finish_hour']; ?>">
+  <input type="hidden" name="h_place" value="<?php echo $holding_place; ?>">
+  <input type="hidden" name="l_month" value="<?php echo $_POST['limit_month']; ?>">
+  <input type="hidden" name="l_date" value="<?php echo $_POST['limit_date']; ?>">
+  <input type="hidden" name="l_hour" value="<?php echo $_POST['limit_hour']; ?>">
+  <input type="hidden" name="h_comment" value="<?php echo $holding_comment; ?>">
+  <input type="hidden" name="e_detail" value="<?php echo $event_detail; ?>">
   <input type="submit" id="insert" name="insert" value="登録する">
-
   </form>
 
 

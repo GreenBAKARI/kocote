@@ -28,13 +28,13 @@
 <input type="text" id="event_title" name="event_title">
 <br><br><br>
 
-<label for="event_comment" style="margin-left:-2%">主催者コメント：</label>
-<textarea name="event_comment" rows="3" cols="40"></textarea>
+<label for="holding_comment" style="margin-left:-2%">主催者コメント：</label>
+<textarea name="holding_comment" rows="3" cols="40"></textarea>
 <br><br><br>
 
   <label for="month" style="margin-left:-9%">開催日*：</label>
   <?php
-  echo '<select name="month">' . "\n";
+  echo '<select name="event_month">' . "\n";
   for ($i = 0; $i <= 12; $i++){
       if($i == 0){echo "<OPTION value=0 >----</OPTION>\n";}
       else{echo "<OPTION value=" . $i . " >" . $i . "月</OPTION>\n";}
@@ -44,7 +44,7 @@
   ?>
   <label for="date" style="margin-left:0%"></label>
   <?php
-  echo '<select name="date">' . "\n";
+  echo '<select name="event_date">' . "\n";
   for ($i = 0; $i <= 31; $i++){
       if($i == 0){echo "<OPTION value=0 >----</OPTION>\n";}
       else{echo "<OPTION value=" . $i . " >" . $i . "日</OPTION>\n";}
@@ -56,8 +56,8 @@
   <label for="start_hour" style="margin-left:-9%">開催時間*：</label>
   <?php
   echo '<select name="start_hour">' . "\n";
-  for ($i = 0; $i <= 24; $i++){
-      if($i == 0){echo "<OPTION value=0 >----</OPTION>\n";}
+  for ($i = -1; $i <= 23; $i++){
+      if($i == -1){echo "<OPTION value=0 >----</OPTION>\n";}
       else{echo "<OPTION value=" . $i . " >" . $i . "時</OPTION>\n";}
   }
   echo '</select>' . "\n";
@@ -66,8 +66,8 @@
   <label for="finish_hour" style="margin-left:0%"></label>
   <?php
   echo '<select name="finish_hour">' . "\n";
-  for ($i = 0; $i <= 24; $i++){
-      if($i == 0){echo "<OPTION value=0 >----</OPTION>\n";}
+  for ($i = -1; $i <= 23; $i++){
+      if($i == -1){echo "<OPTION value=0 >----</OPTION>\n";}
       else{echo "<OPTION value=" . $i . " >" . $i . "時</OPTION>\n";}
   }
   echo '</select>' . "\n";
@@ -75,8 +75,8 @@
   <br><br><br>
 
 
-  <label for="event_place" style="margin-left:-7%">開催場所*：</label>
-  <input type="text" id="event_place" name="event_place">
+  <label for="holding_place" style="margin-left:-7%">開催場所*：</label>
+  <input type="text" id="holding_place" name="holding_place">
   <br><br><br>
 
 
@@ -104,8 +104,8 @@
   <label for="limit_hour" style="margin-left:1%"></label>
   <?php
   echo '<select name="limit_hour">' . "\n";
-  for ($i = 0; $i <= 24; $i++){
-      if($i == 0){echo "<OPTION value=0 >----</OPTION>\n";}
+  for ($i = -1; $i <= 23; $i++){
+      if($i == -1){echo "<OPTION value=0 >----</OPTION>\n";}
       else{echo "<OPTION value=" . $i . " >" . $i . "時</OPTION>\n";}
   }
   echo '</select>' . "\n";
@@ -114,7 +114,7 @@
 
   
   <label for="time" style="margin-left:-7%">分類*：</label>
-  <select name="time">
+  <select name="event_category">
   <option value="全て">全て</option>
   <option value="グルメ/フェスティバル">グルメ/フェスティバル</option>
   <option value="芸術/エンタメ">芸術/エンタメ</option>
