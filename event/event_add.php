@@ -1,3 +1,7 @@
+<?php
+$user_id = 7;
+?>
+
 <html>
 <head>
 <meta charset="UTF-8">
@@ -14,11 +18,11 @@
   <!-- <?php echo $errorMessage ?> -->
 
 <div id = "box">
-    <a href="http://localhost/php/v0/event.php"><img src="img/ev_home.jpg" height="7%" width="16%"></a>
-    <a href="http://localhost/php/v0/bulletin.php"><img src="img/bb_home.jpg" height="7%" width="16%"></a>
-    <a href="http://localhost/php/v0/search.php"><img src="img/se_home.jpg" height="7%" width="16%"></a>
-    <a href="http://localhost/php/v0/dm.php"><img src="img/dm_home.jpg" height="7%" width="16%"></a>
-    <a href="http://localhost/php/v0/mypage.php"><img src="img/mp_home.jpg" height="7%" width="16%"></a></div>
+    <a href="http://localhost/v0/event.php"><img src="img/ev_home.jpg" height="7%" width="16%"></a>
+    <a href="http://localhost/v0/bulletin.php"><img src="img/bb_home.jpg" height="7%" width="16%"></a>
+    <a href="http://localhost/v0/search.php"><img src="img/se_home.jpg" height="7%" width="16%"></a>
+    <a href="http://localhost/v0/dm.php"><img src="img/dm_home.jpg" height="7%" width="16%"></a>
+    <a href="http://localhost/v0/mypage.php"><img src="img/mp_home.jpg" height="7%" width="16%"></a></div>
 <br><br><br>
 
 <a href="http://localhost/php/v0/mypage.php"><img src="img/mp_home.jpg" style="margin-left:-10%" height="8%" width="5%" align="bottom"><font size="6" color="#000000">利用者名</font></a>
@@ -113,7 +117,7 @@
   <br><br><br>
 
   
-  <label for="time" style="margin-left:-7%">分類*：</label>
+  <label for="category" style="margin-left:-7%">分類*：</label>
   <select name="event_category">
   <option value="全て">全て</option>
   <option value="グルメ/フェスティバル">グルメ/フェスティバル</option>
@@ -127,10 +131,12 @@
   <textarea name="event_detail" rows="7" cols="40"></textarea>
   <br><br><br>
 
-
+  <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
   <input type="reset" id="delete" name="delete" value="クリアする">
   <input type="submit" id="edit_conf" name="edit_conf" value="確認画面へ進む">
 
   </form>
   </body>
 </html>
+
+

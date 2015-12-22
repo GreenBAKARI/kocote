@@ -1,5 +1,6 @@
 <?php
-  $user_id = 0;
+  $event_id = $_POST['event_id'];
+  $user_id = $_POST['user_id'];
   $event_title= $_POST['event_title'];
   $event_category = $_POST['event_category'];
   $event_month = $_POST['event_month'];
@@ -13,7 +14,9 @@
   $holding_comment = $_POST['holding_comment'];
   $event_detail = $_POST['event_detail'];
 
-  if (isset($_POST["insert"]) == true) {
+  if ($_POST["insert"] != NULL) {
+    $event_id = $_POST['e_id'];
+    $user_id = $_POST['u_id'];
     $event_title = $_POST['e_title'];
     $event_category = $_POST['e_category'];
     switch ($event_category) {
@@ -68,6 +71,7 @@ echo "$start_hour<br />";
 echo "$finish_hour<br />";
 echo "$event_start<br />";
 echo "$event_finish<br />";*/
+
     //データベース接続
     $conn = mysql_connect('localhost', 'root', 'root');
     if (!$conn) {
@@ -86,14 +90,32 @@ echo "$event_finish<br />";*/
     $sql = "BEGIN";
     mysql_query($sql);
 
+    if ($event_id == NULL){
     //最後のイベントIDを取得
     $sql = "SELECT COUNT(*) FROM EV";
     $new = mysql_query($sql);
     while ($new_id = mysql_fetch_array($new)) {
-      $id = ++$new_id['COUNT(*)'];
+      $ev_id = ++$new_id['COUNT(*)'];
     }
     //INSERT文発行
-    $sql = "INSERT INTO EV(EVENT_ID, USER_ID, EVENT_TITLE, CATEGORY, EVENT_START, EVENT_FINISH, HOLDING_PLACE, PARTICIPATION_DEADLINE, HOLDING_COMMENT, EVENT_DETAIL, UPDATE_DATE) VALUES($id, $user_id, '$event_title', $category, '$event_start', '$event_finish', '$holding_place', '$participation_deadline', '$holding_comment', '$event_detail', '$update_date')";
+    $sql = "INSERT INTO EV(EVENT_ID, USER_ID, EVENT_TITLE, CATEGORY, EVENT_START, EVENT_FINISH, HOLDING_PLACE, PARTICIPATION_DEADLINE, HOLDING_COMMENT, EVENT_DETAIL, UPDATE_DATE) VALUES($ev_id, $user_id, '$event_title', $category, '$event_start', '$event_finish', '$holding_place', '$participation_deadline', '$holding_comment', '$event_detail', '$update_date')";
+    } else {
+    //UPDATE文発行
+    $sql = "UPDATE EV 
+    SET USER_ID = $user_id, 
+    EVENT_TITLE = '$event_title', 
+    CATEGORY =  $category, 
+    EVENT_START = '$event_start', 
+    EVENT_FINISH = '$event_finish', 
+    HOLDING_PLACE = '$holding_place', 
+    PARTICIPATION_DEADLINE = '$participation_deadline',
+    HOLDING_COMMENT = '$holding_comment', 
+    EVENT_DETAIL = '$event_detail', 
+    UPDATE_DATE = '$update_date' 
+    WHERE EVENT_ID = $event_id;";
+    }
+
+
     $res = mysql_query($sql);
 
     if ($res) {
@@ -107,7 +129,6 @@ echo "$event_finish<br />";*/
       mysql_query($sql, $conn);
       //echo "ロールバックしました";
     }
-
     //mysql切断
     mysql_close($conn);
 
@@ -140,11 +161,11 @@ echo "$event_finish<br />";*/
   <!-- <?php echo $errorMessage ?> -->
 
 <div id = "box">
-    <a href="http://localhost/php/v0/event.php"><img src="img/ev_home.jpg" height="7%" width="16%"></a>
-    <a href="http://localhost/php/v0/bulletin.php"><img src="img/bb_home.jpg" height="7%" width="16%"></a>
-    <a href="http://localhost/php/v0/search.php"><img src="img/se_home.jpg" height="7%" width="16%"></a>
-    <a href="http://localhost/php/v0/dm.php"><img src="img/dm_home.jpg" height="7%" width="16%"></a>
-    <a href="http://localhost/php/v0/mypage.php"><img src="img/mp_home.jpg" height="7%" width="16%"></a></div>
+    <a href="http://localhost/v0/event.php"><img src="img/ev_home.jpg" height="7%" width="16%"></a>
+    <a href="http://localhost/v0/bulletin.php"><img src="img/bb_home.jpg" height="7%" width="16%"></a>
+    <a href="http://localhost/v0/search.php"><img src="img/se_home.jpg" height="7%" width="16%"></a>
+    <a href="http://localhost/v0/dm.php"><img src="img/dm_home.jpg" height="7%" width="16%"></a>
+    <a href="http://localhost/v0/mypage.php"><img src="img/mp_home.jpg" height="7%" width="16%"></a></div>
 <br><br><br>
 
 
@@ -184,12 +205,12 @@ echo $_POST["holding_comment"];
   <label for="start_hour" style="margin-left:-9%">開催時間*：</label>
   <?php
   echo "<SELECT>\n";
-  if($_POST['start_hour'] == 0){echo "<OPTION value=0 >----</OPTION>\n";}
+  if($_POST['start_hour'] == -1){echo "<OPTION value=0 >----</OPTION>\n";}
   else{echo "<OPTION value=" . $_POST["start_hour"] . " >" . $_POST["start_hour"] . "時</OPTION>\n";}
   echo "</SELECT>";
   echo "&nbsp;&nbsp;～&nbsp;&nbsp;";
   echo "<SELECT>\n";
-  if($_POST['finish_hour'] == 0){echo "<OPTION value=0 >----</OPTION>\n";}
+  if($_POST['finish_hour'] == -1){echo "<OPTION value=0 >----</OPTION>\n";}
   else{echo "<OPTION value=" . $_POST["finish_hour"] . " >" . $_POST["finish_hour"] . "時</OPTION>\n";}
   echo "</SELECT>";
   ?>
@@ -212,7 +233,7 @@ echo $_POST["holding_comment"];
   echo "</SELECT>";
   echo "&nbsp;&nbsp;&nbsp;&nbsp;";
   echo "<SELECT>\n";
-      if($_POST['limit_hour'] == 0){echo "<OPTION value=0 >----</OPTION>\n";}
+      if($_POST['limit_hour'] == -1){echo "<OPTION value=0 >----</OPTION>\n";}
       else{echo "<OPTION value=" . $_POST["limit_hour"] . " >" . $_POST["limit_hour"] . "時</OPTION>\n";}
   echo "</SELECT>";
   ?>
@@ -242,6 +263,8 @@ echo $_POST["event_detail"];
   <!--input type="reset" id="delete" name="delete" value="クリアする"-->
   
   <form id="loginForm" name="loginForm" action="" method="POST">
+  <input type="hidden" name="e_id" value="<?php echo $event_id; ?>">
+  <input type="hidden" name="u_id" value="<?php echo $user_id; ?>">
   <input type="hidden" name="e_title" value="<?php echo $event_title; ?>">
   <input type="hidden" name="e_category" value="<?php echo $_POST['event_category']; ?>">
   <input type="hidden" name="e_month" value="<?php echo $_POST['event_month']; ?>">
