@@ -52,11 +52,22 @@ if (! $sql_result_pev = mysql_query ( 'SELECT * FROM ev, pev WHERE ev.EVENT_ID=p
 if (! $sql_result_fev = mysql_query ( 'SELECT * FROM ev, fev WHERE ev.EVENT_ID=fev.EVENT_ID' ))
 	die ( 'クエリ失敗。' . mysql_error () );
 
+
+echo ('
+<FORM method="POST" enctype="multipart/form-data" action="upload.php">
+		<P>画像アップロード</P>
+		画像パス：<INPUT type="file" name="upfile" size="50"><BR> <INPUT
+			type="submit" name="submit" value="送信">
+	</FORM>
+');
+echo '<form action="mypage_conf.php" method="post">';
 // ヘッダ画像
 $ua = mysql_fetch_assoc ( $sql_result_ua );
 echo '<img src="./img_get.php?id=' . $ua ['USER_ID'] . '&img=' . 'HEADER_IMAGE' . '"/>';
 // アイコン画像
 echo '<img src="./img_get.php?id=' . $ua ['USER_ID'] . '&img=' . 'ICON_IMAGE' . '"/>';
+// 「編集を確認する」ボタン
+echo '<input type="button" value="編集を確認する" name="conf" ></button>';
 
 /* ▽ 名前・性別・名前の表記 ▽ */
 /* 名前 */
@@ -126,6 +137,7 @@ foreach ( $interest as $key => $value ) {
 	if ($key == 2)
 		echo " checked";
 	echo '>' . $value;
+	// ４つ毎に改行
 	if ($key % 4 == 3)
 		echo "<br>";
 }
@@ -158,7 +170,9 @@ while ( $fev = mysql_fetch_assoc ( $sql_result_fev ) )
 echo '</p>';
 /* △ お気に入り登録しているイベント △ */
 mysql_close ( $link );
+echo '</form>';
 ?>
+
 <!-- 本体end-->
 
 			<div id="footerArea">
