@@ -1,25 +1,3 @@
-<<<<<<< HEAD
-<?php
- // データがセットされていれば実行
- if(isset($_GET['comment'])){
- $comment = $_GET['comment'];
- echo $comment;
-}
-?>
-
-<!DOCTYPE html>
-<html lang = "ja">
-<head>
-<meta charset = "UFT-8">
-<title>フォームからデータを受け取る</title>
-</head>
-<body>
-<h1>フォームデータの送信</h1>
-<form action = "mypage_conf.php" method = "get">
-<input type = "text" name ="comment"><br/>
-<input type = "submit" value ="送信">
-</form>
-=======
 <html>
 <head>
 <meta charset="UTF-8">
@@ -49,10 +27,11 @@
 			<br>
 			<br>
 			<br>
+		</form>
 
 			<!-- 本体start -->
-			<!-- 利用者未識別注意 -->
 <?php
+
 // MySQLと接続
 $link = mysql_connect ( 'localhost', 'root' );
 if (! $link)
@@ -75,11 +54,20 @@ if (! $sql_result_pev = mysql_query ( 'SELECT * FROM ev, pev WHERE ev.EVENT_ID=p
 if (! $sql_result_fev = mysql_query ( 'SELECT * FROM ev, fev WHERE ev.EVENT_ID=fev.EVENT_ID' ))
 	die ( 'クエリ失敗。' . mysql_error () );
 
-	// ヘッダ画像
+echo '<form action="mypage_conf.php" method="post">';
+// ヘッダ画像
 $ua = mysql_fetch_assoc ( $sql_result_ua );
-echo '<img src="./img_get.php?id=' . $ua ['USER_ID'] . '&img=' . 'HEADER_IMAGE' . '"/>';
+echo '<p>';
+echo '<img src="./img_get.php?&img=HEADER_IMAGE"/>';
+echo $_POST['header_up'];
+echo '</p>';
 // アイコン画像
-echo '<img src="./img_get.php?id=' . $ua ['USER_ID'] . '&img=' . 'ICON_IMAGE' . '"/>';
+echo '<p>';
+echo '<img src="./img_get.php?&img=ICON_IMAGE"/>';
+echo 'アイコン画像パス：<INPUT type="file" name="icon_up" size="50"><BR>';
+echo '</p>';
+// 「編集を確認する」ボタン
+echo '<input type="submit" value="編集を確認する" name="conf" ></button>';
 
 /* ▽ 名前・性別・名前の表記 ▽ */
 /* 名前 */
@@ -92,7 +80,7 @@ $hyoki = array (
 		"日本語",
 		"アルファベット"
 );
-echo '　名前の表記 : <form name="name_display" method="post">';
+echo '　名前の表記 : ';
 foreach ( $hyoki as $key0 => $value ) {
 	echo '<input type="radio" name="hyoki" value="' . $value . '"';
 	// 選択済み判定(日本語を選択していると仮定)
@@ -100,7 +88,7 @@ foreach ( $hyoki as $key0 => $value ) {
 		echo " checked";
 	echo '>' . $value;
 }
-echo "</form></p>";
+echo "</p>";
 /* △ 名前・性別・名前の表記 △ */
 
 /* ▽ 大学・学年・学科 ▽ */
@@ -111,7 +99,7 @@ $gakka = array (
 		"環境",
 		"シス"
 );
-echo '<select method="post" action="mypage_conf.php">';
+echo '<select>';
 foreach ( $gakka as $key => $value ) {
 	echo '<option name="gakka" value="' . $value . '"';
 	// 選択済み判定
@@ -124,7 +112,6 @@ echo "</select></p>";
 
 /* ▽ 興味・関心のある分野 ▽ */
 echo ("<p>興味・関心のある分野" . "<br>");
-echo ('<form method="post" action="mypage_conf.php">');
 $interest = array (
 		"アニメ",
 		"映画	",
@@ -153,7 +140,7 @@ foreach ( $interest as $key => $value ) {
 	if ($key % 4 == 3)
 		echo "<br>";
 }
-echo ("</form></p>");
+echo ("</p>");
 /* △ 興味・関心のある分野 △ */
 
 /* ▽ 自己紹介 ▽ */
@@ -182,6 +169,7 @@ while ( $fev = mysql_fetch_assoc ( $sql_result_fev ) )
 echo '</p>';
 /* △ お気に入り登録しているイベント △ */
 mysql_close ( $link );
+echo '</form>';
 ?>
 	<!-- 本体end -->
 
@@ -196,11 +184,4 @@ mysql_close ( $link );
 			</div>
 
 	</body>
-
-<<<<<<< HEAD
 </html>
-=======
->>>>>>> 673e129f6e2ed209277ad773379d9f6d7f1ddfd8
-</body>
-</html>
->>>>>>> 1d3589daa1a213b5c2775aaec90a91b393fb992c

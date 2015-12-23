@@ -6,7 +6,10 @@ $link = mysql_connect ( 'localhost', 'root' );
 $dbLink = mysql_select_db ( 'greenbakari', $link );
 
 // 画像データ取得
-if (! $sql_result_icon_image = mysql_query ( "SELECT " . $_GET ['img'] . " FROM ua WHERE USER_ID = '" . $_GET ['id'] . "'" ))
+// ▽ 1番目に該当する利用者から
+if (! $sql_result_icon_image = mysql_query ( "SELECT " . $_GET ['img'] . " FROM ua WHERE USER_ID = '" . 1 . "'" ))
+// ▽ idに該当する利用者から
+//if (! $sql_result_icon_image = mysql_query ( "SELECT " . $_GET ['img'] . " FROM ua WHERE USER_ID = '" . $_POST ['id'] . "'" ))
 	die ( 'クエリ失敗。' . mysql_error () );
 $row = mysql_fetch_array ( $sql_result_icon_image );
 

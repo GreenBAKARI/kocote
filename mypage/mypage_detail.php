@@ -25,9 +25,9 @@
 					src="img/mp_home.jpg" height="7%" width="16%"></a>
 			</div>
 			<br> <br> <br>
+		</form>
 
-			<!-- 本体start -->
-			<!-- 利用者未識別注意 -->
+	<!-- 本体start -->
 <?php
 
 // MySQLと接続
@@ -52,24 +52,22 @@ if (! $sql_result_pev = mysql_query ( 'SELECT * FROM ev, pev WHERE ev.EVENT_ID=p
 if (! $sql_result_fev = mysql_query ( 'SELECT * FROM ev, fev WHERE ev.EVENT_ID=fev.EVENT_ID' ))
 	die ( 'クエリ失敗。' . mysql_error () );
 
-echo ('
-<FORM method="POST" enctype="multipart/form-data" action="upload.php">
-	</FORM>
-');
 echo '<form action="mypage_conf.php" method="post">';
+echo '<input type="submit">';
+echo '</form>';
 // ヘッダ画像
 $ua = mysql_fetch_assoc ( $sql_result_ua );
 echo '<p>';
-echo '<img src="./img_get.php?id=' . $ua ['USER_ID'] . '&img=' . 'HEADER_IMAGE' . '"/>';
-echo 'ヘッダ画像パス：<INPUT type="file" name="upfile" size="50"><BR>';
+echo '<img src="./img_get.php?img=HEADER_IMAGE"/>';
+echo 'ヘッダ画像パス：<input type="file" name="header_up" size="50"><BR>';
 echo '</p>';
 // アイコン画像
 echo '<p>';
-echo '<img src="./img_get.php?id=' . $ua ['USER_ID'] . '&img=' . 'ICON_IMAGE' . '"/>';
-echo 'アイコン画像パス：<INPUT type="file" name="upfile" size="50"><BR>';
+echo '<img src="./img_get.php?img=ICON_IMAGE"/>';
+echo 'アイコン画像パス：<input type="file" name="icon_up" size="50"><BR>';
 echo '</p>';
 // 「編集を確認する」ボタン
-echo '<input type="button" value="編集を確認する" name="conf" ></button>';
+echo '<input type="submit" value="編集を確認する" name="submit" >';
 
 /* ▽ 名前・性別・名前の表記 ▽ */
 /* 名前 */
@@ -174,7 +172,7 @@ mysql_close ( $link );
 echo '</form>';
 ?>
 
-<!-- 本体end-->
+	<!-- 本体end-->
 
 			<div id="footerArea">
 				<ul>
