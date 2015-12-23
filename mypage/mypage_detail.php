@@ -1,160 +1,176 @@
 <html>
 <head>
-<title>mypage_detail.php</title>
+<meta charset="UTF-8">
+<title>高知県大学生用交流サイト「KoCo + Te」</title>
 </head>
-<body>
+<center>
+	<link rel="stylesheet" href="style.css" 　type="text/css">
+	<body topmargin="100" bottommargin="100">
+
+		<div id="headerArea"></div>
+
+		<form id="loginForm" name="loginForm" action="" method="POST">
+			<!-- <?php echo $errorMessage ?> -->
+
+			<div id="box">
+				<a href="http://localhost/php/v0/event.php"><img
+					src="img/ev_home.jpg" height="7%" width="16%"></a> <a
+					href="http://localhost/php/v0/bulletin.php"><img
+					src="img/bb_home.jpg" height="7%" width="16%"></a> <a
+					href="http://localhost/php/v0/search.php"><img
+					src="img/se_home.jpg" height="7%" width="16%"></a> <a
+					href="http://localhost/php/v0/dm.php"><img src="img/dm_home.jpg"
+					height="7%" width="16%"></a> <a
+					href="http://localhost/php/v0/mypage.php"><img
+					src="img/mp_home.jpg" height="7%" width="16%"></a>
+			</div>
+			<br> <br> <br>
+
+			<!-- 本体start -->
+			<!-- 利用者未識別注意 -->
 <?php
-// phpinfo();
-// $link = mysql_connect ( 'c:\xampp\mysql', 'user', 'pass' );
-
-// if (! $link) {
-// die ( '接続失敗です。' . mysql_error () );
-// }
-
-// print('<p>接続に成功しました。</p>');
-
-// /* ヘッダ画像 */
-// echo "ヘッダ画像<<br>";
-// /* アイコン画像 */
-// echo "アイコン画像<br>";
-// /* 「編集を確認する」-ボタン */
-// echo "「編集を確認する」-ボタン<br>";
-// /* 名前 */
-// echo "名前<br>";
-// /* 性別 */
-// echo "性別<br>";
-// /* 名前の表記-ラジオボタン */
-// echo "名前の表記-ラジオボタン<br>";
-// /* 学科-プルダウンメニュー */
-// echo "学科-プルダウンメニュー<br>";
-// /* 興味・関心のある分野-チェックボックス */
-// echo "興味・関心のある分野-チェックボックス<br>";
-// /* 自己紹介-入力フォーム */
-// echo "自己紹介-入力フォーム<br>";
-// /* 立ち上げているイベント */
-// echo "立ち上げているイベント<br>";
-// /* 参加しているイベント */
-// echo "参加しているイベント<br>";
-// /* お気に入り登録しているイベント */
-// echo "お気に入り登録しているイベント<br>";
-
-// $close_flag = mysql_close($link);
-
-// if ($close_flag){
-// print('<p>切断に成功しました。</p>');
-// }
-//
-?>
-
-<table border="1">
-		<tr>
-			<th>名前</th>
-			<th>価格</th>
-		</tr>
-<?php
-//表示
-$data_source_name = 'mysql:dbname=hogehoge';
-$user = 'root';
-$pdo = new PDO ($data_source_name, $user); // PDO:PHP Data Objects； どのデータベースを使っているか隠蔽
-$st = $pdo->query("SELECT * FROM hoge"); // SQL@すべて表示
-while ($row = $st->fetch()) { // PDOStatementクラスのfetchメソッドで導出表の先頭から一行ずつ順番に取得
-	$name = htmlspecialchars ($row ['name']);
-	$price = htmlspecialchars ($row ['price']);
-	echo "<tr><td>$name</td><td>$price 円</td></tr>";
-}
-
-if(!(empty($_POST['name']) && empty($_POST['price']))) { // 未入力回避
-$st = $pdo->prepare("INSERT INTO hoge VALUES(?, ?)"); // SQL@名前 価格 挿入
-$st->execute(array($_POST['name'], $_POST['price']));
-}
-?>
-</table>
-
-	<form action="mypage_detail.php" method="post">
-		name<br> <input type="text" name="name"><br> price<br> <input
-			type="text" name="price"><br> <br> <input type="submit" value="送信">
-	</form>
-	<form action="mypage_detail.php" method="get">
-		<input type="submit" value="削除">
-	</form>
-<?php
-// 罫線
-print "<hr>";
 
 // MySQLと接続
-$link = mysql_connect ( 'localhost' , 'root');
-if ( !$link ) {
-	die ( '接続失敗です。' . mysql_error () );
-} else {print('<p>接続に成功しました。</p>');}
+$link = mysql_connect ( 'localhost', 'root' );
+if (! $link)
+	die ( 'DB接続失敗です。' . mysql_error () );
 
-// データベースを選択
-$db_selected = mysql_select_db ( 'hogehoge' , $link);
-if ( !$db_selected ) {
-    die ( 'データベース選択失敗です。' . mysql_error() );
-} else {
-	print ( '<p>データベース選択成功です。</p>' );
+	// データベースgreenbakariを選択
+$db_selected = mysql_select_db ( 'greenbakari', $link );
+if (! $db_selected)
+	die ( 'データベース選択失敗です。' . mysql_error () );
+
+	// クエリの発行
+if (! $sql_result_ua = mysql_query ( 'SELECT * FROM ua' ))
+	die ( 'クエリ失敗。' . mysql_error () );
+if (! $sql_result_ur = mysql_query ( 'SELECT * FROM ur' ))
+	die ( 'クエリ失敗。' . mysql_error () );
+if (! $sql_result_ev = mysql_query ( 'SELECT * FROM ev' ))
+	die ( 'クエリ失敗。' . mysql_error () );
+if (! $sql_result_pev = mysql_query ( 'SELECT * FROM ev, pev WHERE ev.EVENT_ID=pev.EVENT_ID' ))
+	die ( 'クエリ失敗。' . mysql_error () );
+if (! $sql_result_fev = mysql_query ( 'SELECT * FROM ev, fev WHERE ev.EVENT_ID=fev.EVENT_ID' ))
+	die ( 'クエリ失敗。' . mysql_error () );
+
+// ヘッダ画像
+$ua = mysql_fetch_assoc ( $sql_result_ua );
+echo '<img src="./img_get.php?id=' . $ua ['USER_ID'] . '&img=' . 'HEADER_IMAGE' . '"/>';
+// アイコン画像
+echo '<img src="./img_get.php?id=' . $ua ['USER_ID'] . '&img=' . 'ICON_IMAGE' . '"/>';
+
+/* ▽ 名前・性別・名前の表記 ▽ */
+/* 名前 */
+$ur = mysql_fetch_assoc ( $sql_result_ur );
+echo ("<p>" . $ur ['USER_LAST_NAME'] . " " . $ur ['USER_FIRST_NAME'] . "	");
+/* 性別 */
+echo ("　" . $ur ['SEX'] . "	");
+/* 名前の表記-ラジオボタン */
+$hyoki = array (
+		"日本語",
+		"アルファベット"
+);
+echo '　名前の表記 : <form name="name_display" method="post">';
+foreach ( $hyoki as $key0 => $value ) {
+	echo '<input type="radio" name="hyoki" value="' . $value . '"';
+	// 選択済み判定(日本語を選択していると仮定)
+	if ($key0 == 0)
+		echo " checked";
+	echo '>' . $value;
 }
+echo "</form></p>";
+/* △ 名前・性別・名前の表記 △ */
 
-// 文字コードをUTF-8にセット
-mysql_set_charset('utf8');
-
-// クエリの発行
-$result = mysql_query ( 'SELECT * FROM ua' );
-if ( !$result ) {
-	die ( 'クエリ失敗。' . mysql_error() );
+/* ▽ 大学・学年・学科 ▽ */
+/* 大学・学年・学科 */
+echo "<p>" . $ur ["COLLEGE_NAME"] . "大学" . " " . $ur ["GRADE"] . "年" . " " . "学科: ";
+$gakka = array (
+		"情報",
+		"環境",
+		"シス"
+);
+echo '<select method="post" action="mypage_conf.php">';
+foreach ( $gakka as $key => $value ) {
+	echo '<option name="gakka" value="' . $value . '"';
+	// 選択済み判定
+	if ($ua ["DEPARTMENT_NAME"] == $value)
+		echo " selected";
+	echo '>' . $value . '</option>';
 }
+echo "</select></p>";
+/* △ 大学・学年・学科 △ */
 
-// 連想配列としてすべての行の各フィールドの値を出力
-while ($row = mysql_fetch_assoc($result)) {
-    print($row['USER_ID']);
-    print($row['DEPARTMENT_NAME']);
-	print($row['INTEREST']);
-	//print($row['ICON_IMAGE']);
-	//print($row['HEADER_IMAGE']);
-	print($row['PROFILE']);
+/* ▽ 興味・関心のある分野 ▽ */
+echo ("<p>興味・関心のある分野" . "<br>");
+echo ('<form method="post" action="mypage_conf.php">');
+$interest = array (
+		"アニメ",
+		"映画	",
+		"音楽	",
+		"カメラ",
+		"グルメ",
+		"ゲーム",
+		"スポーツ",
+		"釣り	",
+		"天体観測",
+		"動物	",
+		"読書	",
+		"乗り物",
+		"ファッション",
+		"漫画	",
+		"料理	",
+		"旅行	"
+);
+foreach ( $interest as $key => $value ) {
+	echo '<input type="checkbox" name="interest" value="' . $value . '"';
+	// 選択済み判定(音楽を選択していると仮定)
+	if ($key == 2)
+		echo " checked";
+	echo '>' . $value;
+	if ($key % 4 == 3)
+		echo "<br>";
 }
+echo ("</form></p>");
+/* △ 興味・関心のある分野 △ */
 
+/* ▽ 自己紹介 ▽ */
+echo "自己紹介" . "<br><p>";
+echo '<textarea name="jikoshokai" cols="50" rows="6" disable>' . $ua ['PROFILE'] . '</textarea></p>';
+/* △ 自己紹介 △ */
 
+/* ▽ 立ち上げているイベント ▽ */
+echo "立ち上げているイベント" . "<br><p>";
+while ( $ev = mysql_fetch_assoc ( $sql_result_ev ) )
+	echo $ev ['EVENT_START'] . " " . $ev ['EVENT_TITLE'] . '<br>';
+echo '</p>';
+/* △ 立ち上げているイベント △ */
 
+/* ▽ 参加しているイベント ▽ */
+echo "参加しているイベント" . "<br><p>";
+while ( $pev = mysql_fetch_assoc ( $sql_result_pev ) )
+	echo $pev ['EVENT_START'] . " " . $pev ['EVENT_TITLE'] . '<br>';
+echo '</p>';
+/* △ 参加しているイベント △ */
 
-
-
-
-
-
-//MySQLと切断
-$close_flag = mysql_close($link);
-if ($close_flag) {
-	print ( '<p>切断に成功しました。</p>');
-}
+/* ▽ お気に入り登録しているイベント ▽ */
+echo "お気に入り登録しているイベント" . "<br><p>";
+while ( $fev = mysql_fetch_assoc ( $sql_result_fev ) )
+	echo $fev ['EVENT_START'] . " " . $fev ['EVENT_TITLE'] . '<br>';
+echo '</p>';
+/* △ お気に入り登録しているイベント △ */
+mysql_close ( $link );
 ?>
+<!-- 本体end-->
 
+			<div id="footerArea">
+				<ul>
+					<li><a href="">会社概要</a></li>
+					<li><a href="">お問い合わせ</a></li>
+					<li><a href="">個人情報保護方針</a></li>
+					<li><a href="">採用情報</a></li>
+					<li><a href="">サイトマップ</a></li>
+				</ul>
+			</div>
 
-<!-- 画像アップロード -->
-<FORM method="POST" enctype="multipart/form-data" action="mypage_detail.php">
-	<P>画像アップロード</P>
-		画像パス：<INPUT type="file" name="upfile" size="50"><BR> <INPUT
-		type="submit" name="submit" value="送信">
-</FORM>
-<!-- 画像表示 -->
-<FORM method="POST" action="mypage_detail.php">
-	<P>画像表示</P>
-	ID：<INPUT type="text" name="id">
-	<INPUT type="submit" name="submit" value="送信">
-	<BR><BR>
-</FORM>
+	</body>
 
-<?php
-// 画像表示
-if (count($_POST) > 0 && isset($_POST["submit"])){
-	$id = $_POST["id"];
-	if ($id==""){
-		print("IDが入力されていません。<BR>\n");
-	} else {
-		print("<img src=\"./img_get.php?id=" . $id . "\">");
-	}
-}
-?>
-
-</body>
 </html>
