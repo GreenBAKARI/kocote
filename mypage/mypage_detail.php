@@ -52,20 +52,22 @@ if (! $sql_result_pev = mysql_query ( 'SELECT * FROM ev, pev WHERE ev.EVENT_ID=p
 if (! $sql_result_fev = mysql_query ( 'SELECT * FROM ev, fev WHERE ev.EVENT_ID=fev.EVENT_ID' ))
 	die ( 'クエリ失敗。' . mysql_error () );
 
-
 echo ('
 <FORM method="POST" enctype="multipart/form-data" action="upload.php">
-		<P>画像アップロード</P>
-		画像パス：<INPUT type="file" name="upfile" size="50"><BR> <INPUT
-			type="submit" name="submit" value="送信">
 	</FORM>
 ');
 echo '<form action="mypage_conf.php" method="post">';
 // ヘッダ画像
 $ua = mysql_fetch_assoc ( $sql_result_ua );
+echo '<p>';
 echo '<img src="./img_get.php?id=' . $ua ['USER_ID'] . '&img=' . 'HEADER_IMAGE' . '"/>';
+echo 'ヘッダ画像パス：<INPUT type="file" name="upfile" size="50"><BR>';
+echo '</p>';
 // アイコン画像
+echo '<p>';
 echo '<img src="./img_get.php?id=' . $ua ['USER_ID'] . '&img=' . 'ICON_IMAGE' . '"/>';
+echo 'アイコン画像パス：<INPUT type="file" name="upfile" size="50"><BR>';
+echo '</p>';
 // 「編集を確認する」ボタン
 echo '<input type="button" value="編集を確認する" name="conf" ></button>';
 
@@ -80,7 +82,7 @@ $hyoki = array (
 		"日本語",
 		"アルファベット"
 );
-echo '　名前の表記 : <form name="name_display" method="post">';
+echo '　名前の表記 : ';
 foreach ( $hyoki as $key0 => $value ) {
 	echo '<input type="radio" name="hyoki" value="' . $value . '"';
 	// 選択済み判定(日本語を選択していると仮定)
@@ -88,7 +90,7 @@ foreach ( $hyoki as $key0 => $value ) {
 		echo " checked";
 	echo '>' . $value;
 }
-echo "</form></p>";
+echo "</p>";
 /* △ 名前・性別・名前の表記 △ */
 
 /* ▽ 大学・学年・学科 ▽ */
@@ -99,7 +101,7 @@ $gakka = array (
 		"環境",
 		"シス"
 );
-echo '<select method="post" action="mypage_conf.php">';
+echo '<select>';
 foreach ( $gakka as $key => $value ) {
 	echo '<option name="gakka" value="' . $value . '"';
 	// 選択済み判定
@@ -112,7 +114,6 @@ echo "</select></p>";
 
 /* ▽ 興味・関心のある分野 ▽ */
 echo ("<p>興味・関心のある分野" . "<br>");
-echo ('<form method="post" action="mypage_conf.php">');
 $interest = array (
 		"アニメ",
 		"映画	",
@@ -141,7 +142,7 @@ foreach ( $interest as $key => $value ) {
 	if ($key % 4 == 3)
 		echo "<br>";
 }
-echo ("</form></p>");
+echo ("</p>");
 /* △ 興味・関心のある分野 △ */
 
 /* ▽ 自己紹介 ▽ */
