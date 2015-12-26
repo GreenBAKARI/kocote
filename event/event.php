@@ -297,6 +297,7 @@ EOT;
 </head>
 <center>
 <link rel="stylesheet" href="style.css" type="text/css">
+<link rel="stylesheet" href="event_calendar.css" type="text/css">
 <body topmargin="100" bottommargin="100">
 
 <div id="headerArea"></div>
@@ -304,6 +305,7 @@ EOT;
 <form id="loginForm" name="loginForm" action="" method="POST">
   <!-- <?php echo $errorMessage ?> -->
 
+  <br><br><br><br><br><br><br>  
 <!-- 機能選択ボタン -->
 <div id = "box">
   <a href="http://localhost/php/v0/event.php"><img src="img/ev_home.jpg" height="13%" width="16%"></a>
@@ -354,6 +356,9 @@ EOT;
 
 <br>
 
+<!-- カテゴリ画像の表示 -->
+<p>カテゴリから探す</p>
+
 <div id = "box">
 <img src="img/ev_all.jpg" height="10%" width="13%">
 <img src="img/ev_gf.jpg" height="10%" width="13%">
@@ -362,13 +367,34 @@ EOT;
 <img src="img/ev_ft.jpg" height="10%" width="13%">
 <img src="img/ev_sc.jpg" height="10%" width="13%">
 </div>
-<br><br><br>
+<br><br>
 </center>
 
-<!-- イベント作成ボタン -->
+<!-- イベント作成ボタンの表示 -->
   <a href="http://localhost/kocote/event/event_add.php">
-  <img src="img/ev_mk.jpg" height="7%" width="10%" style="margin-left:23%"></a>
+  <img src="img/ev_mk.jpg" height="7%" width="10%" style="margin-left:81.5%"></a>
 <br><br><br>
+
+
+<!-- イベント情報（イベントタイトル、開催日時）の表示 -->
+<?php 
+for ($i = 0; $i < 5; $i++) {
+    echo '<a href="http://localhost/kocote/event/event_detail.php?event_id='.$event_id[$i].'">'.$event_title[$i].'</a>';
+    echo '<br>';
+    echo substr($event_start[$i], 0, 4).'年'.substr($event_start[$i], 5, 1).'月'.substr($event_start[$i], 8, 1).'日 ';
+
+    if (substr($event_start[$i], 11, 1) == 0) {
+        echo substr($event_start[$i], 12, 1)."時〜";
+    } else {
+        echo substr($event_start[$i], 11, 2)."時〜";
+    }
+
+    echo '<br><br>';
+}
+?>
+
+<!-- カレンダーの表示> -->
+<?php ev_calendar(); ?>
 
 <div id="footerArea">
 <ul>
@@ -378,6 +404,7 @@ EOT;
 <li><a href="https://www.evol-ni.com/recruit/">採用情報</a></li>
 <li><a href="https://www.evol-ni.com/sitemap/">サイトマップ</a></li>
 </ul></div>
+
 
 </body>
 
