@@ -34,7 +34,7 @@
     $sql4 = "SELECT UR.USER_ID, USER_LAST_NAME, USER_FIRST_NAME FROM UR,PEV WHERE UR.USER_ID = PEV.USER_ID AND PEV.EVENT_ID = $event_id ORDER BY PEV.USER_ID";
     
     //イベント主催者の取得
-    $sql5 = "SELECT USER_LAST_NAME, USER_FIRST_NAME FROM UR, EV WHERE UR.USER_ID = EV.USER_ID AND EV.EVENT_ID = $event_id";
+    $sql5 = "SELECT UR.USER_ID, UR.USER_LAST_NAME, UR.USER_FIRST_NAME FROM UR, EV WHERE UR.USER_ID = EV.USER_ID AND EV.EVENT_ID = $event_id";
     
     $result = mysql_query($sql, $link);
     $result2 = mysql_query($sql2, $link);
@@ -74,6 +74,7 @@
     }
     
     while ($row5 = mysql_fetch_array($result5)) {
+            $organizer_user_id = $row5['USER_ID'];
             $organizer_last_name = $row5['USER_LAST_NAME'];
             $organizer_first_name = $row5['USER_FIRST_NAME'];
     }
@@ -141,7 +142,7 @@
 <h1 align="center"><?php echo $event_title ?></h1>
 
 <!-- イベント主催者名の表示 -->
-<p align="center">主催者：<a href="http://localhost/kocote/mypage/personalpage.php"><?php echo $organizer_last_name." ".$organizer_first_name ?></a></p>
+<p align="center">主催者：<a href="http://localhost/kocote/mypage/personalpage.php?user_id=<?php echo $organizer_user_id ?>"><?php echo $organizer_last_name." ".$organizer_first_name ?></a></p>
 
 <!-- 主催者からのコメントの表示 -->
 <p align="center">主催者からのコメント：<?php echo $comment ?></p>
