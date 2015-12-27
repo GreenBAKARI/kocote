@@ -1,0 +1,125 @@
+@charset "utf-8";
+ 
+body {
+    margin: 10px;
+    padding: 10px;
+    line-height: 100%;
+}
+
+/*
+a {
+    display: block;
+    width: 100%;
+    height: 100%; 
+    text-decoration: none;
+}
+
+a:hover {
+    background-color: #ffcccc;
+    color: black;
+}
+
+a:link { 
+    color: black; 
+}
+a:visited { 
+    color: black; 
+}
+
+a:active { 
+    color: black; 
+}
+*/
+
+.count {
+    text-align: center;
+}
+
+.entry-title {
+    font-weight: 400;
+    font-size: 22px;
+}
+ 
+.calendar_box {
+    height: 100%;
+}
+ 
+.top_ctrl {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+.calendar td{
+    width: 30px;
+    height: 35px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    vertical-align: top;
+}
+ 
+.dayweek {
+    height: 18px;
+    background: white;
+    color: #fff;
+}
+ 
+.y_red {
+    background: firebrick;
+}
+ 
+.y_blue {
+    background: navy;
+}
+ 
+.y_black {
+    background: black;
+}
+ 
+.date_block {
+    width: 155px;
+    height: 40px;
+    background: #cde;
+    border: 1px solid #ccc;
+    border-color: #8ba2c1 #5890bf #4f93ca #768fa5;
+    vertical-align: top;
+    font: 600 12px/1 Lucida Sans, Verdana, sans-serif;
+    color: #000;
+}
+
+.txt_black {
+    height: 12px;
+    color: black;
+    line-height: 12px;
+    overflow: hidden;
+    text-align: center;
+}
+
+.txt_gray {
+    height: 12px;
+    color: gray;
+    line-height: 12px;
+    overflow: hidden;
+    text-align: center;
+}
+
+.bkgd_today {
+    background: gold;
+}
+ 
+.bkgd_red {
+    background: pink;
+}
+ 
+.bkgd_white {
+    background: white;
+}
+
+.bkgd_blue {
+    background: #cde;
+}
+
+.bkgd_gray {
+    background: #dcdcdc;
+    color: gray;
+}
