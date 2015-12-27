@@ -42,6 +42,7 @@
   <a href="http://localhost/php/v0/bulletin_add.html"><img src="img/bb_mk.jpg" height="6%" width="13%"></a>
 </div>
 
+<!-- 掲示板一覧 (ジャンル分け後回しにしすぎたので作成中)-->
 
 
 <!--参考にしたサイト http://okky.way-nifty.com/tama_nikki/2010/06/php-e18e.html -->
