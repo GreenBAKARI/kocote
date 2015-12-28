@@ -1,8 +1,10 @@
 <?php
-   $event_id = 84;
+   $event_id = 87;
    $user_id = 100;
+   $user_name = "greenbakari";
    //$event_id = $_POST['event_id'];
    //$user_id = $_POST['user_id'];
+   //$user_name = $_POST['user_name'];
     //データベース接続
     $conn = mysql_connect('localhost', 'root', 'root');
     if (!$conn) {
@@ -27,19 +29,19 @@
     while ($new = mysql_fetch_array($res)) {
     $user_id = $new['USER_ID'];
     $event_title = $new['EVENT_TITLE'];
-    $category = $new['CATEGORY'];
+    $host_comment = $new['HOLDING_COMMENT'];
     $event_start = $new['EVENT_START'];
     $event_month = date('m', strtotime($event_start));
-    $event_date = date('d', strtotime($event_start));
+    $event_day = date('d', strtotime($event_start));
     $start_hour = date('H', strtotime($event_start));
     $event_finish = $new['EVENT_FINISH'];
     $finish_hour = date('H', strtotime($event_finish));
-    $holding_place = $new['HOLDING_PLACE'];
+    $event_place = $new['HOLDING_PLACE'];
     $participation_deadline = $new['PARTICIPATION_DEADLINE'];
     $limit_month = date('m', strtotime($participation_deadline));
-    $limit_date = date('d', strtotime($participation_deadline));
+    $limit_day = date('d', strtotime($participation_deadline));
     $limit_hour = date('H', strtotime($participation_deadline));
-    $holding_comment = $new['HOLDING_COMMENT'];
+    $event_category = $new['CATEGORY'];
     $event_detail = $new['EVENT_DETAIL'];
     }
 
@@ -84,128 +86,93 @@
     <a href="http://localhost/v0/mypage.php"><img src="img/mp_home.jpg" height="7%" width="16%"></a></div>
 <br><br><br>
 
-<a href="http://localhost/php/v0/mypage.php"><img src="img/mp_home.jpg" style="margin-left:-10%" height="8%" width="5%" align="bottom"><font size="6" color="#000000">利用者名</font></a>
+<a href="http://localhost/php/v0/mypage.php"><img src="img/mp_home.jpg" style="margin-left:-10%" height="8%" width="5%" align="bottom"><font size="6" color="#000000"><?php echo $user_name ?></font></a>
 <br><br><br>
 
 <label for="event_title" style="margin-left:-10%">イベントタイトル*：</label>
-<input type="text" id="event_title" name="event_title" value="<?php echo $event_title ?>">
+<input type="text" id="event_title" name="event_title" value="<?php echo $event_title ?>" required>
 <br><br><br>
 
-<label for="holding_comment" style="margin-left:-2%">主催者コメント：</label>
-<textarea name="holding_comment" rows="3" cols="40"><?php echo $holding_comment ?> </textarea>
+<label for="host_comment" style="margin-left:-2%">主催者コメント：</label>
+<textarea name="host_comment" rows="3" cols="40"><?php echo $host_comment ?> </textarea>
 <br><br><br>
 
-  <label for="month" style="margin-left:-9%">開催日*：</label>
+  <label for="event_month" style="margin-left:-9%">開催日*：</label>
   <?php
-  echo '<select name="event_month">' . "\n";
-     for ($i = 0; $i <= 12; $i++){
-			if($event_month == $i){$selected="selected";}
-			else {$selected="";}
-			
-			if($i == 0){
-			echo '<OPTION value=0 >----</OPTION>\n';
-			} else {
-			echo "<OPTION value=". $i ." ". $selected .">".$i."月</OPTION>\n";}
-			}
+  echo '<select required="required" name="event_month">' . "\n";
+     for ($i = 1; $i <= 12; $i++){
+	if($event_month == $i){$selected="selected";}
+	else {$selected="";}
+	echo "<OPTION value=". $i ." ". $selected .">".$i."月</OPTION>\n";}
   echo '</select>' . "\n";
   echo "&nbsp;&nbsp;";
   ?>
-  <label for="date" style="margin-left:0%"></label>
+  <label for="event_day" style="margin-left:0%"></label>
   <?php
-     echo '<select name="event_date">' . "\n";
-  for ($i = 0; $i <= 31; $i++){
-      if($event_date == $i){$selected="selected";}
-			else {$selected="";}
-			
-			if($i == 0){
-			echo '<OPTION value=0 >----</OPTION>\n';
-			} else {
-			echo "<OPTION value=". $i ." ". $selected .">".$i."日</OPTION>\n";}
-			  }
+     echo '<select required="required" name="event_day">' . "\n";
+  for ($i = 1; $i <= 31; $i++){
+      if($event_day == $i){$selected="selected";}
+      else {$selected="";}
+      echo "<OPTION value=". $i ." ". $selected .">".$i."日</OPTION>\n";}
   echo '</select>' . "\n";
   ?>
   <br><br><br>
 
   <label for="start_hour" style="margin-left:-9%">開催時間*：</label>
   <?php
-  echo '<select name="start_hour">' . "\n";
-  for ($i = -1; $i <= 23; $i++){
+  echo '<select required="required" name="start_hour">' . "\n";
+  for ($i = 0; $i <= 23; $i++){
       if($start_hour == $i){$selected="selected";}
-			else {$selected="";}
-			
-			if($i == -1){
-			echo '<OPTION value=0 >----</OPTION>\n';
-			} else {
-			echo "<OPTION value=". $i ." ". $selected .">".$i."時</OPTION>\n";}
-			  }
+      else {$selected="";}
+      echo "<OPTION value=". $i ." ". $selected .">".$i."時</OPTION>\n";}
   echo '</select>' . "\n";
     echo "&nbsp;&nbsp;～&nbsp;&nbsp;"
   ?>
   <label for="finish_hour" style="margin-left:0%"></label>
   <?php
-  echo '<select name="finish_hour">' . "\n";
-  for ($i = -1; $i <= 23; $i++){
+  echo '<select required="required" name="finish_hour">' . "\n";
+  for ($i = 0; $i <= 23; $i++){
       if($finish_hour == $i){$selected="selected";}
-			else {$selected="";}
-			
-			if($i == -1){
-			echo '<OPTION value=0 >----</OPTION>\n';
-			} else {
-			echo "<OPTION value=". $i ." ". $selected .">".$i."時</OPTION>\n";}
-			  }
+      else {$selected="";}
+      echo "<OPTION value=". $i ." ". $selected .">".$i."時</OPTION>\n";}
   echo '</select>' . "\n";
   ?>
   <br><br><br>
 
 
-  <label for="holding_place" style="margin-left:-7%">開催場所*：</label>
-  <input type="text" id="holding_place" name="holding_place" value="<?php echo $holding_place ?>">
+  <label for="event_place" style="margin-left:-7%">開催場所*：</label>
+  <input type="text" id="event_place" name="event_place" value="<?php echo $event_place ?>" required>
   <br><br><br>
 
 
 
   <label for="limit_month" style="margin-left:-9%">参加応募締め切り*：</label>
   <?php
-  echo '<select name="limit_month">' . "\n";
-  for ($i = 0; $i <= 12; $i++){
+  echo '<select required="required" name="limit_month">' . "\n";
+  for ($i = 1; $i <= 12; $i++){
       if($limit_month == $i){$selected="selected";}
-			else {$selected="";}
-			
-			if($i == 0){
-			echo '<OPTION value=0 >----</OPTION>\n';
-			} else {
-			echo "<OPTION value=". $i ." ". $selected .">".$i."月</OPTION>\n";}
-    }
+      else {$selected="";}
+      echo "<OPTION value=". $i ." ". $selected .">".$i."月</OPTION>\n";}
   echo '</select>' . "\n";
   echo "&nbsp;&nbsp;&nbsp;&nbsp;";
   ?>
-  <label for="limit_date" style="margin-left:0%"></label>
+  <label for="limit_day" style="margin-left:0%"></label>
   <?php
-  echo '<select name="limit_date">' . "\n";
-       for ($i = 0; $i <= 31; $i++){
-      if($limit_date == $i){$selected="selected";}
-			else {$selected="";}
-			
-			if($i == 0){
-			echo '<OPTION value=0 >----</OPTION>\n';
-			} else {
-			echo "<OPTION value=". $i ." ". $selected .">".$i."日</OPTION>\n";}
-  }
+  echo '<select required="required" name="limit_day">' . "\n";
+       for ($i = 1; $i <= 31; $i++){
+      if($limit_day == $i){$selected="selected";}
+      else {$selected="";}
+      echo "<OPTION value=". $i ." ". $selected .">".$i."日</OPTION>\n";}
   echo '</select>' . "\n";
   echo "&nbsp;&nbsp;&nbsp;&nbsp;";
   ?>
   <label for="limit_hour" style="margin-left:1%"></label>
   <?php
-  echo '<select name="limit_hour">' . "\n";
-  for ($i = -1; $i <= 23; $i++){
+  echo '<select required="required" name="limit_hour">' . "\n";
+  for ($i = 0; $i <= 23; $i++){
       if($limit_hour == $i){$selected="selected";}
-			else {$selected="";}
-			
-			if($i == -1){
-			echo '<OPTION value=0 >----</OPTION>\n';
-			} else {
-			echo "<OPTION value=". $i ." ". $selected .">".$i."時</OPTION>\n";}
-  }
+      else {$selected="";}
+      echo "<OPTION value=". $i ." ". $selected .">".$i."時</OPTION>\n";}
   echo '</select>' . "\n";
   ?>
   <br><br><br>
@@ -213,33 +180,33 @@
    
   <label for="category" style="margin-left:-7%">分類*：</label>
   <?php
-  echo '<select name="event_category">' . "\n";	      
-     if($category == 1) {
+  echo '<select name="category">' . "\n";	      
+     if($event_category == 1) {
      echo '<option value="全て" selected>全て</option>\n';
      } else {
      echo '<option value="全て">全て</option>\n';
      }
-     if($category == 2) {
+     if($event_category == 2) {
      echo '<option value="グルメ/フェスティバル" selected>グルメ/フェスティバル</option>\n';
      } else {
      echo '<option value="グルメ/フェスティバル">グルメ/フェスティバル</option>\n';
      }
-     if($category == 3) {
+     if($event_category == 3) {
      echo '<option value="芸術/エンタメ" selected>芸術/エンタメ</option>\n';
      } else {
      echo '<option value="芸術/エンタメ">芸術/エンタメ</option>\n';
      }
-     if($category == 4) {
+     if($event_category == 4) {
      echo '<option value="交流/スポーツ" selected>交流/スポーツ</option>\n';
      } else {
      echo '<option value="交流/スポーツ">交流/スポーツ</option>\n';
      }
-     if($category == 5) {
+     if($event_category == 5) {
      echo '<option value="地域復興/福祉" selected>地域復興/福祉</option>\n';
      } else {
      echo '<option value="地域復興/福祉">地域復興/福祉</option>\n';
      }
-     if($category == 6) {
+     if($event_category == 6) {
      echo '<option value="就活/キャリア" selected>就活/キャリア</option>\n';
      } else {
      echo '<option value="就活/キャリア">就活/キャリア</option>\n';
@@ -254,8 +221,9 @@
 
   <input type="hidden" name="event_id" value="<?php echo $event_id; ?>">
   <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
+  <input type="hidden" name="user_name" value="<?php echo $user_name; ?>">
   <input type="reset" id="delete" name="delete" value="クリアする">
-  <input type="submit" id="edit_conf" name="edit_conf" value="確認画面へ進む">
+  <input type="submit" id="move_conf" name="move_conf" value="確認画面へ進む">
 
   </form>
   </body>
