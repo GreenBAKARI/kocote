@@ -11,6 +11,38 @@
 	</FORM>
 
 <?php
+
+
+
+// ヘッダ画像
+if (isset ( $_POST ['header_img'] ))
+	$img_table = 'tmp'; // 新しい画像に更新する場合
+else
+	$img_table = 'ua';
+echo '<p>';
+echo '<img src="./img_get.php?img_type=HEADER_IMAGE&img_table=' . $img_table . '"/>';
+echo '</p>';
+// アイコン画像
+if (isset ( $_POST ['icon_img'] ))
+	$img_table = 'tmp'; // 新しい画像に更新する場合
+else
+	$img_table = 'ua';
+echo '<p>';
+echo '<img src="./img_get.php?&img_type=ICON_IMAGE"/>';
+echo 'アイコン画像パス：<INPUT type="file" name="icon_img" size="50"><BR>';
+echo '</p>';
+// 「編集を確認する」ボタン
+echo '<input type="submit" value="編集を確認する" name="conf" ></button>';
+
+
+
+
+
+
+
+
+
+
 if (count($_POST) > 0 && isset($_POST["submit"])){
 	$upfile = $_FILES["upfile"]["tmp_name"];
 	if ($upfile==""){
@@ -31,7 +63,7 @@ if (count($_POST) > 0 && isset($_POST["submit"])){
 
 
 	// データ追加
-	$sql = "INSERT INTO IMAGES (IMG) VALUES ('$imgdat')";
+	$sql = "INSERT INTO tmp VALUES ('$imgdat')";
 
 	$result = mysql_query($sql);
 	if (!$result){
