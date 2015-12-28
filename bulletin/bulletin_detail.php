@@ -1,62 +1,41 @@
+<!-- テーブルがないときの処理・書き込みが1件もないときの処理未記述(テーブルがないときの処理は不要かも)-->
+
+<!--コメント投稿フォーム-->
+<html>
+<body>
+  <center>
+<form action="bulletin_write.php" method="post">
+コメント<br>
+<textarea name = "posted_content" cols = 40 rows = 4>
+</textarea>
+<input type="submit" id="makebulletin" name="makebulletin" value="投稿する">
+</form>
+</body>
+<br><br><br>
+
+<!-- 投稿コメント一覧の取得&表示-->
+<!-- クリックに応じた一覧の取得がまだできてないので今は1番目の掲示板のみ表示可(bb_id=1)-->
+<h2>掲示板タイトル</h2>
 <?php
-//変数に各種設定を代入(ここを書き換えると他のデータベースにも接続できる)
-$url = "localhost";
-$user = "root";
-$pass = "kappaebisen";
-$db = "bulletin";
-$pf_name = "pf";
-
-//MySQLへ接続
-//成功したら接続IDが、失敗したらfalse(0)が返る。
-$link = mysql_connect($url, $user, $pass) or die("MySQLへの接続に失敗しました。");
-
-//データベースの選択
-$sdb = mysql_select_db($db, $link) or die("データベースの選択に失敗しました。");
-
-$pf_name = "pf".$_GET['bb_id'];
-
-//クエリの送信
-$sql = "SELECT * FROM $pf_name";
-$result = mysql_query($sql, $link) or die("お探しの掲示板は消去されたか、書き込みがありません。<br />");
-
-//結果セットの行数を取得する
-$rows = mysql_num_rows($result);
-
-//pfテーブルデータを表示
-$temp_html = "";//初期化(undefined variableエラーを非表示にするため)
-if($rows){
-  while($row = mysql_fetch_array($result)){
-    $temp_html .="<tr>";
-    $temp_html .= "<td>".$row["bb_id"]."</td><td>".$row["user_id"]."</td><td>".$row["comment_num"]."</td><td>".$row["posted_content"]."</td><td>".$row["posted_date"]."</td>";
-    $temp_html .="</tr>\n";
-  }
-  $msg = $rows."件の書き込みがあります。";
-}else{
-  $msg = "書き込みはありません。";
-}
-
-
-//結果保持用メモリを解放する
-mysql_free_result($result);
-
-//MySQLへの接続を切断する
-mysql_close($link) or die("MySQL切断に失敗しました。");
+$bb_id = 1;
+$table_name ="pf".$bb_id
  ?>
+<table border="1">
+<tr><th>掲示板ID</th><th>ユーザID</th><th>コメント番号</th><th>投稿内容</th><th>投稿日時</th></tr>
+<?php
+  $pdo = new PDO("mysql:dbname=bulletin", "root", "kappaebisen");
+  $st = $pdo->query("SELECT * FROM $table_name");
+  while ($row = $st->fetch()) {
+    $bb_id = htmlspecialchars($row['bb_id']);
+    $user_id = htmlspecialchars($row['user_id']);
+    $comment_num = htmlspecialchars($row['comment_num']);
+    $posted_content = htmlspecialchars($row['posted_content']);
+    $posted_date = htmlspecialchars($row['posted_date']);
+    echo "<tr><td>$bb_id</td><td>$user_id</td><td>$comment_num</td><td>$posted_content</td><td>$posted_date</td></tr>";
+  }?>
+</table>
+</center>
+<br><br><br>
 
- <html>
- <head>
-   <title>掲示板詳細</title>
- </head>
- <body>
-   <div align="center">
-   <h3>書き込み表示</h3>
-   <?=$msg?>
-   <table width = "600" border = "0">
-     <tr bgcolor = "##cae12e">
-       <td>掲示板ID</td> <td>ユーザID</td> <td>コメント番号</td> <td>投稿内容</td> <td>投稿日時</td>
-      </tr>
-     <?=$temp_html?>
-   </table>
- </div>
- </body>
- </html>
+
+</html>

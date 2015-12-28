@@ -1,5 +1,3 @@
-
-
 <html>
 <head>
 <meta charset="UTF-8">
@@ -35,19 +33,22 @@
 <br><br>
 </center>
 
+
 <!--作成ボタン & 並び替え順と思われるボタン -->
 <div id = "box">
-  <img src="img/bb_home.jpg" height="6%" width="13%" style="margin-left:33%">
-  <img src="img/bb_home.jpg" height="6%" width="13%">
-  <img src="img/bb_home.jpg" height="6%" width="13%">
-  <!--<a href="http://localhost/php/v0/bulletin_add.php"><img src="img/bb_mk.jpg" height="6%" width="13%"></a>-->
+  <a href="http://localhost/php/v0/bulletin.php"><img src="img/bb_home.jpg" height="6%" width="13%" style="margin-left:33%"></a>
+  <a href="http://localhost/php/v0/bulletin.php"><img src="img/bb_home.jpg" height="6%" width="13%"></a>
+  <a href="http://localhost/php/v0/bulletin.php"><img src="img/bb_home.jpg" height="6%" width="13%"></a>
   <a href="http://localhost/php/v0/bulletin_add.html"><img src="img/bb_mk.jpg" height="6%" width="13%"></a>
 </div>
+
+<!-- 掲示板一覧 (ジャンル分け後回しにしすぎたので作成中)-->
+
 
 <!--参考にしたサイト http://okky.way-nifty.com/tama_nikki/2010/06/php-e18e.html -->
 <?php
 //1ページあたりの表示件数
-$one_page = 4;
+$one_page = 5;
  ?>
 
 <?php
@@ -81,11 +82,30 @@ $link = mysql_connect($url, $user, $pass) or die("MySQLへの接続に失敗し�
 $sdb = mysql_select_db($db, $link) or die("データベースの選択に失敗しました。");
 
 //クエリの送信(作成が新しい順に$one_pageページずつ取得)
-$sql = "SELECT * FROM bb ORDER BY bb_id DESC LIMIT $start, $one_page";
+$seq = 3;
+switch($seq){
+  //コメント数の多い順
+case '1':
+  $sql = "SELECT * FROM bb_pre ORDER BY comment_count DESC LIMIT $start, $one_page";
+  break;
+  //コメントの最終投稿日時の新しい順
+case '2':
+  $sql = "SELECT * FROM bb_pre ORDER BY last_posted_date DESC LIMIT $start, $one_page";
+  break;
+//作成順
+case '3':
+  $sql = "SELECT * FROM bb_pre ORDER BY bb_id DESC LIMIT $start, $one_page";
+  break;
+
+default:
+  $sql = "SELECT * FROM bb_pre ORDER BY bb_id DESC LIMIT $start, $one_page";
+}
+
 $result = mysql_query($sql) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
 
+
 //全ての行数を取得しall_rowsへ格納
-$sql_all = "SELECT * FROM bb";
+$sql_all = "SELECT * FROM bb_pre";
 $result_all = mysql_query($sql_all, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql_all);
 $all_rows = mysql_num_rows($result_all);
 
@@ -95,18 +115,19 @@ mysql_close($link) or die("MySQL切断に失敗しました。");
 
 <!--一覧の出力-->
 <div align="center">
-  全部で<?=$all_rows?>件の掲示板があります。(新しく作成された順)<br />
+  全部で<?=$all_rows?>件の掲示板があります。<br />
 
 <table>
   <tbody>
     <th>分類</th>
 <th>タイトル</th>
-<th>作成日時</th>
+<th>コメント数</th>
 <?php while (($row = mysql_fetch_array($result)) && ($now_rows <= $last_rows) && ($now_rows <= $all_rows)) { ?>
   <tr><td align="center" style="width:150px;"><?php echo ($row["category"]); ?></td>
   <td align="center" style="width:500px;"><a href="http://localhost/php/v0/bulletin_detail.php?bb_id=<?php echo ($row["bb_id"]) ?>"><?php echo ($row["bb_name"]); ?></a></td>
-  <td align="center" style="width:100px;"><?php echo ($row["created_date"]); ?></td>
+  <td align="center" style="width:150px;"><?php echo ($row["comment_count"]); ?></td>
     </tr>
+
 
 <?php
 $now_rows++;
@@ -143,15 +164,7 @@ if($last_rows < ($all_rows-1)){
 ?>
 </div>
 
-<!-- 掲示板一覧の表示
-<div id = "bbs" align = "center">
-全部で//$all_rows件の掲示板があります。
-<table width = "600" height = "200" border = "1">
-  //$temp_html
-</table>
-
-</div>-->
-
+</form>
 </body>
 
 </html>
