@@ -73,7 +73,7 @@ echo 'アイコン画像パス：<input type="file" name="icon_img" size="50"><B
 echo '</p>';
 // 「確定する」ボタン
 echo '<input type="submit" value="確定する" name="upload" >';
-// 「確定する」ボタン
+// 「編集する」ボタン
 echo '<input type="button" value="編集する" name="upload" onClick="history.back()">';
 
 /* ▽ 名前・性別・名前の表記 ▽ */
