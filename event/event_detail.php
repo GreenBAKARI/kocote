@@ -1,11 +1,13 @@
-<!-- ログイン中の利用者の取得 -->
 <?php
-    $user_id = 1;
-?>
-
-<!-- イベント情報の取得 -->
-<?php 
     $event_id = $_GET['event_id'];
+    if (empty($event_id)) {
+        header("LOCATION: ./event.php");
+    }
+    
+    //ログイン中の利用者の取得
+    $user_id = 1;
+    
+    //イベント情報の取得
     $event_user_id = array();
     $user_last_name = array();
     $user_first_name = array();
@@ -52,9 +54,9 @@
         $category = $row['CATEGORY'];
         $event_start = $row['EVENT_START'];
         $event_finish = $row['EVENT_FINISH'];
-        $holding_place = $row['HOLDING_PLACE'];
+        $event_place = $row['HOLDING_PLACE'];
         $deadline = $row['PARTICIPATION_DEADLINE'];
-        $comment = $row['HOLDING_COMMENT'];
+        $host_comment = $row['HOLDING_COMMENT'];
         $event_detail = $row['EVENT_DETAIL'];
         $update = $row['UPDATE_DATE'];
     }
@@ -145,7 +147,7 @@
 <p align="center">主催者：<a href="http://localhost/kocote/mypage/personalpage.php?user_id=<?php echo $organizer_user_id ?>"><?php echo $organizer_last_name." ".$organizer_first_name ?></a></p>
 
 <!-- 主催者からのコメントの表示 -->
-<p align="center">主催者からのコメント：<?php echo $comment ?></p>
+<p align="center">主催者からのコメント：<?php echo $host_comment ?></p>
 
 <!-- イベント参加者のアイコン画像の表示 -->
 <p align="center">参加者：</p>
@@ -228,20 +230,29 @@
     <p align="center">開催日時：<?php echo substr($event_start, 0, 4)."年".substr($event_start, 5, 2)."月".substr($event_start, 8, 2)."日 ".substr($event_start, 11, 2)."時 〜 ".substr($event_finish, 11, 2)."時" ?></p>
     
     <!-- イベントの開催場所の表示 -->
-    <p align="center">開催場所：<?php echo $holding_place ?></p>
+    <p align="center">開催場所：<?php echo $event_place ?></p>
     
     <!-- イベント分類の表示 -->
     <?php
-    if ($category == 2) {
-        echo '<p align="center">分類：グルメ / フェスティバル</p>';
-    } else if ($category == 3) {
-        echo '<p align="center">分類：芸術 / エンタメ</p>';
-    } else if ($category == 4) {
-        echo '<p align="center">分類：交流 / スポーツ</p>';
-    } else if ($category == 5) {
-        echo '<p align="center">分類：福祉 / 地域振興</p>';
-    } else if ($category == 6) {
-        echo '<p align="center">分類：就活 / キャリア</p>';
+    switch($category) {
+        case 2:
+            echo '<p align="center">分類：グルメ / フェスティバル</p>';
+            break;
+        case 3:
+            echo '<p align="center">分類：芸術 / エンタメ</p>';
+            break;
+        case 4:
+            echo '<p align="center">分類：交流 / スポーツ</p>';
+            break;
+        case 5:
+            echo '<p align="center">分類：福祉 / 地域振興</p>';
+            break;
+        case 6:
+            echo '<p align="center">分類：就活 / キャリア</p>';
+            break;
+        default:
+            echo '<p align="center">分類なし</p>';
+            break;
     }
     ?>
     

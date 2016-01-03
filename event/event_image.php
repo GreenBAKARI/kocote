@@ -37,15 +37,23 @@
     //配列の添字0~3に参加者数の多いイベント画像順で格納されている
     //htmlからの呼び出し方 <img src="event_image.php?id=1">
     //id=1の1の部分の数字を変えると出力が変わる
-    if ($_GET['image_id'] == tmp1) {
-        echo $event_image[0];
-    } else if ($_GET['image_id'] == tmp2) {
-        echo $event_image[1];
-    } else if ($_GET['image_id'] == tmp3) {
-        echo $event_image[2];
-    } else if ($_GET['image_id'] == tmp4) {
-        echo $event_image[3];
+    
+    switch ($_GET['image_id']) {
+        case tmp1:
+            echo $event_image[0];
+            break;
+        case tmp2:
+            echo $event_image[1];
+            break;
+        case tmp3:
+            echo $event_image[2];
+            break;
+        case tmp4:
+            echo $event_image[3];
+            break;
+        default:
+            break;
     }
-
+    
     mysql_close($link);
 ?>

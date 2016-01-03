@@ -8,18 +8,25 @@ $link = mysql_connect('localhost', 'root', 'root');
 $db_selected = mysql_select_db('greenbakari', $link);
 mysql_set_charset('utf8');
 
-if ($join_id == 0) {
-    //$st = "このイベントに参加しますか？";
-    $sql = "INSERT INTO PEV VALUES($event_id, $user_id)";
-} else if ($join_id == 1) {
-    //$st = "このイベントへの参加をやめますか？";
-    $sql = "DELETE FROM PEV WHERE EVENT_ID = $event_id AND USER_ID = $user_id";
-} else if ($join_id == 2) {
-    //$st = "このイベントをお気に入りに登録しますか？";
-    $sql = "INSERT INTO FEV VALUES($event_id, $user_id)";
-} else if ($join_id == 3) {
-    //$st = "このイベントをお気に入りから削除しますか？";
-    $sql = "DELETE FROM FEV WHERE EVENT_ID = $event_id AND USER_ID = $user_id";
+switch ($join_id) {
+    //このイベントに参加しますか？
+    case 0:
+        $sql = "INSERT INTO PEV VALUES($event_id, $user_id)";
+        break;
+    //このイベントへの参加をやめますか？
+    case 1:
+        $sql = "DELETE FROM PEV WHERE EVENT_ID = $event_id AND USER_ID = $user_id";
+        break;
+    //このイベントをお気に入りに登録しますか？
+    case 2:
+        $sql = "INSERT INTO FEV VALUES($event_id, $user_id)";
+        break;
+    //このイベントをお気に入りから削除しますか？
+    case 3:
+        $sql = "DELETE FROM FEV WHERE EVENT_ID = $event_id AND USER_ID = $user_id";
+        break;
+    default:
+        break;
 }
 
 $result = mysql_query($sql, $link);
