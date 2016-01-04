@@ -24,166 +24,146 @@
 					href="http://localhost/php/v0/mypage.php"><img
 					src="img/mp_home.jpg" height="7%" width="16%"></a>
 			</div>
-			<br>
-			<br>
-			<br>
+			<br> <br> <br>
 		</form>
 
-			<!-- 本体start -->
+		<!-- 本体start -->
 <?php
-
+/* POST@in
+ * header_img	: ヘッダ画像
+ * icon_img		: アイコン画像
+ * hyoki		: 名前の表記
+ * gakka		: 学科
+ * interest		: 興味・関心のある分野
+ * jikoshokai	: 自己紹介
+ */
 // MySQLと接続
 $link = mysql_connect ( 'localhost', 'root' );
 if (! $link)
-	die ( 'DB接続失敗です。' . mysql_error () );
+	die ( 'データベース接続失敗' . mysql_error () );
 
-	// データベースgreenbakariを選択
+// データベースgreenbakariを選択
 $db_selected = mysql_select_db ( 'greenbakari', $link );
 if (! $db_selected)
-	die ( 'データベース選択失敗です。' . mysql_error () );
+	die ( 'データベース選択失敗' . mysql_error () );
 
-	// クエリの発行
-if (! $sql_result_ua = mysql_query ( 'SELECT * FROM ua' ))
-	die ( 'クエリ失敗。' . mysql_error () );
-if (! $sql_result_ur = mysql_query ( 'SELECT * FROM ur' ))
-	die ( 'クエリ失敗。' . mysql_error () );
-if (! $sql_result_ev = mysql_query ( 'SELECT * FROM ev' ))
-	die ( 'クエリ失敗。' . mysql_error () );
-if (! $sql_result_pev = mysql_query ( 'SELECT * FROM ev, pev WHERE ev.EVENT_ID=pev.EVENT_ID' ))
-	die ( 'クエリ失敗。' . mysql_error () );
-if (! $sql_result_fev = mysql_query ( 'SELECT * FROM ev, fev WHERE ev.EVENT_ID=fev.EVENT_ID' ))
-	die ( 'クエリ失敗。' . mysql_error () );
+// クエリの発行
+if (! $sql_result_ua_select = mysql_query ( 'SELECT * FROM ua' ))
+	die ( '@uaテーブル SELECT失敗' . mysql_error () );
+if (! $sql_result_ur_select = mysql_query ( 'SELECT * FROM ur' ))
+	die ( '@urテーブル SELECT失敗' . mysql_error () );
+if (! $sql_result_ev_select = mysql_query ( 'SELECT * FROM ev' ))
+	die ( '@ｅｖテーブル SELECT失敗' . mysql_error () );
+if (! $sql_result_pev_select = mysql_query ( 'SELECT * FROM ev, pev WHERE ev.EVENT_ID=pev.EVENT_ID' ))
+	die ( '@ev, pevテーブル SELECT失敗' . mysql_error () );
+if (! $sql_result_fev_select = mysql_query ( 'SELECT * FROM ev, fev WHERE ev.EVENT_ID=fev.EVENT_ID' ))
+	die ( '@ev, fevテーブル SELECT失敗' . mysql_error () );
 
-echo '<form action="mypage_conf.php" method="post">';
+echo '<form action="upload.php" method="post">';
 // ヘッダ画像
-$ua = mysql_fetch_assoc ( $sql_result_ua );
+$ua = mysql_fetch_assoc ( $sql_result_ua_select );
 echo '<p>';
+
 echo '<img src="./img_get.php?&img=HEADER_IMAGE"/>';
 // ▽ いまここ ▽
 if(isset($_POST['header_up']))
 	echo $_POST['header_up'];
+
+echo '<img src="./img_get.php?img_type=HEADER_IMAGE&img_table=ua"/>';
+echo 'ヘッダ画像パス：<input type="file" name="header_img" size="50"><BR>';
+
 echo '</p>';
 // アイコン画像
 echo '<p>';
-echo '<img src="./img_get.php?&img=ICON_IMAGE"/>';
-echo 'アイコン画像パス：<INPUT type="file" name="icon_up" size="50"><BR>';
+echo '<img src="./img_get.php?img_type=ICON_IMAGE&img_table=ua"/>';
+echo 'アイコン画像パス：<input type="file" name="icon_img" size="50"><BR>';
 echo '</p>';
-// 「編集を確認する」ボタン
-echo '<input type="submit" value="編集を確認する" name="conf" ></button>';
+// 「確定する」ボタン
+echo '<input type="submit" value="確定する" name="upload" >';
+// 「編集する」ボタン
+echo '<input type="button" value="編集する" name="upload" onClick="history.back()">';
 
 /* ▽ 名前・性別・名前の表記 ▽ */
 /* 名前 */
-$ur = mysql_fetch_assoc ( $sql_result_ur );
-echo ("<p>" . $ur ['USER_LAST_NAME'] . " " . $ur ['USER_FIRST_NAME'] . "	");
+$ur = mysql_fetch_assoc ( $sql_result_ur_select );
+/* 名前の表記
+ * true  ⇒ 日本語
+ * false ⇒ ローマ字
+ */
+if ($_POST['hyoki']) {
+	echo ("<p>" . $ur ['USER_LAST_NAME'] . " " . $ur ['USER_FIRST_NAME'] . "	");
+} else {
+	echo ("<p>" . $ur ['USER_LAST_ROMA'] . " " . $ur ['USER_FIRST_ROMA'] . "	");
+}
+
 /* 性別 */
 echo ("　" . $ur ['SEX'] . "	");
-/* 名前の表記-ラジオボタン */
-$hyoki = array (
-		"日本語",
-		"アルファベット"
-);
-echo '　名前の表記 : ';
-foreach ( $hyoki as $key0 => $value ) {
-	echo '<input type="radio" name="hyoki" value="' . $value . '"';
-	// 選択済み判定(日本語を選択していると仮定)
-	if ($key0 == 0)
-		echo " checked";
-	echo '>' . $value;
-}
-echo "</p>";
-/* △ 名前・性別・名前の表記 △ */
+
+/* 名前の表記 */
+echo '　名前の表記 : '.$_POST['hyoki'];
+
 
 /* ▽ 大学・学年・学科 ▽ */
 /* 大学・学年・学科 */
-echo "<p>" . $ur ["COLLEGE_NAME"] . "大学" . " " . $ur ["GRADE"] . "年" . " " . "学科: ";
-$gakka = array (
-		"情報",
-		"環境",
-		"シス"
-);
-echo '<select>';
-foreach ( $gakka as $key => $value ) {
-	echo '<option name="gakka" value="' . $value . '"';
-	// 選択済み判定
-	if ($ua ["DEPARTMENT_NAME"] == $value)
-		echo " selected";
-	echo '>' . $value . '</option>';
-}
-echo "</select></p>";
-/* △ 大学・学年・学科 △ */
+echo "<p>" . $ur ["COLLEGE_NAME"] . "大学" . " " . $ur ["GRADE"] . "年" . " " . "学科:". $_POST['gakka'];
+
 
 /* ▽ 興味・関心のある分野 ▽ */
 echo ("<p>興味・関心のある分野" . "<br>");
-$interest = array (
-		"アニメ",
-		"映画	",
-		"音楽	",
-		"カメラ",
-		"グルメ",
-		"ゲーム",
-		"スポーツ",
-		"釣り	",
-		"天体観測",
-		"動物	",
-		"読書	",
-		"乗り物",
-		"ファッション",
-		"漫画	",
-		"料理	",
-		"旅行	"
-);
-foreach ( $interest as $key => $value ) {
-	echo '<input type="checkbox" name="interest" value="' . $value . '"';
-	// 選択済み判定(音楽を選択していると仮定)
-	if ($key == 2)
-		echo " checked";
-	echo '>' . $value;
-	// ４つ毎に改行
-	if ($key % 4 == 3)
-		echo "<br>";
+$num=0;
+foreach ( $_POST['interest'] as $value) {
+	echo $value;
+	// 4行ごとに改行
+	if (!(++$num%4))
+		echo '<br>';
 }
 echo ("</p>");
-/* △ 興味・関心のある分野 △ */
+
 
 /* ▽ 自己紹介 ▽ */
 echo "自己紹介" . "<br><p>";
-echo '<textarea name="jikoshokai" cols="50" rows="6" disable>' . $ua ['PROFILE'] . '</textarea></p>';
-/* △ 自己紹介 △ */
+echo $_POST['jikoshokai'] .'</p>';
+
 
 /* ▽ 立ち上げているイベント ▽ */
 echo "立ち上げているイベント" . "<br><p>";
-while ( $ev = mysql_fetch_assoc ( $sql_result_ev ) )
+while ( $ev = mysql_fetch_assoc ( $sql_result_ev_select ) )
 	echo $ev ['EVENT_START'] . " " . $ev ['EVENT_TITLE'] . '<br>';
 echo '</p>';
-/* △ 立ち上げているイベント △ */
+
 
 /* ▽ 参加しているイベント ▽ */
 echo "参加しているイベント" . "<br><p>";
-while ( $pev = mysql_fetch_assoc ( $sql_result_pev ) )
+while ( $pev = mysql_fetch_assoc ( $sql_result_pev_select ) )
 	echo $pev ['EVENT_START'] . " " . $pev ['EVENT_TITLE'] . '<br>';
 echo '</p>';
-/* △ 参加しているイベント △ */
+
 
 /* ▽ お気に入り登録しているイベント ▽ */
 echo "お気に入り登録しているイベント" . "<br><p>";
-while ( $fev = mysql_fetch_assoc ( $sql_result_fev ) )
+while ( $fev = mysql_fetch_assoc ( $sql_result_fev_select ) )
 	echo $fev ['EVENT_START'] . " " . $fev ['EVENT_TITLE'] . '<br>';
 echo '</p>';
-/* △ お気に入り登録しているイベント △ */
+
+
+if (! $sql_result_tmp_select = mysql_query ( 'DROP TABLE tmp' ))
+	die ( '@tmpテーブル DROP失敗' . mysql_error () );
 mysql_close ( $link );
 echo '</form>';
 ?>
+
 	<!-- 本体end -->
 
-			<div id="footerArea">
-				<ul>
-					<li><a href="">会社概要</a></li>
-					<li><a href="">お問い合わせ</a></li>
-					<li><a href="">個人情報保護方針</a></li>
-					<li><a href="">採用情報</a></li>
-					<li><a href="">サイトマップ</a></li>
-				</ul>
-			</div>
+		<div id="footerArea">
+			<ul>
+				<li><a href="">会社概要</a></li>
+				<li><a href="">お問い合わせ</a></li>
+				<li><a href="">個人情報保護方針</a></li>
+				<li><a href="">採用情報</a></li>
+				<li><a href="">サイトマップ</a></li>
+			</ul>
+		</div>
 
 	</body>
+
 </html>
