@@ -176,6 +176,7 @@ $interest = array (
 		"旅行 "
 );
 // 興味・関心に格納されている文字の長さを取得
+// INTERESTは文字列型とする．（チェック⇒"ｔ" 未チェック⇒"f"）
 $len = mb_strlen ( $ua ['INTEREST'] );
 for($i = 0; $i < $len; $i ++)
 	$interest_trueORforce [$i] = substr ( $ua ['INTEREST'], $i, 1 );
@@ -184,7 +185,7 @@ foreach ( $interest as $key => $value ) {
 	echo '<input type="checkbox" name="interest[]" value="' . $value . '"';
 	// 選択済み判定
 	if ($len > $key)
-		if ($interest_trueORforce [$key] == 1)
+		if ($interest_trueORforce [$key] == t)
 			echo " checked";
 
 	echo '>' . $value;
