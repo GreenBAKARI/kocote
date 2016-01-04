@@ -53,8 +53,6 @@ if (! $sql_result_fev = mysql_query ( 'SELECT * FROM ev, fev WHERE ev.EVENT_ID=f
 	die ( 'クエリ失敗。' . mysql_error () );
 
 echo '<form action="mypage_conf.php" method="post">';
-echo '<input type="submit">';
-echo '</form>';
 // ヘッダ画像
 $ua = mysql_fetch_assoc ( $sql_result_ua );
 echo '<p>';
