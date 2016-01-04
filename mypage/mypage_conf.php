@@ -59,7 +59,9 @@ echo '<form action="mypage_conf.php" method="post">';
 $ua = mysql_fetch_assoc ( $sql_result_ua );
 echo '<p>';
 echo '<img src="./img_get.php?&img=HEADER_IMAGE"/>';
-echo $_POST['header_up'];
+// ▽ いまここ ▽
+if(isset($_POST['header_up']))
+	echo $_POST['header_up'];
 echo '</p>';
 // アイコン画像
 echo '<p>';
