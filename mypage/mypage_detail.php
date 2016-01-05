@@ -178,39 +178,58 @@ echo "自己紹介" . "<br><p>";
 echo '<textarea name="jikoshokai" cols="50" rows="6">' . $ua ['PROFILE'] . '</textarea></p>';
 
 /* ▽ 立ち上げているイベント ▽ */
-// echo "立ち上げているイベント" . "<br><p>";
-// while ( $ev = mysql_fetch_assoc ( $sql_result_ev_select ) )
-// echo $ev ['EVENT_START'] . " " . $ev ['EVENT_TITLE'] . '<br>';
-// echo '</p>';
-
 echo "立ち上げているイベント" . "<br><p>";
 while ( $ev = mysql_fetch_assoc ( $sql_result_ev_select ) ) {
-	$date = new DateTime($ev ['EVENT_START']);
-	echo $date->format('n月j日') . '<a href=http://localhost/kocote/event/event_detail.php?event_id='.$ev['EVENT_ID'].'>'.$ev['EVENT_TITLE'].'</a>',
-        '(', '現在の参加人数:', 0, '人)', '<br>';
+	// このページの利用者が立ち上げているイベントの参加人数
+	$ev_count = event_count ( $ev ['EVENT_ID'] );
+
+	$date = new DateTime ( $ev ['EVENT_START'] );
+	echo $date->format ( 'n月j日' ) . '<a href=http://localhost/kocote/event/event_detail.php?event_id=' . $ev ['EVENT_ID'] . '>' . $ev ['EVENT_TITLE'] . '</a>', '(', '現在の参加人数:'.$ev_count. '人)', '<br>';
 	echo '</p>';
 }
 
 /* ▽ 参加しているイベント ▽ */
 echo "参加しているイベント" . "<br><p>";
 while ( $pev = mysql_fetch_assoc ( $sql_result_pev_select ) ) {
-	$date = new DateTime($pev ['EVENT_START']);
-	echo $date->format('n月j日') . '<a href=http://localhost/kocote/event/event_detail.php?event_id='.$pev['EVENT_ID'].'>'.$pev['EVENT_TITLE'].'</a>',
-        '(', '現在の参加人数:', 0, '人)', '<br>';
+	// このページの利用者が参加しているイベントの参加人数
+	$pev_count = event_count ( $pev['EVENT_ID'] );
+
+	$date = new DateTime ( $pev ['EVENT_START'] );
+	echo $date->format ( 'n月j日' ) . '<a href=http://localhost/kocote/event/event_detail.php?event_id=' . $pev ['EVENT_ID'] . '>' . $pev ['EVENT_TITLE'] . '</a>', '(', '現在の参加人数:', $pev_count, '人)', '<br>';
 	echo '</p>';
 }
 
 /* ▽ お気に入り登録しているイベント ▽ */
 echo "お気に入り登録しているイベント" . "<br><p>";
 while ( $fev = mysql_fetch_assoc ( $sql_result_fev_select ) ) {
-	$date = new DateTime($fev ['EVENT_START']);
-	echo $date->format('n月j日') . '<a href=http://localhost/kocote/event/event_detail.php?event_id='.$fev['EVENT_ID'].'>'.$fev['EVENT_TITLE'].'</a>',
-        '(', '現在の参加人数:', 0, '人)', '<br>';
+	// このページの利用者が参加しているイベントの参加人数
+	$fev_count = event_count ( $fev['EVENT_ID'] );
+
+	$date = new DateTime ( $fev ['EVENT_START'] );
+	echo $date->format ( 'n月j日' ) . '<a href=http://localhost/kocote/event/event_detail.php?event_id=' . $fev ['EVENT_ID'] . '>' . $fev ['EVENT_TITLE'] . '</a>', '(', '現在の参加人数:', $fev_count, '人)', '<br>';
 	echo '</p>';
 }
 
+
 mysql_close ( $link );
 echo '</form>';
+
+// イベントの参加人数を数える関数(参加人数を数えたいイベントのイベントIDを引数とする)
+function event_count($cnt_id) {
+	mysql_set_charset ( 'utf8' );
+	// 参加イベントテーブルから引数のイベントIDを持つレコード数をカウントする
+	$sql_evcnt = "SELECT COUNT(PEV.EVENT_ID) AS CNT FROM pev WHERE pev.EVENT_ID = $cnt_id;";
+
+	$result_evcnt = mysql_query ( $sql_evcnt);
+	if (! $result_evcnt) {
+		die ( 'クエリが失敗しました。' . mysql_error () );
+	}
+
+	while ( $row_evcnt = mysql_fetch_array ( $result_evcnt ) ) {
+		$event_evcnt = $row_evcnt ['CNT'];
+	}
+	return $event_evcnt;
+}
 ?>
 
 	<!-- 本体end-->
