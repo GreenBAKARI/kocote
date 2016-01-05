@@ -43,9 +43,9 @@ if (! $db_selected)
 	die ( 'データベース選択失敗' . mysql_error () );
 
 	// クエリの発行
-if (! $sql_result_ua_select = mysql_query ( 'SELECT * FROM ua WHERE USER_ID = '. $USER_ID ))
+if (! $sql_result_ua_select = mysql_query ( 'SELECT * FROM ua WHERE USER_ID = ' . $USER_ID ))
 	die ( '@uaテーブル SELECT失敗' . mysql_error () );
-if (! $sql_result_ur_select = mysql_query ( 'SELECT * FROM ur WHERE USER_ID = '. $USER_ID ))
+if (! $sql_result_ur_select = mysql_query ( 'SELECT * FROM ur WHERE USER_ID = ' . $USER_ID ))
 	die ( '@urテーブル SELECT失敗' . mysql_error () );
 if (! $sql_result_ev_select = mysql_query ( 'SELECT * FROM ev' ))
 	die ( '@ｅｖテーブル SELECT失敗' . mysql_error () );
@@ -136,30 +136,6 @@ echo "</select></p>";
 /* ▽ 興味・関心のある分野 ▽ */
 
 echo ("<p>興味・関心のある分野" . "<br>");
-// foreach ( $interest as $i => $value ) {
-// echo '<input type="checkbox" name="interest[]" value="' . $value . '"';
-// if ($ua ['INTEREST'] == true)
-// echo "checked";
-// echo '>' . $value;
-// }
-// echo '<input type="checkbox" name="interest[]" value="映画">映画';
-// echo '<input type="checkbox" name="interest[]" value="音楽" checked>音楽';
-// echo '<input type="checkbox" name="interest[]" value="カメラ">カメラ';
-// echo '<br>';
-// echo '<input type="checkbox" name="interest[]" value="グルメ">グルメ';
-// echo '<input type="checkbox" name="interest[]" value="ゲーム">ゲーム';
-// echo '<input type="checkbox" name="interest[]" value="スポーツ">スポーツ';
-// echo '<input type="checkbox" name="interest[]" value="釣り">釣り';
-// echo '<br>';
-// echo '<input type="checkbox" name="interest[]" value="天体観測">天体観測';
-// echo '<input type="checkbox" name="interest[]" value="動物">動物';
-// echo '<input type="checkbox" name="interest[]" value="読書">読書';
-// echo '<input type="checkbox" name="interest[]" value="乗り物">乗り物';
-// echo '<br>';
-// echo '<input type="checkbox" name="interest[]" value="ファッション">ファッション';
-// echo '<input type="checkbox" name="interest[]" value="漫画">漫画';
-// echo '<input type="checkbox" name="interest[]" value="料理">料理';
-// echo '<input type="checkbox" name="interest[]" value="旅行">旅行';
 $interest = array (
 		"アニメ",
 		"映画 ",
@@ -179,20 +155,20 @@ $interest = array (
 		"旅行 "
 );
 // 興味・関心に格納されている文字の長さを取得
-// INTERESTは文字列型とする．（チェック⇒"ｔ" 未チェック⇒"f"）
 $interest_length = mb_strlen ( $ua ['INTEREST'] );
+
 for($i = 0; $i < $interest_length; $i ++)
 	$interest_trueORfalse [$i] = substr ( $ua ['INTEREST'], $i, 1 );
 
 foreach ( $interest as $key => $value ) {
 	echo '<input type="checkbox" name="interest[]" value="' . $value . '"';
-	// 選択済み判定
+	// 選択済み判定  チェック済⇒"ｔ" 未チェック⇒"f"
 	if ($interest_length > $key)
 		if ($interest_trueORfalse [$key] == "t")
 			echo " checked";
 
 	echo '>' . $value;
-	// ４つ毎に改行
+	// 4項目毎に改行
 	if ($key % 4 == 3)
 		echo "<br>";
 }
