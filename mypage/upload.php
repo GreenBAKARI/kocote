@@ -1,79 +1,71 @@
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>画像アップロード</title>
-</HEAD>
-<BODY>
-	<FORM method="POST" enctype="multipart/form-data" action="upload.php">
-		<P>画像アップロード</P>
-		画像パス：<INPUT type="file" name="upfile" size="50"><BR> <INPUT
-			type="submit" name="submit" value="送信">
-	</FORM>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>高知県大学生用交流サイト「KoCo + Te」</title>
+</head>
+<center>
+	<link rel="stylesheet" href="style.css" 　type="text/css">
+	<body topmargin="100" bottommargin="100">
 
+		<div id="headerArea"></div>
+
+		<form id="loginForm" name="loginForm" action="" method="POST">
+			<!-- <?php echo $errorMessage ?> -->
+
+			<div id="box">
+				<a href="http://localhost/php/v0/event.php"><img
+					src="img/ev_home.jpg" height="7%" width="16%"></a> <a
+					href="http://localhost/php/v0/bulletin.php"><img
+					src="img/bb_home.jpg" height="7%" width="16%"></a> <a
+					href="http://localhost/php/v0/search.php"><img
+					src="img/se_home.jpg" height="7%" width="16%"></a> <a
+					href="http://localhost/php/v0/dm.php"><img src="img/dm_home.jpg"
+					height="7%" width="16%"></a> <a
+					href="http://localhost/php/v0/mypage.php"><img
+					src="img/mp_home.jpg" height="7%" width="16%"></a>
+			</div>
+			<br> <br> <br>
+		</form>
+
+		<!-- 本体start -->
 <?php
+$USER_ID = 1;
+// echo $_POST ['hyoki'];
+// echo $_POST ['gakka'];
+// for($i = 0; $i < $_POST ['key']; $i ++)
+// echo $_POST ['interest'] [$i];
+// echo $_POST ['jikoshokai'];
 
+// MySQLと接続
+$link = mysql_connect ( 'localhost', 'root' );
+// データベースを選択
+$dbLink = mysql_select_db ( 'greenbakari', $link );
 
+// データ更新
+$sql = 'UPDATE ua SET DEPARTMENT_NAME="' . $_POST ['gakka'] . '", INTEREST="' . $_POST ['tf'] . '", PROFILE="' . $_POST ['jikoshokai'] . '" WHERE USER_ID = ' . $USER_ID;
 
-// ヘッダ画像
-if (isset ( $_POST ['header_img'] ))
-	$img_table = 'tmp'; // 新しい画像に更新する場合
-else
-	$img_table = 'ua';
-echo '<p>';
-echo '<img src="./img_get.php?img_type=HEADER_IMAGE&img_table=' . $img_table . '"/>';
-echo '</p>';
-// アイコン画像
-if (isset ( $_POST ['icon_img'] ))
-	$img_table = 'tmp'; // 新しい画像に更新する場合
-else
-	$img_table = 'ua';
-echo '<p>';
-echo '<img src="./img_get.php?&img_type=ICON_IMAGE"/>';
-echo 'アイコン画像パス：<INPUT type="file" name="icon_img" size="50"><BR>';
-echo '</p>';
-// 「編集を確認する」ボタン
-echo '<input type="submit" value="編集を確認する" name="conf" ></button>';
-
-
-
-
-
-
-
-
-
-
-if (count($_POST) > 0 && isset($_POST["submit"])){
-	$upfile = $_FILES["upfile"]["tmp_name"];
-	if ($upfile==""){
-		print("ファイルのアップロードができませんでした。<BR>\n");
-		exit;
-	}
-
-	// ファイル取得
-	$imgdat = file_get_contents($upfile);
-	$imgdat = mysql_real_escape_string($imgdat);
-
-	// DB接続
-	// MySQLと接続
-	$link = mysql_connect ( 'localhost' , 'root');
-
-	// データベースを選択
-	$dbLink = mysql_select_db ( 'hogehoge' , $link);
-
-
-	// データ追加
-	$sql = "INSERT INTO tmp VALUES ('$imgdat')";
-
-	$result = mysql_query($sql);
-	if (!$result){
-		print("SQLの実行に失敗しました<BR>");
-		print(mysql_errno().": ".mysql_error()."<BR>");
-		exit;
-	}
-
-	print("登録が終了しました<BR>");
+$result = mysql_query ( $sql );
+if (! $result) {
+	print ("SQLの実行に失敗しました<BR>") ;
+	print (mysql_errno () . ": " . mysql_error () . "<BR>") ;
+	exit ();
 }
+
+print ("登録が終了しました<BR>") ;
+echo '<input type="button" value="個人ページ画面へ戻る" onclick="location.href=\'mypage.php\'">';
 ?>
-</BODY>
-</HTML>
+	<!-- 本体end -->
+
+		<div id="footerArea">
+			<ul>
+				<li><a href="">会社概要</a></li>
+				<li><a href="">お問い合わせ</a></li>
+				<li><a href="">個人情報保護方針</a></li>
+				<li><a href="">採用情報</a></li>
+				<li><a href="">サイトマップ</a></li>
+			</ul>
+		</div>
+
+	</body>
+
+</html>

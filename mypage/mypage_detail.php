@@ -56,13 +56,13 @@ if (! $sql_result_fev_select = mysql_query ( 'SELECT * FROM ev, fev WHERE ev.EVE
 
 	/*
  * POST@out
- * header_img : ヘッダ画像
- * icon_img : アイコン画像
- * submit : 「編集を確認する」ボタン
- * hyoki : 名前の表記
- * gakka : 学科
- * interest : 興味・関心のある分野
- * jikoshokai : 自己紹介
+ * header_img 	: ヘッダ画像
+ * icon_img 	: アイコン画像
+ * submit 		: 「編集を確認する」ボタン
+ * hyoki		: 名前の表記
+ * gakka		: 学科
+ * interest 	: 興味・関心のある分野
+ * jikoshokai 	: 自己紹介
  */
 echo '<form action="mypage_conf.php" method="post">';
 // ヘッダ画像
@@ -92,7 +92,7 @@ $hyoki = array (
 );
 $JP = 0; // 日本語
 $RO = 1; // ローマ字
-echo '　名前の表記 : ';
+echo ' 名前の表記 : ';
 foreach ( $hyoki as $key0 => $value ) {
 	echo '<input type="radio" name="hyoki" value="' . $value . '"';
 	// 選択済み判定(日本語を選択していると仮定)
@@ -153,14 +153,15 @@ $interest = array (
 		"料理 ",
 		"旅行 "
 );
-// 興味・関心に格納されている文字の長さを取得
+
+// 興味・関心に格納されている文字列の長さを取得
 $interest_length = mb_strlen ( $ua ['INTEREST'] );
 
 for($i = 0; $i < $interest_length; $i ++)
 	$interest_trueORfalse [$i] = substr ( $ua ['INTEREST'], $i, 1 );
 
 foreach ( $interest as $key => $value ) {
-	echo '<input type="checkbox" name="interest[]" value="' . $value . '"';
+	echo '<input type="checkbox" name="interest[]" value="' . $key . '"';
 	// 選択済み判定 チェック済⇒"ｔ" 未チェック⇒"f"
 	if ($interest_length > $key)
 		if ($interest_trueORfalse [$key] == "t")
@@ -171,6 +172,8 @@ foreach ( $interest as $key => $value ) {
 	if ($key % 4 == 3)
 		echo "<br>";
 }
+$key++;
+echo '<input type="hidden" name="key" value="' . $key . '">';
 echo ("</p>");
 
 /* ▽ 自己紹介 ▽ */
@@ -184,7 +187,7 @@ while ( $ev = mysql_fetch_assoc ( $sql_result_ev_select ) ) {
 	$ev_count = event_count ( $ev ['EVENT_ID'] );
 
 	$date = new DateTime ( $ev ['EVENT_START'] );
-	echo $date->format ( 'n月j日' ) . '<a href=http://localhost/kocote/event/event_detail.php?event_id=' . $ev ['EVENT_ID'] . '>' . $ev ['EVENT_TITLE'] . '</a>', '(', '現在の参加人数:'.$ev_count. '人)', '<br>';
+	echo $date->format ( 'Y年n月j日' ) . '<a href=http://localhost/kocote/event/event_detail.php?event_id=' . $ev ['EVENT_ID'] . '>' . $ev ['EVENT_TITLE'] . '</a>', '(', '現在の参加人数:'.$ev_count. '人)', '<br>';
 	echo '</p>';
 }
 
@@ -195,7 +198,7 @@ while ( $pev = mysql_fetch_assoc ( $sql_result_pev_select ) ) {
 	$pev_count = event_count ( $pev['EVENT_ID'] );
 
 	$date = new DateTime ( $pev ['EVENT_START'] );
-	echo $date->format ( 'n月j日' ) . '<a href=http://localhost/kocote/event/event_detail.php?event_id=' . $pev ['EVENT_ID'] . '>' . $pev ['EVENT_TITLE'] . '</a>', '(', '現在の参加人数:', $pev_count, '人)', '<br>';
+	echo $date->format ( 'Y年n月j日' ) . '<a href=http://localhost/kocote/event/event_detail.php?event_id=' . $pev ['EVENT_ID'] . '>' . $pev ['EVENT_TITLE'] . '</a>', '(', '現在の参加人数:', $pev_count, '人)', '<br>';
 	echo '</p>';
 }
 
@@ -206,7 +209,7 @@ while ( $fev = mysql_fetch_assoc ( $sql_result_fev_select ) ) {
 	$fev_count = event_count ( $fev['EVENT_ID'] );
 
 	$date = new DateTime ( $fev ['EVENT_START'] );
-	echo $date->format ( 'n月j日' ) . '<a href=http://localhost/kocote/event/event_detail.php?event_id=' . $fev ['EVENT_ID'] . '>' . $fev ['EVENT_TITLE'] . '</a>', '(', '現在の参加人数:', $fev_count, '人)', '<br>';
+	echo $date->format ( 'Y年n月j日' ) . '<a href=http://localhost/kocote/event/event_detail.php?event_id=' . $fev ['EVENT_ID'] . '>' . $fev ['EVENT_TITLE'] . '</a>', '(', '現在の参加人数:', $fev_count, '人)', '<br>';
 	echo '</p>';
 }
 
