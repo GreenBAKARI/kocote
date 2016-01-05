@@ -179,13 +179,13 @@ $interest = array (
 // INTERESTは文字列型とする．（チェック⇒"ｔ" 未チェック⇒"f"）
 $len = mb_strlen ( $ua ['INTEREST'] );
 for($i = 0; $i < $len; $i ++)
-	$interest_trueORforce [$i] = substr ( $ua ['INTEREST'], $i, 1 );
+	$interest_trueORfalse [$i] = substr ( $ua ['INTEREST'], $i, 1 );
 foreach ( $interest as $key => $value ) {
 	echo $key;
 	echo '<input type="checkbox" name="interest[]" value="' . $value . '"';
 	// 選択済み判定
 	if ($len > $key)
-		if ($interest_trueORforce [$key] == t)
+		if ($interest_trueORfalse [$key] == t)
 			echo " checked";
 
 	echo '>' . $value;
