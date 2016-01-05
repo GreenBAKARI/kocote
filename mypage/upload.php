@@ -30,12 +30,6 @@
 		<!-- 本体start -->
 <?php
 $USER_ID = 1;
-// echo $_POST ['hyoki'];
-// echo $_POST ['gakka'];
-// for($i = 0; $i < $_POST ['key']; $i ++)
-// echo $_POST ['interest'] [$i];
-// echo $_POST ['jikoshokai'];
-
 // MySQLと接続
 $link = mysql_connect ( 'localhost', 'root' );
 // データベースを選択
