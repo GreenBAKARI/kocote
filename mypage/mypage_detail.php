@@ -161,7 +161,7 @@ for($i = 0; $i < $interest_length; $i ++)
 
 foreach ( $interest as $key => $value ) {
 	echo '<input type="checkbox" name="interest[]" value="' . $value . '"';
-	// 選択済み判定  チェック済⇒"ｔ" 未チェック⇒"f"
+	// 選択済み判定 チェック済⇒"ｔ" 未チェック⇒"f"
 	if ($interest_length > $key)
 		if ($interest_trueORfalse [$key] == "t")
 			echo " checked";
@@ -178,22 +178,36 @@ echo "自己紹介" . "<br><p>";
 echo '<textarea name="jikoshokai" cols="50" rows="6">' . $ua ['PROFILE'] . '</textarea></p>';
 
 /* ▽ 立ち上げているイベント ▽ */
+// echo "立ち上げているイベント" . "<br><p>";
+// while ( $ev = mysql_fetch_assoc ( $sql_result_ev_select ) )
+// echo $ev ['EVENT_START'] . " " . $ev ['EVENT_TITLE'] . '<br>';
+// echo '</p>';
+
 echo "立ち上げているイベント" . "<br><p>";
-while ( $ev = mysql_fetch_assoc ( $sql_result_ev_select ) )
-	echo $ev ['EVENT_START'] . " " . $ev ['EVENT_TITLE'] . '<br>';
-echo '</p>';
+while ( $ev = mysql_fetch_assoc ( $sql_result_ev_select ) ) {
+	$date = new DateTime($ev ['EVENT_START']);
+	echo $date->format('n月j日') . '<a href=http://localhost/kocote/event/event_detail.php?event_id='.$ev['EVENT_ID'].'>'.$ev['EVENT_TITLE'].'</a>',
+        '(', '現在の参加人数:', 0, '人)', '<br>';
+	echo '</p>';
+}
 
 /* ▽ 参加しているイベント ▽ */
 echo "参加しているイベント" . "<br><p>";
-while ( $pev = mysql_fetch_assoc ( $sql_result_pev_select ) )
-	echo $pev ['EVENT_START'] . " " . $pev ['EVENT_TITLE'] . '<br>';
-echo '</p>';
+while ( $pev = mysql_fetch_assoc ( $sql_result_pev_select ) ) {
+	$date = new DateTime($pev ['EVENT_START']);
+	echo $date->format('n月j日') . '<a href=http://localhost/kocote/event/event_detail.php?event_id='.$pev['EVENT_ID'].'>'.$pev['EVENT_TITLE'].'</a>',
+        '(', '現在の参加人数:', 0, '人)', '<br>';
+	echo '</p>';
+}
 
 /* ▽ お気に入り登録しているイベント ▽ */
 echo "お気に入り登録しているイベント" . "<br><p>";
-while ( $fev = mysql_fetch_assoc ( $sql_result_fev_select ) )
-	echo $fev ['EVENT_START'] . " " . $fev ['EVENT_TITLE'] . '<br>';
-echo '</p>';
+while ( $fev = mysql_fetch_assoc ( $sql_result_fev_select ) ) {
+	$date = new DateTime($fev ['EVENT_START']);
+	echo $date->format('n月j日') . '<a href=http://localhost/kocote/event/event_detail.php?event_id='.$fev['EVENT_ID'].'>'.$fev['EVENT_TITLE'].'</a>',
+        '(', '現在の参加人数:', 0, '人)', '<br>';
+	echo '</p>';
+}
 
 mysql_close ( $link );
 echo '</form>';
