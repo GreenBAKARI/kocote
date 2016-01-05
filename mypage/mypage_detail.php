@@ -134,7 +134,6 @@ foreach ( $gakka as $key => $value ) {
 echo "</select></p>";
 
 /* ▽ 興味・関心のある分野 ▽ */
-
 echo ("<p>興味・関心のある分野" . "<br>");
 $interest = array (
 		"アニメ",
