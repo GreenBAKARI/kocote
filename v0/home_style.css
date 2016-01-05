@@ -1,0 +1,182 @@
+body{
+  background-color: #EAE8E9;
+  background-size: cover;
+  margin-right: auto;
+}
+
+h3{font-size: 150%;
+   color: #FFFFFF
+}
+
+div#headerArea {
+    position: fixed !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background-color: #4E9ABE;
+    color: #fff;
+}
+
+div#footerArea {
+    position: fixed !important;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background-color: #4E9ABE;
+    color: #fff;
+}
+
+#footerArea {text-align:center;}
+#footerArea li {
+display:inline;
+padding-left:10px;
+padding-right:5px;
+}
+#footerArea li+li {border-left:1px solid #000000;}
+
+p {
+  font-size: 100%;
+  font-family: "ＭＳ Ｐゴシック",monospace;
+  color: #FFFFFF
+}
+
+.figure-ev{
+	position: relative;
+	overflow: hidden;
+	width: 300px;
+	background: #DFBD42;
+}
+
+.figure-bb{
+	position: relative;
+	overflow: hidden;
+	width: 300px;
+	background: #7DC691;
+}
+
+.figure-se{
+	position: relative;
+	overflow: hidden;
+	width: 300px;
+	background: #6FC0D1;
+}
+
+.figure-dm{
+	position: relative;
+	overflow: hidden;
+	width: 300px;
+	background: #D98E64;
+}
+
+.figure-mp{
+	position: relative;
+	overflow: hidden;
+	width: 300px;
+	background: #DE6BAE;
+}
+
+figure img {
+	position: relative;
+	z-index: 1;
+	-webkit-transition: .3s;
+	transition: .3s;
+}
+
+figcaptionev {
+	position: absolute;
+	bottom: -70px;
+	left: 0;
+	z-index: 2;
+	width: 100%;
+	height: 70px;
+	background: #DFBD42;
+	-webkit-transition: .3s;
+	transition: .3s;
+}
+
+figcaptionbb {
+	position: absolute;
+	bottom: -70px;
+	left: 0;
+	z-index: 2;
+	width: 100%;
+	height: 70px;
+	background: #7DC691;
+	-webkit-transition: .3s;
+	transition: .3s;
+}
+
+figcaptionse {
+	position: absolute;
+	bottom: -70px;
+	left: 0;
+	z-index: 2;
+	width: 100%;
+	height: 70px;
+	background: #6FC0D1;
+	-webkit-transition: .3s;
+	transition: .3s;
+}
+
+figcaptiondm {
+	position: absolute;
+	bottom: -70px;
+	left: 0;
+	z-index: 2;
+	width: 100%;
+	height: 70px;
+	background: #D98E64;
+	-webkit-transition: .3s;
+	transition: .3s;
+}
+
+figcaptionmp {
+	position: absolute;
+	bottom: -70px;
+	left: 0;
+	z-index: 2;
+	width: 100%;
+	height: 70px;
+	background: #DE6BAE;
+	-webkit-transition: .3s;
+	transition: .3s;
+}
+
+figure:hover img {
+	-webkit-transform: translateY(-40px);
+	transform: translateY(-40px);
+}
+
+figure:hover figcaptionev {
+	bottom: 0;
+	-webkit-transform: translateY(-30px);
+	transform: translateY(-30px);
+}
+
+figure:hover figcaptionbb {
+	bottom: 0;
+	-webkit-transform: translateY(-30px);
+	transform: translateY(-30px);
+}
+
+figure:hover figcaptionse {
+	bottom: 0;
+	-webkit-transform: translateY(-30px);
+	transform: translateY(-30px);
+}
+
+figure:hover figcaptiondm {
+	bottom: 0;
+	-webkit-transform: translateY(-30px);
+	transform: translateY(-30px);
+}
+
+figure:hover figcaptionmp {
+	bottom: 0;
+	-webkit-transform: translateY(-30px);
+	transform: translateY(-30px);
+}

@@ -1,0 +1,47 @@
+<!-- 掲示板作成フォーム-->
+<html>
+<head>
+<meta charset="UTF-8">
+<title>高知県大学生用交流サイト「KoCo + Te」</title>
+</head>
+<center>
+<link rel="stylesheet" href="style.css"　type="text/css">
+<body topmargin="100" bottommargin="100">
+<form action="bulletin_add.php" method="post">
+
+<div id="headerArea"></div>
+<div id="footerArea"></div>
+
+  <div id = "box">
+    <a href="http://localhost/php/v0/event.php"><img src="img/ev_home.jpg" height="7%" width="16%"></a>
+    <a href="http://localhost/php/v0/bulletin.php"><img src="img/bb_home.jpg" height="7%" width="16%"></a>
+    <a href="http://localhost/php/v0/search.php"><img src="img/se_home.jpg" height="7%" width="16%"></a>
+    <a href="http://localhost/php/v0/dm.php"><img src="img/dm_home.jpg" height="7%" width="16%"></a>
+    <a href="http://localhost/php/v0/mypage.php"><img src="img/mp_home.jpg" height="7%" width="16%"></a></div>
+  <br><br><br>
+
+
+<!-- フォームここから -->
+<form action="bulletin_add.php" method="post">
+掲示板タイトル*:<br>
+<input type="text" name="bb_name"><br>
+<br><br><br>
+
+<label for="category" style="margin-left:-7%">分類*：</label>
+<select name="category" required = "required">
+<option value="">未選択</option>
+<option value="グルメ/フェスティバル">グルメ/フェスティバル</option>
+<option value="芸術/エンタメ">芸術/エンタメ</option>
+<option value="交流/スポーツ">交流/スポーツ</option>
+<option value="地域復興/福祉">地域復興/福祉</option>
+<option value="就活/キャリア">就活/キャリア</option>
+<option value="その他">その他</option>
+</select><br><br><br>
+
+<input type="reset" id="delete" name="delete" value="クリアする">
+<input type="submit" id="makebulletin" name="makebulletin" value="作成する">
+</form>
+
+</body>
+</center>
+</html>

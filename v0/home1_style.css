@@ -1,0 +1,139 @@
+body{
+  background-color: #EAE8E9;
+  background-size: cover;
+  margin-right: auto;
+}
+
+h3{font-size: 150%;}
+
+p {
+  font-size: 150%;
+  font-family: "ＭＳ Ｐゴシック",monospace;
+}
+
+.figure-inner {
+	position: relative;
+	width: 300px;
+	-webkit-perspective: 1000;
+	perspective: 1000;
+	width: 300px;
+	height: 200px;
+	-webkit-transition: .5s;
+	transition: .5s;
+	-webkit-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+}
+/* figcaptionの後に続く2文字が各機能を示している
+   ev:イベント
+   bb:掲示板
+   se:検索
+   dm:ダイレクトメッセージ
+   mp:マイページ
+*/
+
+.image,figcaptionev {
+	position: absolute;
+	width: 300px;
+	height: 200px;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+}
+
+.image,figcaptionbb {
+	position: absolute;
+	width: 300px;
+	height: 200px;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+}
+
+.image,figcaptionse {
+	position: absolute;
+	width: 300px;
+	height: 200px;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+}
+
+.image,figcaptiondm {
+	position: absolute;
+	width: 300px;
+	height: 200px;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+}
+
+.image,figcaptionmp {
+	position: absolute;
+	width: 300px;
+	height: 200px;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+}
+
+figcaptionev {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+  color:#ffffff;
+  background-color: #DFBD42;
+}
+
+figcaptionbb {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+  color:#ffffff;
+  background-color: #7DC691;
+}
+
+figcaptionse {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+  color:#ffffff;
+  background-color: #6FC0D1;
+}
+
+figcaptiondm {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+  color:#ffffff;
+  background-color: #D98E64;
+}
+
+figcaptionmp {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+  color:#ffffff;
+  background-color: #DE6BAE;
+}
+
+figure:hover .figure-inner,
+
+figcaptionev {
+	-webkit-transform: rotateY(180deg);
+	transform: rotateY(180deg);
+}
+
+figcaptionbb {
+	-webkit-transform: rotateY(180deg);
+	transform: rotateY(180deg);
+}
+
+figcaptionse {
+	-webkit-transform: rotateY(180deg);
+	transform: rotateY(180deg);
+}
+
+figcaptiondm {
+	-webkit-transform: rotateY(180deg);
+	transform: rotateY(180deg);
+}
+
+figcaptionmp {
+	-webkit-transform: rotateY(180deg);
+	transform: rotateY(180deg);
+}
