@@ -28,7 +28,10 @@
 		</form>
 
 		<!-- 本体start -->
+
 <?php
+$USER_ID = 1;
+
 // MySQLと接続
 $link = mysql_connect ( 'localhost', 'root' );
 if (! $link)
@@ -40,9 +43,9 @@ if (! $db_selected)
 	die ( 'データベース選択失敗' . mysql_error () );
 
 	// クエリの発行
-if (! $sql_result_ua_select = mysql_query ( 'SELECT * FROM ua' ))
+if (! $sql_result_ua_select = mysql_query ( 'SELECT * FROM ua WHERE USER_ID = '. $USER_ID ))
 	die ( '@uaテーブル SELECT失敗' . mysql_error () );
-if (! $sql_result_ur_select = mysql_query ( 'SELECT * FROM ur' ))
+if (! $sql_result_ur_select = mysql_query ( 'SELECT * FROM ur WHERE USER_ID = '. $USER_ID ))
 	die ( '@urテーブル SELECT失敗' . mysql_error () );
 if (! $sql_result_ev_select = mysql_query ( 'SELECT * FROM ev' ))
 	die ( '@ｅｖテーブル SELECT失敗' . mysql_error () );
@@ -116,8 +119,8 @@ $gakka = array (
 		"健康栄養学",
 
 		// 高知工科大学
-		"情報",
-		"環境理工",
+		"情報学",
+		"環境理工学",
 		"システム工学"
 );
 echo '<select name="gakka">';
@@ -177,15 +180,15 @@ $interest = array (
 );
 // 興味・関心に格納されている文字の長さを取得
 // INTERESTは文字列型とする．（チェック⇒"ｔ" 未チェック⇒"f"）
-$len = mb_strlen ( $ua ['INTEREST'] );
-for($i = 0; $i < $len; $i ++)
+$interest_length = mb_strlen ( $ua ['INTEREST'] );
+for($i = 0; $i < $interest_length; $i ++)
 	$interest_trueORfalse [$i] = substr ( $ua ['INTEREST'], $i, 1 );
+
 foreach ( $interest as $key => $value ) {
-	echo $key;
 	echo '<input type="checkbox" name="interest[]" value="' . $value . '"';
 	// 選択済み判定
-	if ($len > $key)
-		if ($interest_trueORfalse [$key] == t)
+	if ($interest_length > $key)
+		if ($interest_trueORfalse [$key] == "t")
 			echo " checked";
 
 	echo '>' . $value;
