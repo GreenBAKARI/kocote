@@ -53,11 +53,11 @@ if (! $sql_result_ua_select = mysql_query ( 'SELECT * FROM ua' ))
 	die ( '@uaテーブル SELECT失敗' . mysql_error () );
 if (! $sql_result_ur_select = mysql_query ( 'SELECT * FROM ur' ))
 	die ( '@urテーブル SELECT失敗' . mysql_error () );
-if (! $sql_result_ev_select = mysql_query ( 'SELECT * FROM ev' ))
+if (! $sql_result_ev_select = mysql_query ( 'SELECT * FROM ev LIMIT 5' ))
 	die ( '@ｅｖテーブル SELECT失敗' . mysql_error () );
-if (! $sql_result_pev_select = mysql_query ( 'SELECT * FROM ev, pev WHERE ev.EVENT_ID=pev.EVENT_ID' ))
+if (! $sql_result_pev_select = mysql_query ( 'SELECT * FROM ev, pev WHERE ev.EVENT_ID=pev.EVENT_ID LIMIT 5' ))
 	die ( '@ev, pevテーブル SELECT失敗' . mysql_error () );
-if (! $sql_result_fev_select = mysql_query ( 'SELECT * FROM ev, fev WHERE ev.EVENT_ID=fev.EVENT_ID' ))
+if (! $sql_result_fev_select = mysql_query ( 'SELECT * FROM ev, fev WHERE ev.EVENT_ID=fev.EVENT_ID LIMIT 5' ))
 	die ( '@ev, fevテーブル SELECT失敗' . mysql_error () );
 
 echo '<form action="upload.php" method="post">';
@@ -89,10 +89,11 @@ echo '<input type="button" value="編集する" name="upload" onClick="history.b
 $ur = mysql_fetch_assoc ( $sql_result_ur_select );
 /*
  * 名前の表記
- * 1 ⇒ 日本語
- * 0 ⇒ ローマ字
+ * 0 ⇒ 日本語
+ * 1 ⇒ ローマ字
  */
-if ($_POST ['hyoki'] == 1) {
+
+if ($_POST ['hyoki'] == 0) {
 	echo ("<p>" . $ur ['USER_LAST_NAME'] . " " . $ur ['USER_FIRST_NAME'] . "	");
 } else {
 	echo ("<p>" . $ur ['USER_LAST_ROMA'] . " " . $ur ['USER_FIRST_ROMA'] . "	");
@@ -103,7 +104,11 @@ echo '<input type="hidden" name="hyoki" value="' . $_POST ['hyoki'] . '">';
 echo ("　" . $ur ['SEX'] . "	");
 
 /* 名前の表記 */
-echo ' 名前の表記 : ' . $_POST ['hyoki'];
+$hyoki = array (
+		"日本語",
+		"アルファベット"
+);
+echo ' 名前の表記 : ' . $hyoki [$_POST ['hyoki']];
 
 /* ▽ 大学・学年・学科 ▽ */
 /* 大学・学年・学科 */
@@ -136,13 +141,14 @@ for($i = 0; $i < $_POST ['key']; $i ++) {
 	$tf = $tf . "f";
 }
 
-foreach ( $_POST ['interest'] as $key => $value ) {
-	$tf [$value] = "t";
-
-	echo $interest[$value];
-	// 4行ごとに改行
-	if (! (($key + 1) % 4))
-		echo '<br>';
+if (isset($_POST['interest'])) {
+	foreach ( $_POST ['interest'] as $key => $value ) {
+		$tf [$value] = "t";
+		echo $interest [$value];
+		// 4行ごとに改行
+		if (! (($key + 1) % 4))
+			echo '<br>';
+	}
 }
 
 echo '<input type="hidden" name="tf" value="' . $tf . '">';
