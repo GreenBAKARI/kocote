@@ -74,12 +74,14 @@ if (!$keyword && !$category || !$keyword && $category) {
     $result = mysql_query("SELECT BB_ID, BB_NAME, LAST_POSTED_DATE, COMMENT_COUNT FROM BB 
         WHERE BB_NAME LIKE '%$keyword%' OR CATEGORY = $category");
 }
+
 if (!$result) {
-    die('クエリーが失敗しました。'.mysql_error());
+    die('クエリが失敗しました。'.mysql_error());
 }
+//print('<p>クエリが成功しました。</p>');
 
 //抽出結果に表示番号を割り振る
-$num = 1;
+$display_num = 1;
 
 //mysql_num_rows() - クエリの実行結果から行の数を取得する
 $rows = mysql_num_rows($result);
@@ -90,7 +92,7 @@ if ($rows) {
         $send = $row['BB_ID'];
         $date = $row['LAST_POSTED_DATE'];
 		$temp = $temp."<tr>";
-        $temp = $temp."<td>&nbsp;&nbsp;".$num++."</td>";
+        $temp = $temp."<td>&nbsp;&nbsp;".$dispaly_num++."</td>";
         $temp = $temp."<td>&nbsp;&nbsp;<a href=bulletin_datail.php?bb_id=$send>".$row['BB_NAME']."</a></td>";
         $temp = $temp."<td>&nbsp;&nbsp;".substr($date, 0, 4)."年".substr($date, 5, 2)."月".substr($date, 8, 2)."日"."</td>";
         $temp = $temp."<td>&nbsp;&nbsp;".$row['COMMENT_COUNT']."</td>";
@@ -103,10 +105,11 @@ if ($rows) {
 
 //mysql_close() - MySQLサーバへの接続をクローズにする
 $close_flag = mysql_close($link);
-
-if ($close_flag){
-    //print('<p>切断に成功しました。</p>');
+    
+if (!$close_flag) {
+    die('切断に失敗しました。'.mysql_error());
 }
+//print('<p>切断に成功しました。</p>');
 ?>
 
 
