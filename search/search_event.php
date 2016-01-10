@@ -74,12 +74,14 @@ if (!$keyword && !$category || !$keyword && $category) {
     $result = mysql_query("SELECT EVENT_ID, EVENT_TITLE, EVENT_START, EVENT_DETAIL FROM EV 
         WHERE EVENT_TITLE LIKE '%$keyword%' OR CATEGORY = $category ORDER BY EVENT_START");
 }
+
 if (!$result) {
     die('クエリーが失敗しました。'.mysql_error());
 }
+//print('<p>クエリが成功しました。</p>');
 
 //抽出結果に表示番号を割り振る
-$num = 1;
+$display_num = 1;
 
 //mysql_num_rows() - クエリの実行結果から行の数を取得する
 $rows = mysql_num_rows($result);
@@ -90,7 +92,7 @@ if ($rows) {
         $send = $row['EVENT_ID'];
         $date = $row['EVENT_START']; 
         $temp = $temp."<tr>";
-        $temp = $temp."<td>&nbsp;&nbsp;".$num++."</td>";
+        $temp = $temp."<td>&nbsp;&nbsp;".$dispaly_num++."</td>";
         $temp = $temp."<td>&nbsp;&nbsp;<a href=event_detail.php?event_id=$send>".$row['EVENT_TITLE']."</a></td>";
         $temp = $temp."<td>&nbsp;&nbsp;".substr($date, 0, 4)."年".substr($date, 5, 2)."月".substr($date, 8, 2)."日"."</td>";
         $temp = $temp."<td>&nbsp;&nbsp;".$row['EVENT_DETAIL']."</td>";
@@ -104,9 +106,10 @@ if ($rows) {
 //mysql_close() - MySQLサーバへの接続をクローズにする
 $close_flag = mysql_close($link);
 
-if ($close_flag){
-    //print('<p>切断に成功しました。</p>');
+if (!$close_flag) {
+    die('切断に失敗しました。'.mysql_error());
 }
+//print('<p>切断に成功しました。</p>');
 ?>
 
 

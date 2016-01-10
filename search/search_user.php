@@ -120,7 +120,7 @@ if (!$count) {
 	}
 	//名が入力されており、姓・大学・学年が入力されていない場合と
 	//姓が入力されており、名・大学・学年が入力されていない場合と
-	//名・姓が入力されており、大学・学園が入力されちなない場合の検索条件の生成
+	//名・姓が入力されており、大学・学園が入力されていない場合の検索条件の生成
 	if ($first_name && !$last_name && !$college && !$grade && $count 
 		|| !$first_name && $last_name && !$college && !$grade && $count
 		|| $first_name && $last_name && !$college && !$grade && $count ) {
@@ -129,13 +129,14 @@ if (!$count) {
 			WHERE (UR.USER_FIRST_NAME = '$first_name' OR UR.USER_LAST_NAME = '$last_name')  
 			OR $interest");	
     }
-    if (!$result) {
-    	die('クエリーが失敗しました。'.mysql_error());
+    if (!$close_flag) {
+    	die('切断に失敗しました。'.mysql_error());
     }
+    //print('<p>切断に成功しました。</p>');
 }
 
 //抽出結果に表示番号を割り振る
-$num = 1;
+$diaplay_num = 1;
 
 //mysql_num_rows() - クエリの実行結果から行の数を取得する
 $rows = mysql_num_rows($result);
@@ -146,7 +147,7 @@ if ($rows) {
 		$send = $row['USER_ID'];
 		$name = $row['USER_LAST_NAME'].$row['USER_FIRST_NAME'];
 		$temp = $temp."<tr>";
-		$temp = $temp."<td>&nbsp;&nbsp;".$num++."</td>";
+		$temp = $temp."<td>&nbsp;&nbsp;".$dispaly_num++."</td>";
 		$temp = $temp."<td>&nbsp;&nbsp;<a href=personalpage.php?user_id=$send>".$name."</a></td>";
 		$temp = $temp."<td>&nbsp;&nbsp;".$row['PROFILE']."</td>";
 		$temp = $temp."</tr>";
@@ -159,9 +160,10 @@ if ($rows) {
 //mysql_close() - MySQLサーバへの接続をクローズにする
 $close_flag = mysql_close($link);
 
-if ($close_flag){
-    //print('<p>切断に成功しました。</p>');
+if (!$close_flag) {
+    die('切断に失敗しました。'.mysql_error());
 }
+//print('<p>切断に成功しました。</p>');
 ?>
 
 

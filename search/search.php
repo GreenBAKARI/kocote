@@ -82,7 +82,7 @@
 　　　<input type = "checkbox" name = "tag16" value = "16"> 旅行 　　　　</p>
 <br>
 
-<input type = "submit" name = "exec1" value = "検索">
+<input type = "submit" name = "user_exec" value = "検索">
 <br><br><br>
 
 <hr size = "1" color = "#87ceeb" width = "20%">
@@ -110,7 +110,7 @@
 <option value = "5">就活/キャリア</option>
 </select><br><br><br>
 
-<input type = "submit" name = "exec2" value = "検索">
+<input type = "submit" name = "ev_exec" value = "検索">
 <br><br><br>
 
 <hr size = "1" color = "#87ceeb" width = "20%">
@@ -138,7 +138,7 @@
 <option value = "5">就活/キャリア</option>
 </select><br><br><br>
 
-<input type = "submit" name = "exec3" value = "検索">
+<input type = "submit" name = "bb_exec" value = "検索">
 <br><br><br>
 
 <hr size = "1" color = "#87ceeb" width = "20%">
