@@ -61,15 +61,39 @@ mysql_set_charset('utf8');
 $keyword = $_POST['bb_keyword'];   //キーワード
 $category = $_POST['bb_category']; //分類
 
+//分類の変換
+switch ($category) {
+    case 1:
+        $category = 'グルメ/フェスティバル';
+        break;
+    case 2:
+        $category = '芸術/エンタメ';
+        break;
+    case 3:
+        $category = '交流/スポーツ';
+        break;
+    case 4:
+        $category = '地域復興/福祉';
+        break;
+    case 5:
+        $category = '就活/キャリア';
+        break;
+    case 6:
+        $category = 'その他';
+        break;
+    default:
+        break;
+}
+
 //キーワード・分類が入力されていない場合、またはキーワードが入力されておらず、分類が入力されている場合の検索条件の生成
 if (!$keyword && !$category || !$keyword && $category) {
     //mysql_query() - MySQLデータベースへクエリを発行する
     $result = mysql_query("SELECT BB_ID, BB_NAME, LAST_POSTED_DATE, COMMENT_COUNT FROM BB 
-        WHERE BB_NAME LIKE '%$keyword%' AND CATEGORY = $category");
+        WHERE BB_NAME LIKE '%$keyword%' AND CATEGORY = '$category'");
 //キーワード・分類が入力されている場合、またはキーワードが入力されており、分類が入力されていない場合の検索条件の生成
 } else {
     $result = mysql_query("SELECT BB_ID, BB_NAME, LAST_POSTED_DATE, COMMENT_COUNT FROM BB 
-        WHERE BB_NAME LIKE '%$keyword%' OR CATEGORY = $category");
+        WHERE BB_NAME LIKE '%$keyword%' OR CATEGORY = '=$category'");
 }
 
 if (!$result) {
@@ -125,6 +149,7 @@ if (!$close_flag) {
 
 <hr class="top">
 <hr class="bottom">
+
 <br><br>
 
 </body>
