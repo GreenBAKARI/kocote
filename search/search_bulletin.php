@@ -4,40 +4,37 @@
 <title>掲示板検索</title>
 </head>
 <center>
-<link rel="stylesheet" href="style.css"　type="text/css">
+<link rel="stylesheet" href="../css/style.css"　type="text/css">
+<link rel="stylesheet" href="../css/se_style.css"　type="text/css">
 <body topmargin = "100" bottommargin = "100">
-
-<div style = "background-image: url(img/search_src.jpg);
--moz-background-size:100% 100%;
-background-size:100% 100%;">
 
 <div id = "headerArea"></div>
 <div id = "footerArea"></div>
 <br>
 
 <div id = "box">
-<a href = "http://localhost/event.php">
-<img src = "img/ev_home.jpg" height = "7%" width = "16%"></a>
-<a href = "http://localhost/bulletin.php">
-<img src = "img/bb_home.jpg" height = "7%" width = "16%"></a>
-<a href = "http://localhost/search.php">
-<img src = "img/se_home.jpg" height = "7%" width = "16%"></a>
-<a href = "http://localhost/dm.php">
-<img src = "img/dm_home.jpg" height = "7%" width = "16%"></a>
-<a href = "http://localhost/mypage.php">
-<img src = "img/mp_home.jpg" height = "7%" width = "16%"></a>
+<a href = "../event/event.php">
+<img src = "../img/ev_home.jpg" height = "13%" width = "16%"></a>
+<a href = "../bulletin/bulletin.php">
+<img src = "../img/bb_home.jpg" height = "13%" width = "16%"></a>
+<a href = "../search/search.php">
+<img src = "../img/se_home.jpg" height = "13%" width = "16%"></a>
+<a href = "../dm/dm.php">
+<img src = "../img/dm_home.jpg" height = "13%" width = "16%"></a>
+<a href = "../mypage/mypage.php">
+<img src = "../img/mp_home.jpg" height = "13%" width = "16%"></a>
 </div><br><br><br>
 
-<hr size = "1" color = "#87ceeb" width = "20%">
-<hr size = "2" color = "#b0e0e6" width =" 40%">
+<hr class="top">
+<hr class="bottom">
 <br>
 
 
 
 <?php
 $url = 'localhost';  //ローカル環境へのURL
-$user = 'masaki';    //MySQLサーバの利用者ID
-$pass = '1234';      //MySQLのパスワード
+$user = 'root';    //MySQLサーバの利用者ID
+$pass = 'root';      //MySQLのパスワード
 $db = 'greenbakari'; //MySQLのデータベース名
 
 //mysql_close() - MySQLサーバへの接続をオープンにする
@@ -92,15 +89,15 @@ if ($rows) {
         $send = $row['BB_ID'];
         $date = $row['LAST_POSTED_DATE'];
 		$temp = $temp."<tr>";
-        $temp = $temp."<td>&nbsp;&nbsp;".$dispaly_num++."</td>";
-        $temp = $temp."<td>&nbsp;&nbsp;<a href=bulletin_datail.php?bb_id=$send>".$row['BB_NAME']."</a></td>";
-        $temp = $temp."<td>&nbsp;&nbsp;".substr($date, 0, 4)."年".substr($date, 5, 2)."月".substr($date, 8, 2)."日"."</td>";
-        $temp = $temp."<td>&nbsp;&nbsp;".$row['COMMENT_COUNT']."</td>";
+        $temp = $temp."<td class=b_num_main>".$display_num++."</td>";
+        $temp = $temp."<td class=b_title_main><a href=../bulletin/bulletin_datail.php?bb_id=$send>".$row['BB_NAME']."</a></td>";
+        $temp = $temp."<td class=b_date_main>".substr($date, 0, 4)."年".substr($date, 5, 2)."月".substr($date, 8, 2)."日"."</td>";
+        $temp = $temp."<td class=b_comment_main>".$row['COMMENT_COUNT']."</td>";
         $temp = $temp."</tr>";
     }
     $msg = "<p><h3>検索結果： 該当する掲示板が".$rows."件表示されました。</h3></p><br>";
 } else {
-	$msg = "<p><h3>検索結果： 該当する掲示板は存在しません。</h3></p>";
+    $msg = "<p><h3>検索結果： 該当する掲示板は存在しません。</h3></p>";
 }
 
 //mysql_close() - MySQLサーバへの接続をクローズにする
@@ -115,17 +112,19 @@ if (!$close_flag) {
 
 
 <?= $msg ?>
-<table border = "1" cellpadding="5">
-<tr bgcolor = "#87ceeb">
-<td width = 90>&nbsp;&nbsp;表示番号</td>
-<td width = 200>&nbsp;&nbsp;掲示板タイトル</td>
-<td width = 200>&nbsp;&nbsp;最終投稿日時</td>
-<td width = 110>&nbsp;&nbsp;コメント数</td>
+<table class="result">
+<tr class="title">
+<td class="b_num">番号</td>
+<td class="b_title">掲示板タイトル</td>
+<td class="b_date">最終投稿日時</td>
+<td class="b_comment">コメント数</td>
 <?= $temp ?>
-</table><br><br><br>
+</table>
 
-<hr size = "1" color = "#87ceeb" width = "20%">
-<hr size = "2" color = "#b0e0e6" width =" 40%">
+<br><br><br>
+
+<hr class="top">
+<hr class="bottom">
 <br><br>
 
 </body>

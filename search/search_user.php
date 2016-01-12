@@ -4,40 +4,39 @@
 <title>利用者検索</title>
 </head>
 <center>
-<link rel="stylesheet" href="style.css"　type="text/css">
+<link rel="stylesheet" href="../css/style.css"　type="text/css">
+<link rel="stylesheet" href="../css/se_style.css"　type="text/css">
 <body topmargin = "100" bottommargin = "100">
-
-<div style = "background-image: url(img/search_src.jpg);
--moz-background-size:100% 100%;
-background-size:100% 100%;">
 
 <div id = "headerArea"></div>
 <div id = "footerArea"></div>
 <br><br><br>
 
 <div id = "box">
-<a href = "http://localhost/event.php">
-<img src = "img/ev_home.jpg" height = "7%" width = "16%"></a>
-<a href = "http://localhost/bulletin.php">
-<img src = "img/bb_home.jpg" height = "7%" width = "16%"></a>
-<a href = "http://localhost/search.php">
-<img src = "img/se_home.jpg" height = "7%" width = "16%"></a>
-<a href = "http://localhost/dm.php">
-<img src = "img/dm_home.jpg" height = "7%" width = "16%"></a>
-<a href = "http://localhost/mypage.php">
-<img src = "img/mp_home.jpg" height = "7%" width = "16%"></a>
+<a href = "../event/event.php">
+<img src = "../img/ev_home.jpg" height = "13%" width = "16%"></a>
+<a href = "../bulletin/bulletin.php">
+<img src = "../img/bb_home.jpg" height = "13%" width = "16%"></a>
+<a href = "../search/search.php">
+<img src = "../img/se_home.jpg" height = "13%" width = "16%"></a>
+<a href = "../dm/dm.php">
+<img src = "../img/dm_home.jpg" height = "13%" width = "16%"></a>
+<a href = "../mypage/mypage.php">
+<img src = "../img/mp_home.jpg" height = "13%" width = "16%"></a>
 </div><br><br><br>
 
-<hr size = "1" color = "#87ceeb" width = "20%">
-<hr size = "2" color = "#b0e0e6" width =" 40%">
+<hr class="top">
+<hr class="bottom">
 <br>
 
 
 
 <?php
+$user_id = 1;
+
 $url = 'localhost';  //ローカル環境へのURL
-$user = 'masaki';    //MySQLサーバの利用者ID
-$pass = '1234';      //MySQLのパスワード
+$user = 'root';    //MySQLサーバの利用者ID
+$pass = 'root';      //MySQLのパスワード
 $db = 'greenbakari'; //MySQLのデータベース名
 
 //mysql_close() - MySQLサーバへの接続をオープンにする
@@ -84,6 +83,7 @@ $tag13 = $_POST['tag13'];           //ファッション
 $tag14 = $_POST['tag14'];           //漫画
 $tag15 = $_POST['tag15'];           //料理
 $tag16 = $_POST['tag16'];           //旅行
+
 //文字列(タグ)の連結
 $tag = $tag1.$tag2.$tag3.$tag4.$tag5.$tag6.$tag7.$tag8.$tag9.$tag10.$tag11.$tag12.$tag13.$tag14.$tag15.$tag16;
 
@@ -108,16 +108,17 @@ if (!$count) {
 	}
 //タグが選択されている場合の検索条件の生成と文字列分解
 } else {
-	for ($i = 0; $i < $count; $i++) {
-		$interest = $interest."UA.INTEREST LIKE '%".$tag[$i]."%'";
-		if ($i != $count - 1) {
-			$interest = $interest." OR ";
-		}
-		$result = mysql_query("SELECT UR.USER_ID, UR.USER_FIRST_NAME, UR.USER_LAST_NAME, UA.PROFILE 
+        for ($i = 1; $i <= $count; $i++) {
+            $interest = $interest."MID(UA.INTEREST, ".$tag[$i-1].", 1) = 't'"; 
+            if ($i != $count) {
+                $interest = $interest." OR ";
+            }
+        }
+        
+        $result = mysql_query("SELECT UR.USER_ID, UR.USER_FIRST_NAME, UR.USER_LAST_NAME, UA.PROFILE 
 			FROM UR LEFT JOIN UA ON (UR.USER_ID = UA.USER_ID) 
 			WHERE (UR.USER_FIRST_NAME = '$first_name' OR UR.USER_LAST_NAME = '$last_name')  
 			AND (UR.COLLEGE_NAME = $college OR UR.GRADE = $grade) OR $interest");
-	}
 	//名が入力されており、姓・大学・学年が入力されていない場合と
 	//姓が入力されており、名・大学・学年が入力されていない場合と
 	//名・姓が入力されており、大学・学園が入力されていない場合の検索条件の生成
@@ -129,14 +130,10 @@ if (!$count) {
 			WHERE (UR.USER_FIRST_NAME = '$first_name' OR UR.USER_LAST_NAME = '$last_name')  
 			OR $interest");	
     }
-    if (!$close_flag) {
-    	die('切断に失敗しました。'.mysql_error());
-    }
-    //print('<p>切断に成功しました。</p>');
 }
 
 //抽出結果に表示番号を割り振る
-$diaplay_num = 1;
+$display_num = 1;
 
 //mysql_num_rows() - クエリの実行結果から行の数を取得する
 $rows = mysql_num_rows($result);
@@ -147,9 +144,14 @@ if ($rows) {
 		$send = $row['USER_ID'];
 		$name = $row['USER_LAST_NAME'].$row['USER_FIRST_NAME'];
 		$temp = $temp."<tr>";
-		$temp = $temp."<td>&nbsp;&nbsp;".$dispaly_num++."</td>";
-		$temp = $temp."<td>&nbsp;&nbsp;<a href=personalpage.php?user_id=$send>".$name."</a></td>";
-		$temp = $temp."<td>&nbsp;&nbsp;".$row['PROFILE']."</td>";
+		$temp = $temp."<td class=u_num_main>".$display_num++."</td>";
+                //ログイン中のユーザが表示される場合はmypage.phpへのリンクを生成
+                if ($send == $user_id) {
+                    $temp = $temp."<td class=u_name_main><a href=../mypage/mypage.php>".$name."</a></td>";
+                } else {
+                    $temp = $temp."<td class=u_name_main><a href=../mypage/personalpage.php?user_id=$send>".$name."</a></td>";
+                }
+		$temp = $temp."<td class=u_prof_main>".mb_wordwrap($row['PROFILE'], 45, "<br>\n", true)."</td>";
 		$temp = $temp."</tr>";
 	}
 	$msg = "<p><h3>検索結果： 該当する利用者が".$rows."名表示されました。</h3></p><br>";
@@ -166,19 +168,43 @@ if (!$close_flag) {
 //print('<p>切断に成功しました。</p>');
 ?>
 
-
+<!-- マルチバイト対応のwordwrap -->
+<?php
+function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
+    if (!$cut) {
+        $regexp = '#^(?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){'.$width.',}\b#U';
+    } else {
+        $regexp = '#^(?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){'.$width.'}#';
+    }
+    $string_length = mb_strlen($string,'UTF-8');
+    $cut_length = ceil($string_length / $width);
+    $i = 1;
+    $return = '';
+    while ($i < $cut_length) {
+        preg_match($regexp, $string, $matches);
+        $new_string = $matches[0];
+        $return .= $new_string.$break;
+        $string = substr($string, strlen($new_string));
+        $i++;
+    }
+    return $return.$string;
+}
+?>
 
 <?= $msg ?>
-<table border = "1" cellpadding="5">
-<tr bgcolor = "#87ceeb">
-<td width = 90>&nbsp;&nbsp;表示番号</td>
-<td width = 120>&nbsp;&nbsp;利用者名</td>
-<td width = 600>&nbsp;&nbsp;プロフィール</td>
+<table class="result">
+<tr class="title">
+<td class="u_num">番号</td>
+<td class="u_name">利用者名</td>
+<td class="u_prof">プロフィール</td>
+</tr>
 <?= $temp ?>
-</table><br><br><br>
+</table>
 
-<hr size = "1" color = "#87ceeb" width = "20%">
-<hr size = "2" color = "#b0e0e6" width =" 40%">
+<br><br><br>
+
+<hr class="top">
+<hr class="bottom">
 <br><br></form>
 
 </body>
