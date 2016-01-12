@@ -225,6 +225,7 @@
 <option value = "3">交流/スポーツ</option>
 <option value = "4">地域復興/福祉</option>
 <option value = "5">就活/キャリア</option>
+<option value = "6">その他</option>
 </select>
 </td>
 </tr>
