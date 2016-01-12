@@ -1,0 +1,180 @@
+/*検索画面*/
+p.nolinebreak {
+    display: inline;
+}
+
+table.user1 {
+    border-spacing: 20px;
+}
+
+table.user1 td.title {
+    vertical-align: top;
+    text-align: right;  
+    
+}
+
+table.user1 td.content {
+    vertical-align: top;
+    text-align: left;
+}
+
+table.user2 {
+    border-spacing: 15px;
+}
+
+table.event {
+    border-spacing: 20px;
+}
+
+table.event td.title {
+    vertical-align: top;
+    text-align: right;
+}
+
+table.bulletin {
+    border-spacing: 20px;
+}
+
+table.bulletin td.title {
+    vertical-align: top;
+    text-align: right;
+}
+
+hr.top {
+    border: 1px #87ceeb solid;
+    width: 20%
+}
+
+hr.bottom {
+    border: 2px #b0e0e6 solid;
+    width: 40%
+}
+
+/*検索結果画面共通*/
+table.result {
+    border: 1px #808080 solid;
+}
+
+table.result tr td {
+    border: 1px #808080 solid;
+    padding: 8px 0px;
+}
+
+table.result tr.title {
+    background-color: #87ceeb;
+}
+
+/*利用者検索結果画面*/
+table.result td.u_num {
+    width: 60px;
+    text-align: center;
+}
+
+table.result td.u_num_main {
+    text-align: center;
+    background-color: #ffffff;
+}
+
+table.result td.u_name {
+    width: 150px;
+    text-align: center;
+}
+
+table.result td.u_name_main {
+    text-align: center;
+    background-color: #ffffff;
+}
+
+table.result td.u_prof {
+    width: 600px;
+    text-align: center;
+}
+
+table.result td.u_prof_main {
+    background-color: #ffffff;
+    padding: 0px 20px;
+}
+
+/*イベント検索結果画面*/
+table.result td.e_num {
+    width: 60px;
+    text-align: center;
+}
+
+table.result td.e_num_main {
+    text-align: center;
+    background-color: #ffffff;
+}
+
+table.result td.e_title {
+    width: 220px;
+    text-align: center;
+}
+
+table.result td.e_title_main {
+    text-align: center;
+    background-color: #ffffff;
+}
+
+table.result td.e_date {
+    width: 160px;
+    text-align: center;
+}
+
+table.result td.e_date_main {
+    background-color: #ffffff;
+    text-align: center;
+}
+
+table.result td.e_detail {
+    width: 570px;
+    text-align: center;
+}
+
+table.result td.e_detail_main {
+    background-color: #ffffff;
+    padding: 0px 20px;
+}
+
+/*掲示板検索結果画面*/
+table.result td.b_num {
+    width: 60px;
+    text-align: center;
+}
+
+table.result td.b_num_main {
+    text-align: center;
+    background-color: #ffffff;
+}
+
+table.result td.b_title {
+    width: 250px;
+    text-align: center;
+}
+
+table.result td.b_title_main {
+    text-align: center;
+    background-color: #ffffff;
+}
+
+table.result td.b_date {
+    width: 200px;
+    text-align: center;
+}
+
+table.result td.b_date_main {
+    background-color: #ffffff;
+    text-align: center;
+}
+
+table.result td.b_comment {
+    width: 110px;
+    text-align: center;
+}
+
+table.result td.b_comment_main {
+    background-color: #ffffff;
+    text-align: center;
+}
+
+

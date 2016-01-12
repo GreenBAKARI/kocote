@@ -1,0 +1,68 @@
+div#blocka {
+    float: left;
+    width: 500px;
+    background: white;
+    /*margin-top: 20px;*/
+    margin-left: 160px;/*130px;*/
+    margin-bottom: 200px;
+    padding-left: 60px;
+    padding-top: 50px;
+    padding-bottom: 20px;
+    border: solid;
+    border-color: #e9bd42;
+}
+div#blockb {
+    float: right;
+    width: 300px;
+    margin-top: -90px;
+    margin-right: 100px;
+}
+
+p.event-size {
+    padding-left: 170px;/*140px;*/
+}
+
+a.event-title {
+    line-height: 25px;
+}
+
+img.event-image {
+    float: left;
+    margin-right: 20px;
+}
+
+div#clear {
+    clear: both;
+}
+
+table.event-table {
+    margin-left: auto;
+    margin-right: auto;
+    border-spacing: 6px;
+}
+
+table.event-table td.title {
+    vertical-align: top;
+    text-align: right;  
+    
+}
+
+table.event-table td.content {
+    vertical-align: top;
+    text-align: left;
+}
+
+hr {
+    width: 60%;
+    box-shadow: 1px;
+}
+
+img.user-image {
+    margin-right: 5px;
+}
+
+img.button {
+    width: 20%;
+    margin-right: 10px;
+    margin-bottom: 20px;
+}
