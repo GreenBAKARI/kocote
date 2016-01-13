@@ -81,11 +81,13 @@ mysql_set_charset('utf8');
 //_POST[] - HTTP POSTメソッドからイベント検索に渡された変数の連想配列を定義する
 $keyword = $_POST['ev_keyword'];   //キーワード
 $category = $_POST['ev_category']; //分類
+$year = $_POST['select_year'];
 $month = $_POST['select_month'];   //開始月
 $day = $_POST['select_date'];      //開始日
 
 //イベント詳細ページから検索がかかったときは、GETで受け取る
-if (isset($_GET['month']) && isset($_GET['day'])) {
+if (isset($_GET['year']) && isset($_GET['month']) && isset($_GET['day'])) {
+    $year = $_GET['year'];
     $month = $_GET['month'];
     $day = $_GET['day'];
 }
@@ -95,8 +97,11 @@ if (isset($_GET['category'])) {
 }
 
 //月が1桁の場合は、先頭に0を追加
+//月が空の場合は、00を代入
 if (mb_strlen($month) == 1) {
     $month = '0'.$month;
+} else if (mb_strlen($month) == 0) {
+    $month = '00';
 }
 
 //日が1桁の場合は、先頭に0を追加
@@ -108,13 +113,13 @@ if (mb_strlen($day) == 1) {
 }
 
 //日付のみが選択されている場合
-if ($month != '00' && $day != '00' && !$keyword && !$category) {
+if ($year != '0' && $month != '00' && $day != '00' && !$keyword && !$category) {
     $result = mysql_query("SELECT EVENT_ID, EVENT_TITLE, EVENT_START, EVENT_DETAIL FROM EV 
-        WHERE EVENT_START > NOW() AND MID(EVENT_START, 6, 2) = $month AND MID(EVENT_START, 9, 2) = $day ORDER BY EVENT_START");
+        WHERE EVENT_START > NOW() AND MID(EVENT_START, 1, 4) = $year AND MID(EVENT_START, 6, 2) = $month AND MID(EVENT_START, 9, 2) = $day ORDER BY EVENT_START");
 //日付とキーワードまたは分類が選択されている場合
-} else if ($month != '00' && $day != '00' && ($keyword || $category)) {
+} else if ($year != '0' && $month != '00' && $day != '00' && ($keyword || $category)) {
     $result = mysql_query("SELECT EVENT_ID, EVENT_TITLE, EVENT_START, EVENT_DETAIL FROM EV 
-        WHERE EVENT_START > NOW() AND MID(EVENT_START, 6, 2) = $month AND MID(EVENT_START, 9, 2) = $day "
+        WHERE EVENT_START > NOW() AND MID(EVENT_START, 1, 4) = $year AND MID(EVENT_START, 6, 2) = $month AND MID(EVENT_START, 9, 2) = $day "
             . "AND (CATEGORY = $category OR EVENT_TITLE LIKE '%$keyword%')"
             . " ORDER BY EVENT_START ");
 //分類で全てが選択された場合

@@ -140,8 +140,9 @@
 <tr>
 <td class="title">開催日：</td>
 <td class="content">
-<select name = "select_month" onchange="set_select_date()"></select> 月
-<select name = "select_date"></select> 日
+<select name="select_year" onchange="set_select_month()"></select> 年
+<select name="select_month" onchange="set_select_date()"></select> 月
+<select name="select_date"></select> 日
 </td>
 </tr>
 </table>
@@ -158,44 +159,91 @@
 
 <script type="text/javascript">
     var now = new Date();
+    var now_year = now.getFullYear();
     var now_month = now.getMonth() + 1;
     var now_date = now.getDate();
-
+    
+    function uruu(Year) {
+        var uruu = 
+            (Year % 400 == 0) ? true :
+            (Year % 100 == 0) ? false :
+            (Year % 4 == 0) ? true : false;
+        return uruu;
+    }
+    
+    function set_select_year() {
+        var select = document.formDate.select_year;
+        var option = select.appendChild(document.createElement('option'));
+        option.value = 0;
+        option.text = '----';
+        for (var y = now_year; y < now_year + 5; y++) {
+            var select = document.formDate.select_year;
+            var option = select.appendChild(document.createElement('option'));
+            option.value = y;
+            option.text = y;
+            option.selected = (y == 0) ? 'selected' : false;
+        }
+        set_select_month();
+    }
+    set_select_year();
+  
     function set_select_month() {
+        var Year =
+            document.formDate.select_year.options[
+            document.formDate.select_year.selectedIndex
+            ].value;
         var select = document.formDate.select_month;
-        while(select.options.length){
+        while (select.options.length){
             select.removeChild(select.options[0]);
         }
-        for(var m = 0; m <= 12; m++){
+        if (Year != 0) {
+            for (var m = 1; m <= 12; m++){
+                var option = select.appendChild(document.createElement('option'));
+                option.value = m;
+                option.text = m;
+                option.selected =
+                    (Year == now_year) ?
+                    ((m == now_month) ? 'selected' : false ) :
+                    ((m == 0) ? 'selected' : false );
+            }
+        } else {
             var option = select.appendChild(document.createElement('option'));
-            option.value = m;
-            if (m == 0) option.text = '----';
-            else option.text = m;
-            option.selected = (m == 0) ? 'selected' : false;
+            option.value = 0;
+            option.text = '';
         }
         set_select_date();
     }
-    set_select_month();
 
-    function set_select_date(){
+    function set_select_date() {
+        var Year =
+            document.formDate.select_year.options[
+            document.formDate.select_year.selectedIndex
+            ].value;
         var Month =
             document.formDate.select_month.options[
             document.formDate.select_month.selectedIndex
             ].value;
         var days =
-            [31,28,31,30,31,30,31,31,30,31,30,31];
+            [31,(uruu(Year)?29:28),31,30,31,30,31,31,30,31,30,31];
         var select = document.formDate.select_date;
         while(select.options.length) {
             select.removeChild(select.options[0]);
         }
-        for(var d = 1; d <= days[Month - 1]; d++) {
-            var option = select.appendChild( document.createElement('option') );
+        
+        if (Month != 0) {        
+            for (var d = 1; d <= days[Month - 1]; d++) {
+            var option = select.appendChild(document.createElement('option'));
             option.value = d;
             option.text = d;
             option.select =
-                (Month == now_month) ?
+                (Year == now_year && Month == now_month) ?
                 ((d == now_date) ? 'selected' : false ) : 
                 ((d == 1) ? 'selected' : false ); 
+            }
+        } else {
+            var option = select.appendChild(document.createElement('option'));
+            option.value = 0;
+            option.text = '';
         }
     }
 </script>
