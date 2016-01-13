@@ -1,3 +1,4 @@
+<!-- ユーザIDのコメントアウト外す必要アリ-->
 <html>
 <head>
 <meta charset="UTF-8">
@@ -21,7 +22,7 @@ $db = "test_bulletin";
 
 //ユーザ情報
   $user_id = 165848;
-  //$user_id = $_POST['cokkieか何かからとってくるid']
+  //$user_id = $_COOKIE["user_id"];
 
 //table情報
   $comment_count = 0;
