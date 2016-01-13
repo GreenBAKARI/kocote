@@ -86,7 +86,7 @@
     //イベント詳細情報を文字ごとに改行
     $host_comment = mb_wordwrap($host_comment, 25, "<br>\n", true);
     $event_detail = mb_wordwrap($event_detail, 25, "<br>\n", true);
-    
+    //$event_detail = nl2br($event_detail);
         
     //データベース切断
     mysql_close($link);

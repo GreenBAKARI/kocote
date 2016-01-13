@@ -232,7 +232,7 @@ EOT;
         if ($today == $_SESSION["year"].$_SESSION["month"].$d) {
             $td = "bkgd_today";
         }
-        echo '<td class="date_block '.$td.'"><div class="'.$td_txt.'">'.'<a href=../search/search_event.php?month='.$m.'&day='.$d.'>',$d.'</a>'.'</div>'.'</br>'.'<div class="count">'.'('.$event_count.')'.'</div>';
+        echo '<td class="date_block '.$td.'"><div class="'.$td_txt.'">'.'<a href=../search/search_event.php?year='.$y.'&month='.$m.'&day='.$d.'>',$d.'</a>'.'</div>'.'</br>'.'<div class="count">'.'('.$event_count.')'.'</div>';
         echo '</td>';
         $thismonth++;
         $d++;
