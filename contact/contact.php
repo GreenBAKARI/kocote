@@ -7,12 +7,14 @@
     if (!$link) {
         die('接続失敗です。' .mysql_error());
           }
-      //  データベーすの名前
+  //  データベースの名前
   $db_selected = mysql_select_db('greenbakari', $link);
     if (!$db_selected) {
         die('データベース選択失敗です。'.mysql_error());
           }
   mysql_set_charset('utf8');
+  date_default_timezone_set('Asia/Tokyo');
+  //関数定義
   $user_id=0;
   $category="-";
   $contact_content="";
@@ -20,7 +22,6 @@
   $flg=true;
   $sql="";
   $message="";
-  date_default_timezone_set('Asia/Tokyo');
   $transfer_date=date("Y-m-d");
 
   $user_id=$_SESSION["user_id"];
@@ -71,11 +72,11 @@
 <label for="category" style="margin-left:-11%">問い合わせ内容*：</label>
 <select name="category">
 <option value="-">------------------------------</option>
-<option value="グルメ/フェスティバル">グルメ/フェスティバル</option>
-<option value="芸術/エンタメ">芸術/エンタメ</option>
-<option value="交流/スポーツ">交流/スポーツ</option>
-<option value="地域復興/福祉">地域復興/福祉</option>
-<option value="就活/キャリア">就活/キャリア</option>
+<option value="掲示板の削除">掲示板の削除</option>
+<option value="不快なユーザ">不快なユーザ</option>
+<option value="不適切な発言">不適切な発言</option>
+<option value="利用停止について">利用停止について</option>
+<option value="その他">その他</option>
 </select><br><br><br>
 
 <label for="comment" align="left" style="margin-left:-2%">作成者コメント*：</label>

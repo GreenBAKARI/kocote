@@ -9,14 +9,15 @@ session_start();
         if (!$db_selected) {
            die('データベース選択失敗です。'.mysql_error());
          }
-      $session_id=0;
       mysql_set_charset('utf8');
+      //関数定義
+      $session_id=0;
       $user_id=0;
       $user_last_name="";
       $user_first_name="";
       $user_last_roma="";
       $user_first_roma="";
-      $SEX="";
+      $sex="";
       $college_name="";
       $grade=0;
       $mail_address="";
