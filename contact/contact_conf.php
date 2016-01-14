@@ -13,6 +13,7 @@
         die('データベース選択失敗です。'.mysql_error());
           }
   mysql_set_charset('utf8');
+  //関数定義
   $user_id=0;
   $category="";
   $contact_content="";
@@ -20,17 +21,22 @@
   $flg=true;
   $sql="";
   $user_id=$_SESSION["user_id"];
-  $sql="SELECT CATEGORY FROM cf WHERE USER_ID = '$user_id'";
+  $sql="SELECT CATEGORY FROM CF WHERE USER_ID = '$user_id'";
   $result = mysql_query($sql, $link);
-  $sql1="SELECT CONTACT_CONTENT FROM cf WHERE USER_ID = '$user_id'";
+  $sql1="SELECT CONTACT_CONTENT FROM CF WHERE USER_ID = '$user_id'";
   $result1 = mysql_query($sql1, $link);
-
+  if(strpos($_SERVER['HTTP_REFERER'],'contact.php')===false)
+  {
+    echo "不正なアクセスです。";
+  }
+else{
 while ($data = mysql_fetch_array($result)) {
    $category=$data['CATEGORY'];
 }
 
 while ($data1 = mysql_fetch_array($result1)) {
    $contact_content=$data1['CONTACT_CONTENT'];
+}
 }
 ?>
 
