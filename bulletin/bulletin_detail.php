@@ -124,10 +124,16 @@ $st = $pdo->query("SELECT comment_num, bb_id, user_last_name, user_first_name, p
     $posted_content = nl2br($posted_content);
     $posted_content = autoLinker($posted_content);
 
+    if($user_id == 165848){
+      $url = "http://localhost/kocote/mypage.php";
+    }else{
+    $url = "http://localhost/kocote/parsonalpage.php?user_id=$user_id";
+    }
+
   //詳細表示
     echo "
     <tr>
-    <td class=\"top_cell\">$comment_num:&nbsp;$last_name $first_name&nbsp;&nbsp; $posted_date &nbsp;&nbsp; ID:$user_id</td>
+    <td class=\"top_cell\">$comment_num:&nbsp;<a href=\"$url\">$last_name $first_name</a>&nbsp;&nbsp; $posted_date &nbsp;&nbsp; ID:$user_id</td>
     </tr>
     <tr>
     <td class=\"middle_cell\">$posted_content</td>
