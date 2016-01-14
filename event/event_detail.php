@@ -1,7 +1,9 @@
 <?php
+    //イベントIDの取得
+    //引数が空のときは自動的にevent.phpに遷移
     $event_id = $_GET['event_id'];
     if (empty($event_id)) {
-        header("LOCATION: ./event.php");
+        header("LOCATION: ../event/event.php");
     }
     
     //ログイン中の利用者の取得
@@ -33,7 +35,7 @@
     $sql3 = "SELECT COUNT(*) AS COUNT FROM FEV WHERE EVENT_ID = $event_id AND USER_ID = $user_id";
     
     //イベント参加者の名前を取得
-    $sql4 = "SELECT UR.USER_ID, USER_LAST_NAME, USER_FIRST_NAME FROM UR,PEV WHERE UR.USER_ID = PEV.USER_ID AND PEV.EVENT_ID = $event_id ORDER BY PEV.USER_ID";
+    $sql4 = "SELECT UR.USER_ID, USER_LAST_NAME, USER_FIRST_NAME FROM UR, PEV WHERE UR.USER_ID = PEV.USER_ID AND PEV.EVENT_ID = $event_id ORDER BY PEV.USER_ID";
     
     //イベント主催者の取得
     $sql5 = "SELECT UR.USER_ID, UR.USER_LAST_NAME, UR.USER_FIRST_NAME FROM UR, EV WHERE UR.USER_ID = EV.USER_ID AND EV.EVENT_ID = $event_id";
@@ -80,10 +82,44 @@
             $organizer_last_name = $row5['USER_LAST_NAME'];
             $organizer_first_name = $row5['USER_FIRST_NAME'];
     }
+    
+    //イベント詳細情報を文字ごとに改行
+    $host_comment = mb_wordwrap($host_comment, 25, "<br>\n", true);
+    $event_detail = mb_wordwrap($event_detail, 25, "<br>\n", true);
+    //$event_detail = nl2br($event_detail);
         
     //データベース切断
     mysql_close($link);
 
+?>
+
+<!-- マルチバイト対応のwordwrap -->
+<?php
+function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
+    if (!$cut) {
+        $regexp = '#^(?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){'.$width.',}\b#U';
+    } else {
+        $regexp = '#^(?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){'.$width.'}#';
+    }
+    $string_length = mb_strlen($string,'UTF-8');
+    $cut_length = ceil($string_length / $width);
+    $i = 1;
+    $return = '';
+    while ($i < $cut_length) {
+        preg_match($regexp, $string, $matches);
+        $new_string = $matches[0];
+        $return .= $new_string.$break;
+        $string = substr($string, strlen($new_string));
+        $i++;
+    }
+    return $return.$string;
+}
+?>
+
+<!-- 現在時刻の取得 -->
+<?php
+    $dt = new DateTime();
+    $current_time = $dt->format('Y-m-d H:i:s');
 ?>
 
 <html>
@@ -91,7 +127,8 @@
 <meta charset="UTF-8">
 <title>高知県大学生用交流サイト「KoCo + Te」</title>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
-<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="stylesheet" href="../css/style.css" type="text/css">
+<link rel="stylesheet" href="../css/ev_style.css" type="text/css">
 </head>
 <center>
 
@@ -104,11 +141,11 @@
 
 <!-- 機能選択ボタン -->
 <div id = "box">
-  <a href="http://localhost/php/v0/event.php"><img src="img/ev_home.jpg" height="13%" width="16%"></a>
-  <a href="http://localhost/php/v0/bulletin.php"><img src="img/bb_home.jpg" height="13%" width="16%"></a>
-  <a href="http://localhost/php/v0/search.php"><img src="img/se_home.jpg" height="13%" width="16%"></a>
-  <a href="http://localhost/php/v0/dm.php"><img src="img/dm_home.jpg" height="13%" width="16%"></a>
-  <a href="http://localhost/php/v0/mypage.php"><img src="img/mp_home.jpg" height="13%" width="16%"></a></div>
+  <a href="../event/event.php"><img src="../img/ev_home.jpg" height="13%" width="16%"></a>
+  <a href="../bulletin/bulletin.php"><img src="../img/bb_home.jpg" height="13%" width="16%"></a>
+  <a href="../search/search.php"><img src="../img/se_home.jpg" height="13%" width="16%"></a>
+  <a href="../dm/dm.php"><img src="../img/dm_home.jpg" height="13%" width="16%"></a>
+  <a href="../mypage/mypage.php"><img src="../img/mp_home.jpg" height="13%" width="16%"></a></div>
   <br>
 
 <div id="stage">
@@ -127,12 +164,12 @@
 
 <!-- イベント分類ボタンの表示 -->
 <div id = "box">
-<img src="img/ev_all.jpg" height="10%" width="13%">
-<img src="img/ev_gf.jpg" height="10%" width="13%">
-<img src="img/ev_ge.jpg" height="10%" width="13%">
-<img src="img/ev_ks.jpg" height="10%" width="13%">
-<img src="img/ev_ft.jpg" height="10%" width="13%">
-<img src="img/ev_sc.jpg" height="10%" width="13%">
+    <a href="../search/search_event.php?category=0"><img src="../img/ev_all.jpg" height="10%" width="13%"></a>
+    <a href="../search/search_event.php?category=1"><img src="../img/ev_gf.jpg" height="10%" width="13%"></a>
+    <a href="../search/search_event.php?category=2"><img src="../img/ev_ge.jpg" height="10%" width="13%"></a>
+    <a href="../search/search_event.php?category=3"><img src="../img/ev_ks.jpg" height="10%" width="13%"></a>
+    <a href="../search/search_event.php?category=4"><img src="../img/ev_ft.jpg" height="10%" width="13%"></a>
+    <a href="../search/search_event.php?category=5"><img src="../img/ev_sc.jpg" height="10%" width="13%"></a>
 </div>
 <br><br>
 </center>
@@ -143,19 +180,155 @@
 <!-- イベントタイトルの表示 -->
 <h1 align="center"><?php echo $event_title ?></h1>
 
+
+<table class="event-table">
 <!-- イベント主催者名の表示 -->
-<p align="center">主催者：<a href="http://localhost/kocote/mypage/personalpage.php?user_id=<?php echo $organizer_user_id ?>"><?php echo $organizer_last_name." ".$organizer_first_name ?></a></p>
+<tr>
+    <td class="title"><p>主催者：</p></td>
+    <td class="content"><p><a href="../mypage/personalpage.php?user_id=<?php echo $organizer_user_id ?>"><?php echo $organizer_last_name." ".$organizer_first_name ?></a></p></td>
+</tr>
+
 
 <!-- 主催者からのコメントの表示 -->
-<p align="center">主催者からのコメント：<?php echo $host_comment ?></p>
+<tr>
+    <td class="title"><p>主催者からのコメント：</p></td>
+    <td class="content"><p><?php echo $host_comment ?></p></td>
+</tr>
+
+<!-- イベントの開催日時の表示 -->
+<tr>
+    <td class="title"><p>開催日時：</p></td>
+    <td class="content"><p>
+        <?php 
+            //イベント開始年の表示
+            echo substr($event_start, 0, 4).'年';
+        
+            //イベント開始月の表示（先頭の0は表示されない）
+            if (substr($event_start, 5, 1) == 0) {
+                echo substr($event_start, 6, 1).'月';
+            } else {
+                echo substr($event_start, 5, 2).'月';
+            }
+        
+            //イベント開始日の表示（先頭の0は表示されない）
+            if (substr($event_start, 8, 1) == 0) {
+                echo substr($event_start, 9, 1).'日 ';
+            } else {
+                echo substr($event_start, 8, 2).'日 ';
+            }
+        
+            //イベント開始時刻の表示（先頭の0は表示されない）
+            if (substr($event_start, 11, 1) == 0) {
+                echo substr($event_start, 12, 1)."時 〜 ";
+            } else {
+                echo substr($event_start, 11, 2)."時 〜 ";
+            }
+            
+            //イベント終了時刻の表示（先頭の0は表示されない）
+            if (substr($event_finish, 11, 1) == 0) {
+                echo substr($event_finish, 12, 1)."時";
+            } else {
+                echo substr($event_finish, 11, 2)."時";
+            }
+        ?>
+    </p></td>
+<tr>
+        
+<!-- イベントの開催場所の表示 -->
+<tr>
+    <td class="title"><p>開催場所：</p></td>
+    <td class="content"><p><?php echo $event_place ?></p></td>
+</tr>
+    
+<!-- イベント分類の表示 -->
+<tr>
+    <?php
+    switch($category) {
+        case 2:
+            echo '<td class="title">';
+            echo '<p>分類：</p>';
+            echo '</td>';
+            echo '<td class="content">';
+            echo '<p>グルメ / フェスティバル</p>';
+            echo '</td>';
+            break;
+        case 3:
+            echo '<td class="title">';
+            echo '<p>分類：</p>';
+            echo '</td>';
+            echo '<td class="content">';
+            echo '<p>芸術 / エンタメ</p>';
+            echo '</td>';
+            break;
+        case 4:
+            echo '<td class="title">';
+            echo '<p>分類：</p>';
+            echo '</td>';
+            echo '<td class="content">';
+            echo '<p>交流 / スポーツ</p>';
+            echo '</td>';
+            break;
+        case 5:
+            echo '<td class="title">';
+            echo '<p>分類：</p>';
+            echo '</td>';
+            echo '<td class="content">';
+            echo '<p>福祉 / 地域振興</p>';
+            echo '</td>';
+            break;
+        case 6:
+            echo '<td class="title">';
+            echo '<p>分類：</p>';
+            echo '</td>';
+            echo '<td class="content">';
+            echo '<p>就活 / キャリア</p>';
+            echo '</td>';
+            break;
+        default:
+            echo '<td class="title">';
+            echo '<p>分類：</p>';
+            echo '</td>';
+            echo '<td class="content">';
+            echo '<p>分類なし</p>';
+            echo '</td>';
+            break;
+    }
+    ?>
+</tr>
+    
+<!-- イベント詳細の表示 -->
+<tr>
+    <td class="title"><p>イベント詳細：</p>
+    <td class="content"><p><?php echo $event_detail ?></p>
+</tr>
+    
+</table>
+
+<br>
+
+<!-- 区切り線 -->
+<hr>
 
 <!-- イベント参加者のアイコン画像の表示 -->
-<p align="center">参加者：</p>
+<div id="reg">
+    
+<p align="center">イベント参加者</p>
+
 <center>
 <?php 
-    for ($i = 0; $i < count($event_user_id); $i++) {
-        echo '<a href=personalpage?user_id='.$event_user_id[$i].'><img src=event_detail_image.php?event_id='.$event_id.'&image_id='.$i.' width=50 height=50></a>';
-    }  
+    if (count($event_user_id) == 0) {
+        echo '<p align="center">現在このイベントの参加者はいません。</p>';
+    } else {
+        for ($i = 0; $i < count($event_user_id); $i++) {
+            //ログイン中の利用者のアイコン画像を選択した場合はmypage.phpへのリンクを生成
+            if ($event_user_id[$i] == $user_id) {
+                echo '<a href=../mypage/mypage.php><img class="user-image" src=event_detail_image.php?event_id='.$event_id.'&image_id='.$i.' width=50 height=50></a>';
+            //それ以外はpersonalpage.phpへのリンクを生成 
+            } else {
+                echo '<a href=../mypage/personalpage.php?user_id='.$event_user_id[$i].'><img class="user-image" src=event_detail_image.php?event_id='.$event_id.'&image_id='.$i.' width=50 height=50></a>';
+            }
+        }  
+    }
 ?>
 <br><br>
 
@@ -163,30 +336,36 @@
     <?php
         echo '<center>';
         echo '<form>';
-        if ($event_par == 0) {
-            echo '<a onclick="participation(); return false;"><img src="ev_img/participation.jpg"></a>';
+        //参加締切を過ぎている場合
+        if (strtotime($deadline) < strtotime($current_time)) {
+            echo '<p align="center">※このイベントは参加登録の締切を過ぎています。</p>';
+        } else if ($event_par == 0) {
+            echo '<a onclick="participation(); return false;"><img class="button" src="../img/participation.jpg"></a>';
             $par_id = 0;
             $par_st = "このイベントに参加しますか？";
         } else if ($event_par == 1) {
-            echo '<a onclick="participation(); return false;"><img src="ev_img/nonparticipation.jpg"></a>';
+            echo '<a onclick="participation(); return false;"><img class="button" src="../img/nonparticipation.jpg"></a>';
             $par_id = 1;
             $par_st = "このイベントの参加をやめますか？";
         }
     ?>
     
     <!-- イベントお気に入り登録ボタンの表示 -->
+    <!-- 参加締切が過ぎていない場合のみ表示 -->
     <?php
-        if ($event_fav == 0) {
-            echo '<a onclick="favorite(); return false;"><img src="ev_img/favorite_add.jpg"></a>';
-            $fav_id = 2;
-            $fav_st = "このイベントをお気に入りに登録しますか？";
-        } else if ($event_fav == 1) {
-            echo '<a onclick="favorite(); return false;"><img src="ev_img/favorite_del.jpg"></a>';
-            $fav_id = 3;
-            $fav_st = "このイベントをお気に入りから削除しますか？";
+        if (strtotime($deadline) >= strtotime($current_time)) {
+            if ($event_fav == 0) {
+                echo '<a onclick="favorite(); return false;"><img class="button" src="../img/favorite_add.jpg"></a>';
+                $fav_id = 2;
+                $fav_st = "このイベントをお気に入りに登録しますか？";
+            } else if ($event_fav == 1) {
+                echo '<a onclick="favorite(); return false;"><img class="button" src="../img/favorite_del.jpg"></a>';
+                $fav_id = 3;
+                $fav_st = "このイベントをお気に入りから削除しますか？";
+            }
+            echo '</form>';
+            echo '</center>';
         }
-        echo '</form>';
-        echo '</center>';
     ?>
     
     
@@ -226,44 +405,15 @@
         }
     </script>
     
-    <!-- イベントの開催日時の表示 -->
-    <p align="center">開催日時：<?php echo substr($event_start, 0, 4)."年".substr($event_start, 5, 2)."月".substr($event_start, 8, 2)."日 ".substr($event_start, 11, 2)."時 〜 ".substr($event_finish, 11, 2)."時" ?></p>
+</div>
+
     
-    <!-- イベントの開催場所の表示 -->
-    <p align="center">開催場所：<?php echo $event_place ?></p>
-    
-    <!-- イベント分類の表示 -->
-    <?php
-    switch($category) {
-        case 2:
-            echo '<p align="center">分類：グルメ / フェスティバル</p>';
-            break;
-        case 3:
-            echo '<p align="center">分類：芸術 / エンタメ</p>';
-            break;
-        case 4:
-            echo '<p align="center">分類：交流 / スポーツ</p>';
-            break;
-        case 5:
-            echo '<p align="center">分類：福祉 / 地域振興</p>';
-            break;
-        case 6:
-            echo '<p align="center">分類：就活 / キャリア</p>';
-            break;
-        default:
-            echo '<p align="center">分類なし</p>';
-            break;
-    }
-    ?>
-    
-    <!-- イベント詳細の表示 -->
-    <p align="center">イベント詳細：<?php echo $event_detail ?></p>
 
     
 <div id="footerArea">
 <ul>
 <li><a href="https://www.evol-ni.com/company/">会社概要</a></li>
-<li><a href="http://localhost/php/v0/contact.php">お問い合わせ</a></li>
+<li><a href="../contact/contact.php">お問い合わせ</a></li>
 <li><a href="https://secure.evol-ni.com/common/policy/">個人情報保護方針</a></li>
 <li><a href="https://www.evol-ni.com/recruit/">採用情報</a></li>
 <li><a href="https://www.evol-ni.com/sitemap/">サイトマップ</a></li>

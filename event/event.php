@@ -8,6 +8,7 @@
     $event_id = array();
     $event_title = array();
     $event_start = array();
+    $event_finish = array();
 
     $link = mysql_connect('localhost', 'root', 'root');
     if (!$link) {
@@ -20,7 +21,7 @@
     mysql_set_charset('utf8');
 
     //イベントの開始日時が現在時刻から近いイベント上位5件のイベントID、イベントタイトル、開始日時を取得
-    $sql = "SELECT EVENT_ID, EVENT_TITLE, EVENT_START FROM EV WHERE EVENT_START > NOW() ORDER BY EVENT_START ASC LIMIT 5";
+    $sql = "SELECT EVENT_ID, EVENT_TITLE, EVENT_START, EVENT_FINISH FROM EV WHERE EVENT_START > NOW() ORDER BY EVENT_START ASC LIMIT 5";
 
     $result = mysql_query($sql, $link);
     if (!$result) {
@@ -31,6 +32,7 @@
         $event_id[] = $row['EVENT_ID'];
         $event_title[] = $row['EVENT_TITLE'];
         $event_start[] = $row['EVENT_START'];
+        $event_finish[] = $row['EVENT_FINISH'];
     }
 
     //$event_idの添字0から4にイベントIDが入っている
@@ -135,7 +137,7 @@ function ev_calendar() {
  
 //フォーム部分
 echo<<<EOT
-    <h1 class="entry-title" align="center">イベントカレンダー</h1>
+    <p class="entry-title" align="center">日付から探す</p>
     <div class="calendar_box">
     <div style="text-align:center;">
     <div style="margin-left:auto; margin-right:auto;">
@@ -207,7 +209,7 @@ EOT;
         mysql_set_charset('utf8');
         
         //日ごとに開催イベント数を取得
-        $sql_evcount = "SELECT COUNT(*) AS COUNT FROM EV WHERE EVENT_START BETWEEN '$y-$m-$d 00:00:00' AND '$y-$m-$d 23:59:59'";
+        $sql_evcount = "SELECT COUNT(*) AS COUNT FROM EV WHERE EVENT_START > NOW() AND EVENT_START BETWEEN '$y-$m-$d 00:00:00' AND '$y-$m-$d 23:59:59'";
         $result_evcount = mysql_query($sql_evcount, $link);
         while ($row_evcount = mysql_fetch_array($result_evcount)) {
             $event_count = $row_evcount['COUNT'];
@@ -230,7 +232,7 @@ EOT;
         if ($today == $_SESSION["year"].$_SESSION["month"].$d) {
             $td = "bkgd_today";
         }
-        echo '<td class="date_block '.$td.'"><div class="'.$td_txt.'">'.'<a href=../search/search.php?year='.$y.'&month='.$m.'&day='.$d.'>',$d.'</a>'.'</div>'.'</br>'.'<div class="count">'.'('.$event_count.')'.'</div>';
+        echo '<td class="date_block '.$td.'"><div class="'.$td_txt.'">'.'<a href=../search/search_event.php?year='.$y.'&month='.$m.'&day='.$d.'>',$d.'</a>'.'</div>'.'</br>'.'<div class="count">'.'('.$event_count.')'.'</div>';
         echo '</td>';
         $thismonth++;
         $d++;
@@ -259,7 +261,7 @@ EOT;
     $yd = date("j", mktime(0,0,0,$m,$d,$y)) + $i;
     while ($i < $e) {
         $nextmonth_ymd = date("Ymd", mktime(0, 0, 0, $ym, $yd, $yy));
-        echo '<td class="datablock bkgd_gray"><div class="txt_gray">'.$yd; //'</br>'.'</div>'.'<div class="kara">'.'(0)'.'</div>';
+        echo '<td class="datablock bkgd_gray"><div class="txt_gray">'.$yd; 
         echo '</td>';
         $yd++;
         $nextmonth++;
@@ -285,8 +287,9 @@ EOT;
 <title>高知県大学生用交流サイト「KoCo + Te」</title>
 </head>
 <center>
-<link rel="stylesheet" href="style.css" type="text/css">
-<link rel="stylesheet" href="event_calendar.css" type="text/css">
+    <link rel="stylesheet" href="../css/style.css" type="text/css">
+    <link rel="stylesheet" href="../css/ev_calendar.css" type="text/css">
+    <link rel="stylesheet" href="../css/ev_style.css" type="text/css">
 <body topmargin="100" bottommargin="100">
 
 <div id="headerArea"></div>
@@ -297,13 +300,21 @@ EOT;
   <br><br><br><br><br><br><br>  
 <!-- 機能選択ボタン -->
 <div id="box">
-  <a href="http://localhost/php/v0/event.php"><img src="img/ev_home.jpg" height="13%" width="16%"></a>
-  <a href="http://localhost/php/v0/bulletin.php"><img src="img/bb_home.jpg" height="13%" width="16%"></a>
-  <a href="http://localhost/php/v0/search.php"><img src="img/se_home.jpg" height="13%" width="16%"></a>
-  <a href="http://localhost/php/v0/dm.php"><img src="img/dm_home.jpg" height="13%" width="16%"></a>
-  <a href="http://localhost/php/v0/mypage.php"><img src="img/mp_home.jpg" height="13%" width="16%"></a></div>
+  <a href="../event/event.php"><img src="../img/ev_home.jpg" height="13%" width="16%"></a>
+  <a href="../bulletin/bulletin.php"><img src="../img/bb_home.jpg" height="13%" width="16%"></a>
+  <a href="../search/search.php"><img src="../img/se_home.jpg" height="13%" width="16%"></a>
+  <a href="../dm/dm.php"><img src="../img/dm_home.jpg" height="13%" width="16%"></a>
+  <a href="../mypage/mypage.php"><img src="../img/mp_home.jpg" height="13%" width="16%"></a></div>
   <br>
+</center>  
 
+<!-- イベント作成ボタンの表示 -->
+  <a href="event_add.php">
+  <img src="../img/ev_mk.jpg" height="10%" width="13%" style="margin-left:82%"></a>
+  
+  <br><br><br>
+
+<center>
 <div id="stage">
     <input type="radio" id="back1" name="gal">
     <input type="radio" id="back2" name="gal">
@@ -315,28 +326,32 @@ EOT;
     <input type="radio" id="next3" name="gal">
     <input type="radio" id="next4" name="gal">
     <input type="radio" id="next5" name="gal">
-    
+   
   <!-- 各画像はSQLで人気のイベント画像を抽出-->
   <div id="photos">
-      <div id="photo0" class="pic"><img src="event_image.php?image_id=tmp4" width="200%">
+      <div id="photo0" class="pic"><img src="event_image.php?image_id=tmp5" width="400%">
       </div>
-      <div id="photo1" class="pic"><img src="event_image.php?image_id=tmp1" width="200%">
+      <div id="photo1" class="pic"><img src="event_image.php?image_id=tmp1" width="400%">
 	    <label for="back1"><div id="left1" class="b_left"><span>＜</span></div></label>
 	    <label for="next1"><div id="right1" class="b_right"><span>＞</span></div></label>
       </div>
-      <div id="photo2" class="pic"><img src="event_image.php?image_id=tmp2" width="200%">
+      <div id="photo2" class="pic"><img src="event_image.php?image_id=tmp2" width="400%">
 	    <label for="back2"><div id="left2" class="b_left"><span>＜</span></div></label>
     	<label for="next2"><div id="right2" class="b_right"><span>＞</span></div></label>
       </div>
-      <div id="photo3" class="pic"><img src="event_image.php?image_id=tmp3" width="200%">
+      <div id="photo3" class="pic"><img src="event_image.php?image_id=tmp3" width="400%">
 	    <label for="back3"><div id="left3" class="b_left"><span>＜</span></div></label>
     	<label for="next3"><div id="right3" class="b_right"><span>＞</span></div></label>
       </div>
-      <div id="photo4" class="pic"><img src="event_image.php?image_id=tmp4" width="200%">
+      <div id="photo4" class="pic"><img src="event_image.php?image_id=tmp4" width="400%">
     	<label for="back4"><div id="left4" class="b_left"><span>＜</span></div></label>
     	<label for="next4"><div id="right4" class="b_right"><span>＞</span></div></label>
       </div>
-      <div id="photo5" class="pic"><img src="event_image.php?image_id=tmp1" width="200%">
+      <div id="photo5" class="pic"><img src="event_image.php?image_id=tmp5" width="400%">
+    	<label for="back5"><div id="left5" class="b_left"><span>＜</span></div></label>
+    	<label for="next5"><div id="right5" class="b_right"><span>＞</span></div></label>
+      </div>
+      <div id="photo6" class="pic"><img src="event_image.php?image_id=tmp1" width="400%">
       </div>
     </div>
    <div style="padding:25%;"></div>
@@ -347,24 +362,22 @@ EOT;
 
 <!-- カテゴリ画像の表示 -->
 <p>カテゴリから探す</p>
-
-<div id="box">
-<img src="img/ev_all.jpg" height="10%" width="13%">
-<img src="img/ev_gf.jpg" height="10%" width="13%">
-<img src="img/ev_ge.jpg" height="10%" width="13%">
-<img src="img/ev_ks.jpg" height="10%" width="13%">
-<img src="img/ev_ft.jpg" height="10%" width="13%">
-<img src="img/ev_sc.jpg" height="10%" width="13%">
+<div id = "box">
+    <a href="../search/search_event.php?category=0"><img src="../img/ev_all.jpg" height="10%" width="13%"></a>
+    <a href="../search/search_event.php?category=1"><img src="../img/ev_gf.jpg" height="10%" width="13%"></a>
+    <a href="../search/search_event.php?category=2"><img src="../img/ev_ge.jpg" height="10%" width="13%"></a>
+    <a href="../search/search_event.php?category=3"><img src="../img/ev_ks.jpg" height="10%" width="13%"></a>
+    <a href="../search/search_event.php?category=4"><img src="../img/ev_ft.jpg" height="10%" width="13%"></a>
+    <a href="../search/search_event.php?category=5"><img src="../img/ev_sc.jpg" height="10%" width="13%"></a>
 </div>
 <br><br>
 </center>
 
-<!-- イベント作成ボタンの表示 -->
-  <a href="http://localhost/kocote/event/event_add.php">
-  <img src="img/ev_mk.jpg" height="7%" width="10%" style="margin-left:81.5%"></a>
 <br><br><br>
 
+<p class="event-size">最近追加されたイベント</p>
 
+<div id="blocka">
 <!-- イベント情報（イベントタイトル、開催日時）の表示 -->
 <?php
 $count = count($event_id);
@@ -377,7 +390,8 @@ if ($count == 0) {
         $count = 5;
     }
     for ($i = 0; $i < $count; $i++) {
-        echo '<a href="http://localhost/kocote/event/event_detail.php?event_id='.$event_id[$i].'">'.$event_title[$i].'</a>';
+        echo '<img class="event-image" src="event_image.php?event_id='.$event_id[$i].'"width="20%">';
+        echo '<a class="event-title" href="event_detail.php?event_id='.$event_id[$i].'">'.$event_title[$i].'</a>';
         echo '<br>';
         //年の表示
         echo substr($event_start[$i], 0, 4).'年';
@@ -396,28 +410,42 @@ if ($count == 0) {
             echo substr($event_start[$i], 8, 2).'日 ';
         }
         
-        //時の表示（先頭の0は表示されない）
+        //イベント開始時刻の表示（先頭の0は表示されない）
         if (substr($event_start[$i], 11, 1) == 0) {
-            echo substr($event_start[$i], 12, 1)."時〜";
+            echo substr($event_start[$i], 12, 1)."時 〜 ";
         } else {
-            echo substr($event_start[$i], 11, 2)."時〜";
+            echo substr($event_start[$i], 11, 2)."時 〜 ";
         }
-        echo '<br><br>';
+            
+        //イベント終了時刻の表示（先頭の0は表示されない）
+        if (substr($event_finish[$i], 11, 1) == 0) {
+            echo substr($event_finish[$i], 12, 1)."時";
+        } else {
+            echo substr($event_finish[$i], 11, 2)."時";
+        }
+            
+        echo '<br><br><br><br><br>';
     }
 }
 ?>
+</div>
 
+<div id="blockb">
 <!-- カレンダーの表示> -->
 <?php ev_calendar(); ?>
+</div>
+
+<div id="clear"></div>
 
 <div id="footerArea">
 <ul>
 <li><a href="https://www.evol-ni.com/company/">会社概要</a></li>
-<li><a href="http://localhost/php/v0/contact.php">お問い合わせ</a></li>
+<li><a href="../contact/contact.php">お問い合わせ</a></li>
 <li><a href="https://secure.evol-ni.com/common/policy/">個人情報保護方針</a></li>
 <li><a href="https://www.evol-ni.com/recruit/">採用情報</a></li>
 <li><a href="https://www.evol-ni.com/sitemap/">サイトマップ</a></li>
-</ul></div>
+</ul>
+</div>
 
 
 </body>
