@@ -1,4 +1,5 @@
 <?php
+$USER_ID = 1;
 // DB接続
 // MySQLと接続
 $link = mysql_connect ( 'localhost', 'root' );
@@ -14,7 +15,7 @@ $dbLink = mysql_select_db ( 'greenbakari', $link );
 // ▽ idに該当する利用者
 // if (! $sql_result_icon_image = mysql_query ( "SELECT " . $_GET ['img_type'] . " FROM " . $_GET ['img_table'] . " WHERE USER_ID = '" . $_POST ['id'] . "'" ))
 // ▽ 1番目に該当する利用者を仮定
-if (! $sql_result_image = mysql_query ( "SELECT " . $_GET ['img_type'] . " FROM " . $_GET ['img_table'] . " WHERE USER_ID = '" . 1 . "'" ))
+if (! $sql_result_image = mysql_query ( "SELECT " . $_GET ['img_type'] . " FROM " . $_GET ['img_table'] . " WHERE USER_ID = '" . $USER_ID . "'" ))
 	die ( '画像取得失敗' . mysql_error () );
 
 $row = mysql_fetch_array ( $sql_result_image );

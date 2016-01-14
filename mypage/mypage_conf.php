@@ -60,25 +60,49 @@ if (! $sql_result_pev_select = mysql_query ( 'SELECT * FROM ev, pev WHERE ev.EVE
 if (! $sql_result_fev_select = mysql_query ( 'SELECT * FROM ev, fev WHERE ev.EVENT_ID=fev.EVENT_ID LIMIT 5' ))
 	die ( '@ev, fevテーブル SELECT失敗' . mysql_error () );
 
-echo '<form action="upload.php" method="post">';
-// ヘッダ画像
+echo '<form action="upload.php" method="post" enctype="multipart/form-data">';
+// 画像
 $ua = mysql_fetch_assoc ( $sql_result_ua_select );
 echo '<p>';
 
-echo '<img src="./img_get.php?&img=HEADER_IMAGE"/>';
-// ▽ いまここ ▽
-if (isset ( $_POST ['header_up'] ))
-	echo $_POST ['header_up'];
+$header_imgdata = NULL;
+$icon_imgdata = NULL;
+if (! $sql_result_tmp_create = mysql_query ( 'CREATE TABLE IF NOT EXISTS tmp (HEADER_IMAGE BLOB, ICON_IMAGE BLOB, USER_ID INTEGER)' ))
+	die ( '@tmp, CREATE失敗' . mysql_error () );
+//if (! $sql_result_tmp_insert = mysql_query ( 'INSERT INTO TMP VALUES(NULL, NULL, 1)' ))
+//	die ( '@tmp, INSERT失敗' . mysql_error () );
 
+if (isset ( $_POST ['header_img'] )) {
+	$fp = fopen ( $_FILES ["header_img"] ["tmp_name"], "rb" );
+	$imgdata = fread ( $fp, filesize ( $_FILES ["header_img"] ["tmp_name"] ) );
+	fclose ( $fp );
+	$str = mb_convert_encoding ( $imgdata, "UTF-8" );
+	$header_imgdata = addslashes ( $imgdata );
+	echo '<input type="hidden" name="img_dat" value="' . $header_imgdata . '">';
+	if (! $sql_result_tmp_update = mysql_query ( 'UPDATE tmp SET HEADER_IMAGE="' . $header_imgdata . '"' ))
+		die ( '@tmp, HEADER_IMAGE UPDATE失敗' . mysql_error () );
+}
+
+if (isset ( $_POST ['icon_img'] )) {
+	$fp = fopen ( $_FILES ["icon_img"] ["tmp_name"], "rb" );
+	$imgdata = fread ( $fp, filesize ( $_FILES ["icon_img"] ["tmp_name"] ) );
+	fclose ( $fp );
+	$str = mb_convert_encoding ( $imgdata, "UTF-8" );
+	$icon_imgdata = addslashes ( $imgdata );
+	echo '<input type="hidden" name="img_dat" value="' . $icon_imgdata . '">';
+	if (! $sql_result_tmp_update = mysql_query ( 'UPDATE tmp SET ICON_IMAGE="' . $icon_imgdata . '"' ))
+		die ( '@tmp, ICON_IMAGEUPDATE失敗' . mysql_error () );
+}
+// ヘッダ画像
 echo '<img src="./img_get.php?img_type=HEADER_IMAGE&img_table=ua"/>';
-echo 'ヘッダ画像パス：<input type="file" name="header_img" size="50"><BR>';
-
+echo '<img src="./img_get.php?img_type=HEADER_IMAGE&img_table=tmp"/>';
 echo '</p>';
 // アイコン画像
 echo '<p>';
 echo '<img src="./img_get.php?img_type=ICON_IMAGE&img_table=ua"/>';
-echo 'アイコン画像パス：<input type="file" name="icon_img" size="50"><BR>';
+echo '<img src="./img_get.php?img_type=ICON_IMAGE&img_table=tmp"/>';
 echo '</p>';
+
 // 「確定する」ボタン
 echo '<input type="submit" value="確定する" name="upload" >';
 // 「編集する」ボタン
@@ -141,7 +165,7 @@ for($i = 0; $i < $_POST ['key']; $i ++) {
 	$tf = $tf . "f";
 }
 
-if (isset($_POST['interest'])) {
+if (isset ( $_POST ['interest'] )) {
 	foreach ( $_POST ['interest'] as $key => $value ) {
 		$tf [$value] = "t";
 		echo $interest [$value];
@@ -151,7 +175,7 @@ if (isset($_POST['interest'])) {
 	}
 }
 
-echo '<input type="hidden" name="tf" value="' . $tf . '">';
+echo '<input type="hidden" name="interest" value="' . $tf . '">';
 echo ("</p>");
 
 /* ▽ 自己紹介 ▽ */
@@ -192,8 +216,8 @@ while ( $fev = mysql_fetch_assoc ( $sql_result_fev_select ) ) {
 	echo '</p>';
 }
 
-if (! $sql_result_tmp_select = mysql_query ( 'DROP TABLE tmp' ))
-	die ( '@tmpテーブル DROP失敗' . mysql_error () );
+// if (! $sql_result_tmp_select = mysql_query ( 'DROP TABLE tmp' ))
+// die ( '@tmpテーブル DROP失敗' . mysql_error () );
 mysql_close ( $link );
 echo '</form>';
 
