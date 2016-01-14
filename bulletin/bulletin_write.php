@@ -5,8 +5,8 @@
 <title>高知県大学生用交流サイト「KoCo + Te」</title>
 </head>
 <center>
-<link rel="stylesheet" href="css/style.css"　type="text/css">
-<link rel="stylesheet" href="css/bb_style.css"　type="text/css">
+<link rel="stylesheet" href="../css/style.css"　type="text/css">
+<link rel="stylesheet" href="../css/bb_style.css"　type="text/css">
 <body topmargin="100" bottommargin="100">
 
 <div id="headerArea"></div>

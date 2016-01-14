@@ -5,8 +5,8 @@
 <title>高知県大学生用交流サイト「KoCo + Te」</title>
 </head>
 <center>
-<link rel="stylesheet" href="css/style.css"　type="text/css">
-<link rel="stylesheet" href="css/bb_style.css"　type="text/css">
+<link rel="stylesheet" href="../css/style.css"　type="text/css">
+<link rel="stylesheet" href="../css/bb_style.css"　type="text/css">
 
 <body  topmargin="100" bottommargin="100">
 
@@ -17,18 +17,18 @@
 <!--ヘッダ部分 -->
       <div id = "box">
         <center>
-        <a href="http://localhost/kocote/event.php"><img src="img/ev_home.jpg" height="7%" width="16%"></a>
-        <a href="http://localhost/kocote/bulletin.php"><img src="img/bb_home.jpg" height="7%" width="16%"></a>
-        <a href="http://localhost/kocote/search.php"><img src="img/se_home.jpg" height="7%" width="16%"></a>
-        <a href="http://localhost/kocote/dm.php"><img src="img/dm_home.jpg" height="7%" width="16%"></a>
-        <a href="http://localhost/kocote/mypage.php"><img src="img/mp_home.jpg" height="7%" width="16%"></a>
+        <a href="http:../event/event.php"><img src="../img/ev_home.jpg" height="7%" width="16%"></a>
+        <a href="http:../bulletin/bulletin.php"><img src="../img/bb_home.jpg" height="7%" width="16%"></a>
+        <a href="http:../search/search.php"><img src="../img/se_home.jpg" height="7%" width="16%"></a>
+        <a href="http:../dm/dm.php"><img src="../img/dm_home.jpg" height="7%" width="16%"></a>
+        <a href="http:../mypage/mypage.php"><img src="../img/mp_home.jpg" height="7%" width="16%"></a>
 </center>
       </div>
       <br><br>
 
       <!-- 作成ボタン-->
       <div align="right" style="margin-right:248px" class="right">
-        <input type="button" onClick="location.href='http://localhost/kocote/bulletin_add.html'" class="bb_make" />
+        <input type="button" onClick="location.href='http:../bulletin/bulletin_add.html'" class="bb_make" />
       </div>
       <!--float解除-->
       <div class="clear"></div>
@@ -125,9 +125,9 @@ $st = $pdo->query("SELECT comment_num, bb_id, user_last_name, user_first_name, p
     $posted_content = autoLinker($posted_content);
 
     if($user_id == 165848){
-      $url = "http://localhost/kocote/mypage.php";
+      $url = "http:../mypage/mypage.php";
     }else{
-    $url = "http://localhost/kocote/parsonalpage.php?user_id=$user_id";
+    $url = "http:../mypage/parsonalpage.php?user_id=$user_id";
     }
 
   //詳細表示

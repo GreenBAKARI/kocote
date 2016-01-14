@@ -5,8 +5,8 @@
 <title>高知県大学生用交流サイト「KoCo + Te」</title>
 </head>
 <center>
-<link rel="stylesheet" href="css/style.css"　type="text/css">
-<link rel="stylesheet" href="css/bb_style.css"　type="text/css">
+<link rel="stylesheet" href="../css/style.css"　type="text/css">
+<link rel="stylesheet" href="../css/bb_style.css"　type="text/css">
 
 <body topmargin="100" bottommargin="100">
 
@@ -16,11 +16,11 @@
 
 <!--ヘッダ部分 -->
   <div id = "box">
-    <a href="http://localhost/kocote/event.php"><img src="img/ev_home.jpg" height="7%" width="16%"></a>
-    <a href="http://localhost/kocote/bulletin.php"><img src="img/bb_home.jpg" height="7%" width="16%"></a>
-    <a href="http://localhost/kocote/search.php"><img src="img/se_home.jpg" height="7%" width="16%"></a>
-    <a href="http://localhost/kocote/dm.php"><img src="img/dm_home.jpg" height="7%" width="16%"></a>
-    <a href="http://localhost/kocote/mypage.php"><img src="img/mp_home.jpg" height="7%" width="16%"></a></div>
+    <a href="http:../event/event.php"><img src="../img/ev_home.jpg" height="7%" width="16%"></a>
+    <a href="http:../bulletin/bulletin.php"><img src="../img/bb_home.jpg" height="7%" width="16%"></a>
+    <a href="http:../search/search.php"><img src="../img/se_home.jpg" height="7%" width="16%"></a>
+    <a href="http:../dm/dm.php"><img src="../img/dm_home.jpg" height="7%" width="16%"></a>
+    <a href="http:../mypage/mypage.php"><img src="../img/mp_home.jpg" height="7%" width="16%"></a></div>
   <br>
 
 <!--掲示板ジャンル選択ボタン -->
@@ -55,7 +55,7 @@ $seq = 3;
 
 <!-- 作成ボタン-->
 <div align="right" style="margin-right:248px" class="right">
-  <input type="button" onClick="location.href='http://localhost/kocote/bulletin_add.html'" class="bb_make" />
+  <input type="button" onClick="location.href='http:../bulletin/bulletin_add.html'" class="bb_make" />
 </div>
 <!--float解除-->
 <div class="clear"></div>
@@ -176,7 +176,7 @@ mysql_close($link) or die("MySQL切断に失敗しました。");
 <th>コメント数</th>
 <?php while (($row = mysql_fetch_array($result)) && ($first_rows <= $last_rows) && ($first_rows <= $all_rows)) { ?>
   <tr><td align="center" style="width:150px;"><?php echo ($row["category"]); ?></td>
-  <td align="center" style="width:500px;"><a href="http://localhost/kocote/bulletin_detail.php?bb_id=<?php echo ($row["bb_id"]) ?>"><?php echo ($row["bb_name"]); ?></a></td>
+  <td align="center" style="width:500px;"><a href="http:../bulletin/bulletin_detail.php?bb_id=<?php echo ($row["bb_id"]) ?>"><?php echo ($row["bb_name"]); ?></a></td>
   <td align="center" style="width:150px;"><?php echo ($row["comment_count"]); ?></td>
     </tr>
 <?php
@@ -189,7 +189,7 @@ $first_rows++;
 if($start > 0){
   ?>
   <div id = "box">
-  <a href="http://localhost/kocote/bulletin.php?start=<?php echo ($start-$one_page)?>"><br>[前のページ]</a>
+  <a href="http:../bulletin/bulletin.php?start=<?php echo ($start-$one_page)?>"><br>[前のページ]</a>
   <?php
 }else{
   //startが0なら最初のページなので、前のページへのリンクは無し
@@ -204,7 +204,7 @@ if($start > 0){
 //last_row値がクエリした全行数-1より小さければ、まだ次のページがあるということなので次ページのリンクを作成
 if($last_rows < ($all_rows-1)){
   ?>
-  <a href="http://localhost/kocote/bulletin.php?start=<?php echo ($start + $one_page)?>">[次のページ]</a>
+  <a href="http:../bulletin/bulletin.php?start=<?php echo ($start + $one_page)?>">[次のページ]</a>
   <?php
 }else{
   ?>
