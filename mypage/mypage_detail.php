@@ -69,7 +69,7 @@ echo '<form action="mypage_conf.php" method="post" enctype="multipart/form-data"
 $ua = mysql_fetch_assoc ( $sql_result_ua_select );
 echo '<p>';
 echo '<img src="./img_get.php?img_type=HEADER_IMAGE&img_table=ua"/>';
-echo 'ヘッダ画像ファイル選択：<input type="file" name="header_img" size="50"><BR>';
+echo 'ヘッダ画像ファイル選択：<input type="file" name="header_img" size="50"/><BR>';
 echo '</p>';
 // アイコン画像
 echo '<p>';

@@ -64,43 +64,46 @@ echo '<form action="upload.php" method="post" enctype="multipart/form-data">';
 // 画像
 $ua = mysql_fetch_assoc ( $sql_result_ua_select );
 echo '<p>';
-
 $header_imgdata = NULL;
 $icon_imgdata = NULL;
 if (! $sql_result_tmp_create = mysql_query ( 'CREATE TABLE IF NOT EXISTS tmp (HEADER_IMAGE BLOB, ICON_IMAGE BLOB, USER_ID INTEGER)' ))
 	die ( '@tmp, CREATE失敗' . mysql_error () );
 //if (! $sql_result_tmp_insert = mysql_query ( 'INSERT INTO TMP VALUES(NULL, NULL, 1)' ))
 //	die ( '@tmp, INSERT失敗' . mysql_error () );
-
-if (isset ( $_POST ['header_img'] )) {
+if (is_uploaded_file ( $_FILES ["header_img"]["tmp_name"])) {
 	$fp = fopen ( $_FILES ["header_img"] ["tmp_name"], "rb" );
 	$imgdata = fread ( $fp, filesize ( $_FILES ["header_img"] ["tmp_name"] ) );
 	fclose ( $fp );
 	$str = mb_convert_encoding ( $imgdata, "UTF-8" );
 	$header_imgdata = addslashes ( $imgdata );
-	echo '<input type="hidden" name="img_dat" value="' . $header_imgdata . '">';
+	//echo '<input type="hidden" name="header_imgdata" value="' . $header_imgdata . '"/>';
 	if (! $sql_result_tmp_update = mysql_query ( 'UPDATE tmp SET HEADER_IMAGE="' . $header_imgdata . '"' ))
 		die ( '@tmp, HEADER_IMAGE UPDATE失敗' . mysql_error () );
+} else {
+	echo "ファイルをアップロードできません。";
 }
 
-if (isset ( $_POST ['icon_img'] )) {
+if (!isset ( $_FILES ["icon_img"] )) {
 	$fp = fopen ( $_FILES ["icon_img"] ["tmp_name"], "rb" );
 	$imgdata = fread ( $fp, filesize ( $_FILES ["icon_img"] ["tmp_name"] ) );
 	fclose ( $fp );
 	$str = mb_convert_encoding ( $imgdata, "UTF-8" );
 	$icon_imgdata = addslashes ( $imgdata );
-	echo '<input type="hidden" name="img_dat" value="' . $icon_imgdata . '">';
+	echo '<input type="hidden" name="icon_imgdata" value="' . $icon_imgdata . '"/>';
 	if (! $sql_result_tmp_update = mysql_query ( 'UPDATE tmp SET ICON_IMAGE="' . $icon_imgdata . '"' ))
 		die ( '@tmp, ICON_IMAGEUPDATE失敗' . mysql_error () );
 }
+
 // ヘッダ画像
 echo '<img src="./img_get.php?img_type=HEADER_IMAGE&img_table=ua"/>';
 echo '<img src="./img_get.php?img_type=HEADER_IMAGE&img_table=tmp"/>';
+echo '<img src="./img_get.php?raw_img='.$header_imgdata.'"/>';
 echo '</p>';
 // アイコン画像
 echo '<p>';
 echo '<img src="./img_get.php?img_type=ICON_IMAGE&img_table=ua"/>';
 echo '<img src="./img_get.php?img_type=ICON_IMAGE&img_table=tmp"/>';
+echo '<img src="'.$icon_imgdata.'"/>';
 echo '</p>';
 
 // 「確定する」ボタン
