@@ -37,7 +37,7 @@ $dbLink = mysql_select_db ( 'greenbakari', $link );
 
 // データ更新
 if (isset ( $_POST ['gakka'] ) && isset ( $_POST ['interest'] ) && isset ( $_POST ['jikoshokai'] )) {
-	$sql = 'UPDATE ua SET ' . 'DEPARTMENT_NAME="' . $_POST ['gakka'] . '", INTEREST="' . $_POST ['interest'] . '" , PROFILE="' . $_POST ['jikoshokai'] . '" WHERE USER_ID = ' . $USER_ID;
+	$sql = 'UPDATE ua SET DEPARTMENT_NAME="' . $_POST ['gakka'] . '", INTEREST="' . $_POST ['interest'] . '" , PROFILE="' . $_POST ['jikoshokai'] . '" WHERE USER_ID = ' . $USER_ID;
 	$result = mysql_query ( $sql );
 	if (! $result) {
 		print ("SQLの実行に失敗しました<BR>") ;
@@ -45,9 +45,22 @@ if (isset ( $_POST ['gakka'] ) && isset ( $_POST ['interest'] ) && isset ( $_POS
 		exit ();
 	}
 }
-if (isset ( $_POST ['header_imgdata'] ) & isset ( $_POST ['icon_imgdata'] ))
-	if (! $sql_result_ua_update = mysql_query ( 'UPDATE ua SET HEADER_IMAGE="' . $_POST ['header_imgdata'] . 'ICON_IMAGE="' . $_POST ['icon_imgdata'] . '"' ))
-		die ( '@ua, HEADER_IMAGEテーブル UPDATE失敗' . mysql_error () );
+
+$fp = fopen ( "uploaded_header" . $USER_ID . ".jpg", "rb" );
+$imgdata = fread ( $fp, filesize ( "uploaded_header" . $USER_ID . ".jpg" ) );
+fclose ( $fp );
+$str = mb_convert_encoding ( $imgdata, "UTF-8" );
+$header_imgdata = addslashes ( $imgdata );
+$fp = fopen ( "uploaded_icon" . $USER_ID . ".jpg", "rb" );
+$imgdata = fread ( $fp, filesize ( "uploaded_icon" . $USER_ID . ".jpg" ) );
+fclose ( $fp );
+$str = mb_convert_encoding ( $imgdata, "UTF-8" );
+$icon_imgdata = addslashes ( $imgdata );
+if (! $sql_result_ua_update = mysql_query ( 'UPDATE ua SET HEADER_IMAGE="' . $header_imgdata . '", ICON_IMAGE="' . $icon_imgdata . '"' ))
+	die ( '@ua, HEADER_IMAGEテーブル UPDATE失敗' . mysql_error () );
+	// if (isset ( $_POST ['header_imgdata'] ) & isset ( $_POST ['icon_imgdata'] ))
+	// if (! $sql_result_ua_update = mysql_query ( 'UPDATE ua SET HEADER_IMAGE="' . $_POST ['header_imgdata'] . 'ICON_IMAGE="' . $_POST ['icon_imgdata'] . '"' ))
+	// die ( '@ua, HEADER_IMAGEテーブル UPDATE失敗' . mysql_error () );
 
 print ("登録が終了しました<BR>") ;
 echo '<input type="button" value="個人ページ画面へ戻る" onclick="location.href=\'mypage.php\'">';
