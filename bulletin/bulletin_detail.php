@@ -5,8 +5,8 @@
 <title>高知県大学生用交流サイト「KoCo + Te」</title>
 </head>
 <center>
-<link rel="stylesheet" href="css/style.css"　type="text/css">
-<link rel="stylesheet" href="css/bb_style.css"　type="text/css">
+<link rel="stylesheet" href="../css/style.css"　type="text/css">
+<link rel="stylesheet" href="../css/bb_style.css"　type="text/css">
 
 <body  topmargin="100" bottommargin="100">
 
@@ -17,18 +17,18 @@
 <!--ヘッダ部分 -->
       <div id = "box">
         <center>
-        <a href="http://localhost/kocote/event.php"><img src="img/ev_home.jpg" height="7%" width="16%"></a>
-        <a href="http://localhost/kocote/bulletin.php"><img src="img/bb_home.jpg" height="7%" width="16%"></a>
-        <a href="http://localhost/kocote/search.php"><img src="img/se_home.jpg" height="7%" width="16%"></a>
-        <a href="http://localhost/kocote/dm.php"><img src="img/dm_home.jpg" height="7%" width="16%"></a>
-        <a href="http://localhost/kocote/mypage.php"><img src="img/mp_home.jpg" height="7%" width="16%"></a>
+        <a href="http:../event/event.php"><img src="../img/ev_home.jpg" height="7%" width="16%"></a>
+        <a href="http:../bulletin/bulletin.php"><img src="../img/bb_home.jpg" height="7%" width="16%"></a>
+        <a href="http:../search/search.php"><img src="../img/se_home.jpg" height="7%" width="16%"></a>
+        <a href="http:../dm/dm.php"><img src="../img/dm_home.jpg" height="7%" width="16%"></a>
+        <a href="http:../mypage/mypage.php"><img src="../img/mp_home.jpg" height="7%" width="16%"></a>
 </center>
       </div>
       <br><br>
 
       <!-- 作成ボタン-->
       <div align="right" style="margin-right:248px" class="right">
-        <input type="button" onClick="location.href='http://localhost/kocote/bulletin_add.html'" class="bb_make" />
+        <input type="button" onClick="location.href='http:../bulletin/bulletin_add.html'" class="bb_make" />
       </div>
       <!--float解除-->
       <div class="clear"></div>
@@ -36,16 +36,20 @@
 
 <!-- 投稿コメント一覧の取得&表示とDB情報-->
 <?php
+//DB情報
+$db = "test_bulletin";
+$host = "localhost";
+$user = "root";
+$pass = "kappaebisen";
+
 $bb_id = $_GET['bb_id'];
 $table_name ="pf".$bb_id;
-
-$db = "test_bulletin";
  ?>
 
 <center>
 <!--掲示板タイトル取得 -->
 <?php
-$link = mysql_connect("localhost", "root", "kappaebisen") or die("MySQLへの接続に失敗しました。");
+$link = mysql_connect("$host", "$user", "$pass") or die("MySQLへの接続に失敗しました。");
 $sdb = mysql_select_db("$db", $link) or die("データベースの選択に失敗しました。");
 $sql = "SELECT bb_name FROM bb WHERE bb_id = $bb_id";
 $result_name = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
@@ -57,7 +61,7 @@ mysql_close($link) or die("MySQL切断に失敗しました。");
 
  <!--コメント数取得 -->
  <?php
- $link = mysql_connect("localhost", "root", "kappaebisen") or die("MySQLへの接続に失敗しました。");
+ $link = mysql_connect("$host", "$user", "$pass") or die("MySQLへの接続に失敗しました。");
  $sdb = mysql_select_db("$db", $link) or die("データベースの選択に失敗しました。");
  $sql = "SELECT COUNT(*) FROM $table_name";
  $result_comment_num = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
@@ -69,7 +73,7 @@ mysql_close($link) or die("MySQL切断に失敗しました。");
 
   <!--コメント数更新-->
   <?php
-  $link = mysql_connect("localhost", "root", "kappaebisen") or die("MySQLへの接続に失敗しました。");
+  $link = mysql_connect("$host", "$user", "$pass") or die("MySQLへの接続に失敗しました。");
   $sdb = mysql_select_db("$db", $link) or die("データベースの選択に失敗しました。");
   $sql = "UPDATE bb SET comment_count = $comment_num WHERE bb_id = $bb_id";
   $result_comment_update = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
@@ -95,9 +99,8 @@ mysql_close($link) or die("MySQL切断に失敗しました。");
 <?php
   $url = 0; //変数初期化
   $res_num = 1;//返信番号用
-  $pdo = new PDO("mysql:dbname=$db", "root", "kappaebisen");
+  $pdo = new PDO("mysql:dbname=$db", "$user", "$pass");
 
-//ローマ字希望か判定なし
 $roma_switch=0;
 $st = $pdo->query("SELECT comment_num, bb_id, user_last_name, user_first_name, posted_date, $table_name.user_id, posted_content FROM ur_new, $table_name WHERE ur_new.user_id = $table_name.user_id ORDER BY comment_num");
 
@@ -124,10 +127,16 @@ $st = $pdo->query("SELECT comment_num, bb_id, user_last_name, user_first_name, p
     $posted_content = nl2br($posted_content);
     $posted_content = autoLinker($posted_content);
 
+    if($user_id == 165848){
+      $url = "http:../mypage/mypage.php";
+    }else{
+    $url = "http:../mypage/parsonalpage.php?user_id=$user_id";
+    }
+
   //詳細表示
     echo "
     <tr>
-    <td class=\"top_cell\">$comment_num:&nbsp;$last_name $first_name&nbsp;&nbsp; $posted_date &nbsp;&nbsp; ID:$user_id</td>
+    <td class=\"top_cell\">$comment_num:&nbsp;<a href=\"$url\">$last_name $first_name</a>&nbsp;&nbsp; $posted_date &nbsp;&nbsp; ID:$user_id</td>
     </tr>
     <tr>
     <td class=\"middle_cell\">$posted_content</td>

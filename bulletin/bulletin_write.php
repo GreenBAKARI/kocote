@@ -5,8 +5,8 @@
 <title>高知県大学生用交流サイト「KoCo + Te」</title>
 </head>
 <center>
-<link rel="stylesheet" href="css/style.css"　type="text/css">
-<link rel="stylesheet" href="css/bb_style.css"　type="text/css">
+<link rel="stylesheet" href="../css/style.css"　type="text/css">
+<link rel="stylesheet" href="../css/bb_style.css"　type="text/css">
 <body topmargin="100" bottommargin="100">
 
 <div id="headerArea"></div>
@@ -15,10 +15,10 @@
 <!-- コメント投稿処理 -->
 <?php
 //DB情報
-$url = "localhost";
+$db = "test_bulletin";
+$host = "localhost";
 $user = "root";
 $pass = "kappaebisen";
-$db = "test_bulletin";
 
 //ユーザ情報
   $user_id = 165848;
@@ -28,14 +28,13 @@ $db = "test_bulletin";
   $comment_count = 0;
   $comment = $_POST['posted_content'];
   $bb_id = $_POST['id'];
-  //echo $_POST['id'];
   $table = "pf".$bb_id;
 ?>
 
 <!--コメント数取得 -->
 <?php
-$link = mysql_connect("localhost", "root", "kappaebisen") or die("MySQLへの接続に失敗しました。");
-$sdb = mysql_select_db("test_bulletin", $link) or die("データベースの選択に失敗しました。");
+$link = mysql_connect($host, $user, $pass) or die("MySQLへの接続に失敗しました。");
+$sdb = mysql_select_db("$db", $link) or die("データベースの選択に失敗しました。");
 $sql = "SELECT COUNT(*) FROM $table";
 $result_comment_num = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
 $comment_num = mysql_result($result_comment_num, 0);
@@ -52,7 +51,7 @@ $next_com_num = $comment_num + 1;
 <!--コメント投稿(pfテーブルにinsert)-->
 <?php
    //SQL発行
-   $pdo = new PDO("mysql:dbname=$db", "root", "kappaebisen");
+   $pdo = new PDO("mysql:dbname=$db", $user, $pass);
    $st = $pdo->prepare("INSERT INTO $table VALUES(?,?,?,?,?)");
    $st->execute(array($bb_id, $user_id, $next_com_num, $comment, $time));
  ?>
@@ -64,8 +63,8 @@ print("投稿しました。");
 
 <!--コメント数と投稿時間更新-->
 <?php
-$link = mysql_connect("localhost", "root", "kappaebisen") or die("MySQLへの接続に失敗しました。");
-$sdb = mysql_select_db("test_bulletin", $link) or die("データベースの選択に失敗しました。");
+$link = mysql_connect($host, $user, $pass) or die("MySQLへの接続に失敗しました。");
+$sdb = mysql_select_db($db, $link) or die("データベースの選択に失敗しました。");
 $sql = "UPDATE bb SET comment_count = $comment_num, last_posted_date = '$time' WHERE bb_id = $bb_id";
 $result_comment_update = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
 mysql_close($link) or die("MySQL切断に失敗しました。");

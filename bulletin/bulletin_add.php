@@ -5,8 +5,8 @@
 <title>高知県大学生用交流サイト「KoCo + Te」</title>
 </head>
 <center>
-<link rel="stylesheet" href="css/style.css"　type="text/css">
-<link rel="stylesheet" href="css/bb_style.css"　type="text/css">
+<link rel="stylesheet" href="../css/style.css"　type="text/css">
+<link rel="stylesheet" href="../css/bb_style.css"　type="text/css">
 
 <body topmargin="100" bottommargin="100">
 
@@ -16,10 +16,12 @@
 
 <!--作成されている掲示板の総数の取得 -->
 <?php
-$url = "localhost";
+//DB情報
+$db = "test_bulletin";
+$host = "localhost";
 $user = "root";
 $pass = "kappaebisen";
-$db = "test_bulletin";
+
 $table = "bb";
 $category = "category";
 ?>
@@ -39,8 +41,8 @@ $time = date('Y-m-d H:i:s');
 
  <!--最終IDの取得-->
  <?php
- $link = mysql_connect("localhost", "root", "kappaebisen") or die("MySQLへの接続に失敗しました。");
- $sdb = mysql_select_db("test_bulletin", $link) or die("データベースの選択に失敗しました。");
+ $link = mysql_connect($host, $user, $pass) or die("MySQLへの接続に失敗しました。");
+ $sdb = mysql_select_db("$db", $link) or die("データベースの選択に失敗しました。");
  $sql = "SELECT bb_id FROM bb WHERE bb_id = (SELECT max(bb_id) FROM bb)";
  $result_last_id = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
  $last_id = mysql_result($result_last_id, 0);
@@ -54,16 +56,13 @@ $time = date('Y-m-d H:i:s');
   $next_id = $last_id + 1;
   $user_id = 154697;
   //$user_id = $_COOKIE["user_id"];
-  $pdo = new PDO("mysql:dbname=$db", "root", "kappaebisen");
+  $pdo = new PDO("mysql:dbname=$db", "$user", "kappaebisen");
   $st = $pdo->prepare("INSERT INTO $table VALUES(?,?,?,?,?,?,?)");
   $st->execute(array($next_id, $user_id,$_POST['bb_name'],$_POST['category'], $comment_count, $time, $time));
 ?>
 
 <!--pfテーブル作成-->
 <?php
-$host="localhost"; // ホスト名
-$user="root"; // ユーザー名
-$pass="kappaebisen"; // パスワード
 $dbname="$db"; // DB名
 $tbname="pf".$next_id; // テーブル名
 
