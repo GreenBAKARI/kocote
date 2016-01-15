@@ -19,8 +19,6 @@
 					src="img/bb_home.jpg" height="7%" width="16%"></a> <a
 					href="http://localhost/php/v0/search.php"><img
 					src="img/se_home.jpg" height="7%" width="16%"></a> <a
-					href="http://localhost/php/v0/dm.php"><img src="img/dm_home.jpg"
-					height="7%" width="16%"></a> <a
 					href="http://localhost/php/v0/mypage.php"><img
 					src="img/mp_home.jpg" height="7%" width="16%"></a>
 			</div>
@@ -65,7 +63,6 @@ if (! $sql_result_fev_select = mysql_query ( 'SELECT * FROM ev, fev WHERE ev.EVE
  * jikoshokai : 自己紹介
  */
 echo '<form action="mypage_conf.php" method="post" enctype="multipart/form-data">';
-//echo '<form action="mypage_conf.php" method="post">';
 // ヘッダ画像
 $ua = mysql_fetch_assoc ( $sql_result_ua_select );
 echo '<p>';
@@ -137,7 +134,7 @@ $interest = array (
 		"ファッション",
 		"漫画 ",
 		"料理 ",
-		"旅行 ",
+		"旅行 "
 );
 
 // 興味・関心に格納されている文字列の長さを取得

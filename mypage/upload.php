@@ -19,8 +19,6 @@
 					src="img/bb_home.jpg" height="7%" width="16%"></a> <a
 					href="http://localhost/php/v0/search.php"><img
 					src="img/se_home.jpg" height="7%" width="16%"></a> <a
-					href="http://localhost/php/v0/dm.php"><img src="img/dm_home.jpg"
-					height="7%" width="16%"></a> <a
 					href="http://localhost/php/v0/mypage.php"><img
 					src="img/mp_home.jpg" height="7%" width="16%"></a>
 			</div>
@@ -58,9 +56,6 @@ $str = mb_convert_encoding ( $imgdata, "UTF-8" );
 $icon_imgdata = addslashes ( $imgdata );
 if (! $sql_result_ua_update = mysql_query ( 'UPDATE ua SET HEADER_IMAGE="' . $header_imgdata . '", ICON_IMAGE="' . $icon_imgdata . '"' ))
 	die ( '@ua, HEADER_IMAGEテーブル UPDATE失敗' . mysql_error () );
-	// if (isset ( $_POST ['header_imgdata'] ) & isset ( $_POST ['icon_imgdata'] ))
-	// if (! $sql_result_ua_update = mysql_query ( 'UPDATE ua SET HEADER_IMAGE="' . $_POST ['header_imgdata'] . 'ICON_IMAGE="' . $_POST ['icon_imgdata'] . '"' ))
-	// die ( '@ua, HEADER_IMAGEテーブル UPDATE失敗' . mysql_error () );
 
 print ("登録が終了しました<BR>") ;
 echo '<input type="button" value="個人ページ画面へ戻る" onclick="location.href=\'mypage.php\'">';
