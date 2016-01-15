@@ -69,12 +69,11 @@ echo '<p>';
 echo '<img src="./img_get.php?img_type=HEADER_IMAGE&img_table=ua"/>';
 if (move_uploaded_file ( $_FILES ['header_img'] ['tmp_name'], 'uploaded_header' . $USER_ID . '.jpg' )) {
 	echo '<img src="uploaded_header' . $USER_ID . '.jpg">';
-	$fp = fopen ( "uploaded_header.jpg", "rb" );
-	$imgdata = fread ( $fp, filesize ( "uploaded_header.jpg" ) );
+	$fp = fopen ( "uploaded_header" . $USER_ID . ".jpg", "rb" );
+	$imgdata = fread ( $fp, filesize ( "uploaded_header" . $USER_ID . ".jpg" ) );
 	fclose ( $fp );
 	$str = mb_convert_encoding ( $imgdata, "UTF-8" );
 	$header_imgdata = addslashes ( $imgdata );
-	//echo '<input type="hidden" name="header_imgdata" value="' . $header_imgdata . '">';
 } else {
 	echo "ファイルを選択してください。";
 }
@@ -85,12 +84,11 @@ echo '<p>';
 echo '<img src="./img_get.php?img_type=ICON_IMAGE&img_table=ua"/>';
 if (move_uploaded_file ( $_FILES ['icon_img'] ['tmp_name'], 'uploaded_icon' . $USER_ID . '.jpg' )) {
 	echo '<img src="uploaded_icon' . $USER_ID . '.jpg">';
-	$fp = fopen ( "uploaded_icon.jpg", "rb" );
-	$imgdata = fread ( $fp, filesize ( "uploaded_icon.jpg" ) );
+	$fp = fopen ( "uploaded_icon" . $USER_ID . ".jpg", "rb" );
+	$imgdata = fread ( $fp, filesize ( "uploaded_icon" . $USER_ID . ".jpg" ) );
 	fclose ( $fp );
 	$str = mb_convert_encoding ( $imgdata, "UTF-8" );
 	$icon_imgdata = addslashes ( $imgdata );
-	//echo '<input type="hidden" name="header_imgdata" value="' . $icon_imgdata . '">';
 } else {
 	echo "ファイルを選択してください。";
 }
@@ -101,31 +99,13 @@ echo '<input type="submit" value="確定する" name="upload" >';
 // 「編集する」ボタン
 echo '<input type="button" value="編集する" name="upload" onClick="history.back()">';
 
-/* ▽ 名前・性別・名前の表記 ▽ */
+/* ▽ 名前・性別 ▽ */
 /* 名前 */
 $ur = mysql_fetch_assoc ( $sql_result_ur_select );
-/*
- * 名前の表記
- * 0 ⇒ 日本語
- * 1 ⇒ ローマ字
- */
-
-if ($_POST ['hyoki'] == 0) {
-	echo ("<p>" . $ur ['USER_LAST_NAME'] . " " . $ur ['USER_FIRST_NAME'] . "	");
-} else {
-	echo ("<p>" . $ur ['USER_LAST_ROMA'] . " " . $ur ['USER_FIRST_ROMA'] . "	");
-}
-echo '<input type="hidden" name="hyoki" value="' . $_POST ['hyoki'] . '">';
+echo ("<p>" . $ur ['USER_LAST_NAME'] . " " . $ur ['USER_FIRST_NAME'] . "	");
 
 /* 性別 */
 echo ("　" . $ur ['SEX'] . "	");
-
-/* 名前の表記 */
-$hyoki = array (
-		"日本語",
-		"アルファベット"
-);
-echo ' 名前の表記 : ' . $hyoki [$_POST ['hyoki']];
 
 /* ▽ 大学・学年・学科 ▽ */
 /* 大学・学年・学科 */

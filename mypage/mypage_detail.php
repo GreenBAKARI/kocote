@@ -80,27 +80,12 @@ echo '</p>';
 // 「編集を確認する」ボタン
 echo '<input type="submit" value="編集を確認する" name="upload" >';
 
-/* ▽ 名前・性別・名前の表記 ▽ */
+/* ▽ 名前・性別 ▽ */
 /* 名前 */
 $ur = mysql_fetch_assoc ( $sql_result_ur_select );
 echo ("<p>" . $ur ['USER_LAST_NAME'] . " " . $ur ['USER_FIRST_NAME'] . "	");
 /* 性別 */
 echo ("　" . $ur ['SEX'] . "	");
-/* 名前の表記-ラジオボタン */
-$hyoki = array (
-		"日本語",
-		"アルファベット"
-);
-$JP = 0; // 日本語
-$RO = 1; // ローマ字
-echo ' 名前の表記 : ';
-foreach ( $hyoki as $key => $value ) {
-	echo '<input type="radio" name="hyoki" value="' . $key . '"';
-	// 選択済み判定(日本語を選択していると仮定)
-	if ($key == $JP)
-		echo " checked";
-	echo '>' . $value;
-}
 echo "</p>";
 
 /* ▽ 大学・学年・学科 ▽ */
