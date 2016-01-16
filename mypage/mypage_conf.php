@@ -12,17 +12,16 @@
 		<form id="loginForm" name="loginForm" action="" method="POST">
 			<!-- <?php echo $errorMessage ?> -->
 
+			<!-- 機能選択ボタン -->
 			<div id="box">
-				<a href="http://localhost/php/v0/event.php"><img
-					src="img/ev_home.jpg" height="7%" width="16%"></a> <a
-					href="http://localhost/php/v0/bulletin.php"><img
-					src="img/bb_home.jpg" height="7%" width="16%"></a> <a
-					href="http://localhost/php/v0/search.php"><img
-					src="img/se_home.jpg" height="7%" width="16%"></a> <a
-					href="http://localhost/php/v0/mypage.php"><img
-					src="img/mp_home.jpg" height="7%" width="16%"></a>
+				<a href="../event/event.php"><img src="../img/ev_home.jpg"
+					height="13%" width="16%"></a> <a href="../bulletin/bulletin.php"><img
+					src="../img/bb_home.jpg" height="13%" width="16%"></a> <a
+					href="../search/search.php"><img src="../img/se_home.jpg"
+					height="13%" width="16%"></a> <a href="../mypage/mypage.php"><img
+					src="../img/mp_home.jpg" height="13%" width="16%"></a>
 			</div>
-			<br> <br> <br>
+			<br>
 		</form>
 
 		<!-- 本体start -->

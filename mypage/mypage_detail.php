@@ -12,17 +12,16 @@
 		<form id="loginForm" name="loginForm" action="" method="POST">
 			<!-- <?php echo $errorMessage ?> -->
 
+			<!-- 機能選択ボタン -->
 			<div id="box">
-				<a href="http://localhost/php/v0/event.php"><img
-					src="img/ev_home.jpg" height="7%" width="16%"></a> <a
-					href="http://localhost/php/v0/bulletin.php"><img
-					src="img/bb_home.jpg" height="7%" width="16%"></a> <a
-					href="http://localhost/php/v0/search.php"><img
-					src="img/se_home.jpg" height="7%" width="16%"></a> <a
-					href="http://localhost/php/v0/mypage.php"><img
-					src="img/mp_home.jpg" height="7%" width="16%"></a>
+				<a href="../event/event.php"><img src="../img/ev_home.jpg"
+					height="13%" width="16%"></a> <a href="../bulletin/bulletin.php"><img
+					src="../img/bb_home.jpg" height="13%" width="16%"></a> <a
+					href="../search/search.php"><img src="../img/se_home.jpg"
+					height="13%" width="16%"></a> <a href="../mypage/mypage.php"><img
+					src="../img/mp_home.jpg" height="13%" width="16%"></a>
 			</div>
-			<br> <br> <br>
+			<br>
 		</form>
 
 		<!-- 本体start -->
@@ -117,31 +116,53 @@ switch ($ur ['GRADE']) {
 }
 echo "<p>" . $ur ["COLLEGE_NAME"] . " " . $grade . " " . "学科: ";
 echo '<input type="hidden" name="grade" value="' . $grade . '">';
-$gakka = array (
+$gakka_KU = array (
 		// 高知大学
 		"人文社会科学",
 		"自然科学",
 		"医療学",
-		"総合化学",
+		"総合化学"
+);
 
+$gakka_UK = array (
 		// 高知県立大学
 		"文化学",
 		"看護学",
 		"社会福祉学",
-		"健康栄養学",
+		"健康栄養学"
+);
 
+$gakka_KUT = array (
 		// 高知工科大学
 		"情報学",
 		"環境理工学",
 		"システム工学"
 );
 echo '<select name="gakka">';
-foreach ( $gakka as $key => $value ) {
-	echo '<option value="' . $value . '"';
-	// 選択済み判定
-	if ($ua ["DEPARTMENT_NAME"] == $value)
-		echo " selected";
-	echo '>' . $value . '</option>';
+if ($ur ["COLLEGE_NAME"] == "高知大学") {
+	foreach ( $gakka_KU as $key => $value ) {
+		echo '<option value="' . $value . '"';
+		// 選択済み判定
+		if ($ua ["DEPARTMENT_NAME"] == $value)
+			echo " selected";
+		echo '>' . $value . '</option>';
+	}
+} else if ($ur ["COLLEGE_NAME"] == "高知県立大学") {
+	foreach ( $gakka_UK as $key => $value ) {
+		echo '<option value="' . $value . '"';
+		// 選択済み判定
+		if ($ua ["DEPARTMENT_NAME"] == $value)
+			echo " selected";
+		echo '>' . $value . '</option>';
+	}
+} else if ($ur ["COLLEGE_NAME"] == "高知工科大学") {
+	foreach ( $gakka_KUT as $key => $value ) {
+		echo '<option value="' . $value . '"';
+		// 選択済み判定
+		if ($ua ["DEPARTMENT_NAME"] == $value)
+			echo " selected";
+		echo '>' . $value . '</option>';
+	}
 }
 echo "</select></p>";
 
