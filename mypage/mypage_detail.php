@@ -44,15 +44,15 @@ if (! $db_selected)
 	die ( 'データベース選択失敗' . mysql_error () );
 
 	// クエリの発行
-if (! $sql_result_ua_select = mysql_query ( 'SELECT * FROM ua WHERE USER_ID = ' . $user_id ))
+if (! $sql_result_ua_select = mysql_query ( 'SELECT * FROM ua WHERE USER_ID=' . $user_id ))
 	die ( '@uaテーブル SELECT失敗' . mysql_error () );
-if (! $sql_result_ur_select = mysql_query ( 'SELECT * FROM ur WHERE USER_ID = ' . $user_id ))
+if (! $sql_result_ur_select = mysql_query ( 'SELECT * FROM ur WHERE USER_ID=' . $user_id ))
 	die ( '@urテーブル SELECT失敗' . mysql_error () );
-if (! $sql_result_ev_select = mysql_query ( 'SELECT * FROM ev' ))
+if (! $sql_result_ev_select = mysql_query ( 'SELECT * FROM ev WHERE USER_ID=' . $user_id ))
 	die ( '@ｅｖテーブル SELECT失敗' . mysql_error () );
-if (! $sql_result_pev_select = mysql_query ( 'SELECT * FROM ev, pev WHERE ev.EVENT_ID=pev.EVENT_ID' ))
+if (! $sql_result_pev_select = mysql_query ( 'SELECT * FROM ev, pev WHERE ev.EVENT_ID=pev.EVENT_ID AND pev.USER_ID=' . $user_id . ' ORDER BY ev.EVENT_START ASC LIMIT 5' ))
 	die ( '@ev, pevテーブル SELECT失敗' . mysql_error () );
-if (! $sql_result_fev_select = mysql_query ( 'SELECT * FROM ev, fev WHERE ev.EVENT_ID=fev.EVENT_ID' ))
+if (! $sql_result_fev_select = mysql_query ( 'SELECT * FROM ev, fev WHERE ev.EVENT_ID=fev.EVENT_ID AND fev.USER_ID=' . $user_id . ' ORDER BY ev.EVENT_START ASC LIMIT 5' ))
 	die ( '@ev, fevテーブル SELECT失敗' . mysql_error () );
 
 	/*
@@ -95,7 +95,28 @@ echo "</p>";
 
 /* ▽ 大学・学年・学科 ▽ */
 /* 大学・学年・学科 */
-echo "<p>" . $ur ["COLLEGE_NAME"] . "大学" . " " . $ur ["GRADE"] . "年" . " " . "学科: ";
+switch ($ur ['GRADE']) {
+	case 1 :
+		$grade = '学部1年';
+		break;
+	case 2 :
+		$grade = '学部2年';
+		break;
+	case 3 :
+		$grade = '学部3年';
+		break;
+	case 4 :
+		$grade = '学部4年';
+		break;
+	case 5 :
+		$grade = '修士s1年';
+		break;
+	case 6 :
+		$grade = '修士2年';
+		break;
+}
+echo "<p>" . $ur ["COLLEGE_NAME"] . " " . $grade . " " . "学科: ";
+echo '<input type="hidden" name="grade" value="' . $grade . '">';
 $gakka = array (
 		// 高知大学
 		"人文社会科学",

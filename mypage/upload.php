@@ -48,18 +48,20 @@ if (isset ( $_POST ['gakka'] ) && isset ( $_POST ['interest'] ) && isset ( $_POS
 	}
 }
 
-$fp = fopen ( "img_header/uploaded_header" . $user_id . ".jpg", "rb" );
-$imgdata = fread ( $fp, filesize ( "img_header/uploaded_header" . $user_id . ".jpg" ) );
+$fp = fopen ( "uploaded_header" . $user_id . ".jpg", "rb" );
+$imgdata = fread ( $fp, filesize ( "uploaded_header" . $user_id . ".jpg" ) );
 fclose ( $fp );
 $str = mb_convert_encoding ( $imgdata, "UTF-8" );
 $header_imgdata = addslashes ( $imgdata );
-$fp = fopen ( "img_icon/uploaded_icon" . $user_id . ".jpg", "rb" );
-$imgdata = fread ( $fp, filesize ( "img_icon/uploaded_icon" . $user_id . ".jpg" ) );
+$fp = fopen ( "uploaded_icon" . $user_id . ".jpg", "rb" );
+$imgdata = fread ( $fp, filesize ( "uploaded_icon" . $user_id . ".jpg" ) );
 fclose ( $fp );
 $str = mb_convert_encoding ( $imgdata, "UTF-8" );
 $icon_imgdata = addslashes ( $imgdata );
 if (! $sql_result_ua_update = mysql_query ( 'UPDATE ua SET HEADER_IMAGE="' . $header_imgdata . '", ICON_IMAGE="' . $icon_imgdata . '" WHERE USER_ID = ' . $user_id ))
 	die ( '@ua, HEADER_IMAGEテーブル UPDATE失敗' . mysql_error () );
+unlink("uploaded_header" . $user_id . ".jpg");
+unlink("uploaded_icon" . $user_id . ".jpg");
 
 print ("登録が終了しました<BR>") ;
 echo '<input type="button" value="個人ページ画面へ戻る" onclick="location.href=\'mypage.php\'">';

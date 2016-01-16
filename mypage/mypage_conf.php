@@ -50,15 +50,15 @@ if (! $db_selected)
 	die ( 'データベース選択失敗' . mysql_error () );
 
 	// クエリの発行
-if (! $sql_result_ua_select = mysql_query ( 'SELECT * FROM ua' ))
+if (! $sql_result_ua_select = mysql_query ( 'SELECT * FROM ua WHERE USER_ID=' . $user_id ))
 	die ( '@uaテーブル SELECT失敗' . mysql_error () );
-if (! $sql_result_ur_select = mysql_query ( 'SELECT * FROM ur' ))
+if (! $sql_result_ur_select = mysql_query ( 'SELECT * FROM ur WHERE USER_ID=' . $user_id ))
 	die ( '@urテーブル SELECT失敗' . mysql_error () );
-if (! $sql_result_ev_select = mysql_query ( 'SELECT * FROM ev LIMIT 5' ))
+if (! $sql_result_ev_select = mysql_query ( 'SELECT * FROM ev WHERE USER_ID=' . $user_id ))
 	die ( '@ｅｖテーブル SELECT失敗' . mysql_error () );
-if (! $sql_result_pev_select = mysql_query ( 'SELECT * FROM ev, pev WHERE ev.EVENT_ID=pev.EVENT_ID LIMIT 5' ))
+if (! $sql_result_pev_select = mysql_query ( 'SELECT * FROM ev, pev WHERE ev.EVENT_ID=pev.EVENT_ID AND pev.USER_ID=' . $user_id . ' ORDER BY ev.EVENT_START ASC LIMIT 5' ))
 	die ( '@ev, pevテーブル SELECT失敗' . mysql_error () );
-if (! $sql_result_fev_select = mysql_query ( 'SELECT * FROM ev, fev WHERE ev.EVENT_ID=fev.EVENT_ID LIMIT 5' ))
+if (! $sql_result_fev_select = mysql_query ( 'SELECT * FROM ev, fev WHERE ev.EVENT_ID=fev.EVENT_ID AND fev.USER_ID=' . $user_id . ' ORDER BY ev.EVENT_START ASC LIMIT 5' ))
 	die ( '@ev, fevテーブル SELECT失敗' . mysql_error () );
 
 echo '<form action="upload.php" method="post" enctype="multipart/form-data">';
@@ -69,8 +69,8 @@ $ua = mysql_fetch_assoc ( $sql_result_ua_select );
 // ヘッダ画像
 echo '<p>';
 echo '<img src="./img_get.php?user_id=' . $user_id . '&img_type=HEADER_IMAGE&img_table=ua"/>⇒';
-if (move_uploaded_file ( $_FILES ['header_img'] ['tmp_name'], 'img_header/uploaded_header' . $user_id . '.jpg' )) {
-	echo '<img src="img_header/uploaded_header' . $user_id . '.jpg">';
+if (move_uploaded_file ( $_FILES ['header_img'] ['tmp_name'], 'uploaded_header' . $user_id . '.jpg' )) {
+	echo '<img src="uploaded_header' . $user_id . '.jpg">';
 } else {
 	echo "ファイルを選択してください。";
 }
@@ -79,8 +79,8 @@ echo '</p>';
 // アイコン画像
 echo '<p>';
 echo '<img src="./img_get.php?user_id=' . $user_id . '&img_type=ICON_IMAGE&img_table=ua"/>⇒';
-if (move_uploaded_file ( $_FILES ['icon_img'] ['tmp_name'], 'img_icon/uploaded_icon' . $user_id . '.jpg' )) {
-	echo '<img src="img_icon/uploaded_icon' . $user_id . '.jpg">';
+if (move_uploaded_file ( $_FILES ['icon_img'] ['tmp_name'], 'uploaded_icon' . $user_id . '.jpg' )) {
+	echo '<img src="uploaded_icon' . $user_id . '.jpg">';
 } else {
 	echo "ファイルを選択してください。";
 }
@@ -105,7 +105,7 @@ echo ("　" . $sex);
 
 /* ▽ 大学・学年・学科 ▽ */
 /* 大学・学年・学科 */
-echo "<p>" . $ur ["COLLEGE_NAME"] . "大学" . " " . $ur ["GRADE"] . "年" . " " . "学科:" . $_POST ['gakka'];
+echo "<p>" . $ur ["COLLEGE_NAME"] . " " . $_POST ['grade'] . " " . "学科:" . $_POST ['gakka'];
 echo '<input type="hidden" name="gakka" value="' . $_POST ['gakka'] . '">';
 
 /* ▽ 興味・関心のある分野 ▽ */
