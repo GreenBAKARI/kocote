@@ -64,7 +64,6 @@
     <a href="http://localhost/php/v0event.php"><img src="img/ev_home.jpg" height="7%" width="16%"></a>
     <a href="http://localhost/php/v0/bulletin.php"><img src="img/bb_home.jpg" height="7%" width="16%"></a>
     <a href="http://localhost/php/v0/search.php"><img src="img/se_home.jpg" height="7%" width="16%"></a>
-    <a href="http://localhost/php/v0/dm.php"><img src="img/dm_home.jpg" height="7%" width="16%"></a>
     <a href="http://localhost/php/v0/mypage.php"><img src="img/mp_home.jpg" height="7%" width="16%"></a></div>
   <br><br><br>
 <p><?php echo $message; ?></p>
