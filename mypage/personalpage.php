@@ -1,11 +1,9 @@
 <?php
-/*
+//表示する利用者のIDを取得
     $user_id = $_GET['user_id'];
     if (empty($user_id)) {
       header("LOCATION: ./mypage.php");
     }
-*/
-    $user_id = 1;
 ?>
 
 <!-- 利用者情報の取得 -->
@@ -294,7 +292,6 @@
   <a href="../event/event.php"><img src="../img/ev_home.jpg" height="13%" width="16%"></a>
   <a href="../bulletin/bulletin.php"><img src="../img/bb_home.jpg" height="13%" width="16%"></a>
   <a href="../search/search.php"><img src="../img/se_home.jpg" height="13%" width="16%"></a>
-  <a href="../dm/dm.php"><img src="../img/dm_home.jpg" height="13%" width="16%"></a>
   <a href="../mypage/mypage.php"><img src="../img/mp_home.jpg" height="13%" width="16%"></a></div>
 <br>
 
@@ -306,14 +303,44 @@
 
 <!-- 利用者情報の表示-->
 <table style="position:absolute;left:500px;top:450px;">
-  <!-- 利用者名の表示-->
+  <!-- 利用者名と性別の表示-->
   <tr>
-    <td class="name-size"><?php echo  $last_name[0], $first_name[0],'　', $sex[0];?></td>
+    <td class="name-size">
+      <?php
+      //利用者名の表示
+          echo  $last_name[0], $first_name[0],'　';
+      //性別の表示
+          if($sex[0] == 'm') {
+            echo '<font color="#0000ff">男性</font>';
+          }else {
+            echo '<font color="#ff0000">女性</font>';
+          }
+      ?>
+    </td>
   </tr>
   <br>
-  <!-- 利用者の大学、学部、学年を表示-->
+  <!-- 利用者の大学名、学部名、学年を表示-->
   <tr>
-    <td class="space"><?php echo $college_name[0], '　', $grade[0], '年', '　', $department_name[0];?></td>
+    <td class="space">
+      <?php
+      //大学名と学部名を表示
+          echo $college_name[0], '　', $department_name[0], '　';
+      //学年を表示
+          if($grade[0] == '1') {
+            echo '学部1年';
+          }else if($grade[0] == '2') {
+            echo '学部2年';
+          }else if($grade[0] == '3') {
+            echo '学部3年';
+          }else if($grade[0] == '4') {
+            echo '学部4年';
+          }else if($grade[0] == '5') {
+            echo '修士1年';
+          }else{
+            echo '修士2年';
+          }
+      ?>
+    </td>
   </tr>
 
   <!-- 利用者の興味関心のある分野を表示-->
