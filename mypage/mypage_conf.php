@@ -62,13 +62,15 @@ if (! $sql_result_fev_select = mysql_query ( 'SELECT * FROM ev, fev WHERE ev.EVE
 	die ( '@ev, fevテーブル SELECT失敗' . mysql_error () );
 
 echo '<form action="upload.php" method="post" enctype="multipart/form-data">';
+// user_id をmypage_conf.phpに伝播
+echo '<input type="hidden" name="user_id" value="' . $user_id . '">';
 // 画像
 $ua = mysql_fetch_assoc ( $sql_result_ua_select );
 // ヘッダ画像
 echo '<p>';
-echo '<img src="./img_get.php?img_type=HEADER_IMAGE&img_table=ua"/>⇒';
+echo '<img src="./img_get.php?user_id=' . $user_id . '&img_type=HEADER_IMAGE&img_table=ua"/>⇒';
 if (move_uploaded_file ( $_FILES ['header_img'] ['tmp_name'], 'img_header/uploaded_header' . $user_id . '.jpg' )) {
-	echo '<img src="uploaded_header' . $user_id . '.jpg">';
+	echo '<img src="img_header/uploaded_header' . $user_id . '.jpg">';
 } else {
 	echo "ファイルを選択してください。";
 }
@@ -76,9 +78,9 @@ echo '</p>';
 
 // アイコン画像
 echo '<p>';
-echo '<img src="./img_get.php?img_type=ICON_IMAGE&img_table=ua"/>⇒';
+echo '<img src="./img_get.php?user_id=' . $user_id . '&img_type=ICON_IMAGE&img_table=ua"/>⇒';
 if (move_uploaded_file ( $_FILES ['icon_img'] ['tmp_name'], 'img_icon/uploaded_icon' . $user_id . '.jpg' )) {
-	echo '<img src="uploaded_icon' . $user_id . '.jpg">';
+	echo '<img src="img_icon/uploaded_icon' . $user_id . '.jpg">';
 } else {
 	echo "ファイルを選択してください。";
 }

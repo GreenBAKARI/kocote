@@ -1,5 +1,5 @@
 <?php
-$user_id = $_POST ['user_id'];
+$user_id = $_GET ['user_id'];
 if (empty ( $user_id )) {
 	header ( "LOCATION: ./mypage.php" );
 }
@@ -16,9 +16,6 @@ $dbLink = mysql_select_db ( 'greenbakari', $link );
  * img_table :
  */
 
-// ▽ idに該当する利用者
-// if (! $sql_result_icon_image = mysql_query ( "SELECT " . $_GET ['img_type'] . " FROM " . $_GET ['img_table'] . " WHERE USER_ID = '" . $_POST ['id'] . "'" ))
-// ▽ 1番目に該当する利用者を仮定
 if (! $sql_result_image = mysql_query ( "SELECT " . $_GET ['img_type'] . " FROM " . $_GET ['img_table'] . " WHERE USER_ID = '" . $user_id . "'" ))
 	die ( '画像取得失敗' . mysql_error () );
 

@@ -27,10 +27,11 @@
 
 		<!-- 本体start -->
 <?php
-$user_id = $_GET ['user_id'];
+$user_id = $_POST ['user_id'];
 if (empty ( $user_id )) {
 	header ( "LOCATION: ./mypage.php" );
 }
+
 // MySQLと接続
 $link = mysql_connect ( 'localhost', 'root' );
 // データベースを選択
@@ -47,13 +48,13 @@ if (isset ( $_POST ['gakka'] ) && isset ( $_POST ['interest'] ) && isset ( $_POS
 	}
 }
 
-$fp = fopen ( "uploaded_header" . $user_id . ".jpg", "rb" );
-$imgdata = fread ( $fp, filesize ( "uploaded_header" . $user_id . ".jpg" ) );
+$fp = fopen ( "img_header/uploaded_header" . $user_id . ".jpg", "rb" );
+$imgdata = fread ( $fp, filesize ( "img_header/uploaded_header" . $user_id . ".jpg" ) );
 fclose ( $fp );
 $str = mb_convert_encoding ( $imgdata, "UTF-8" );
 $header_imgdata = addslashes ( $imgdata );
-$fp = fopen ( "uploaded_icon" . $user_id . ".jpg", "rb" );
-$imgdata = fread ( $fp, filesize ( "uploaded_icon" . $user_id . ".jpg" ) );
+$fp = fopen ( "img_icon/uploaded_icon" . $user_id . ".jpg", "rb" );
+$imgdata = fread ( $fp, filesize ( "img_icon/uploaded_icon" . $user_id . ".jpg" ) );
 fclose ( $fp );
 $str = mb_convert_encoding ( $imgdata, "UTF-8" );
 $icon_imgdata = addslashes ( $imgdata );

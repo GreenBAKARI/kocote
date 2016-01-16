@@ -66,15 +66,16 @@ if (! $sql_result_fev_select = mysql_query ( 'SELECT * FROM ev, fev WHERE ev.EVE
 echo '<form action="mypage_conf.php" method="post" enctype="multipart/form-data">';
 // user_id をmypage_conf.phpに伝播
 echo '<input type="hidden" name="user_id" value="' . $user_id . '">';
-// ヘッダ画像
+// 画像
 $ua = mysql_fetch_assoc ( $sql_result_ua_select );
+// ヘッダ画像
 echo '<p>';
-echo '<img src="./img_get.php?img_type=HEADER_IMAGE&img_table=ua">';
+echo '<img src="./img_get.php?user_id=' . $user_id . '&img_type=HEADER_IMAGE&img_table=ua">';
 echo 'ヘッダ画像ファイル選択：<input type="file" name="header_img" size="50"><BR>';
 echo '</p>';
 // アイコン画像
 echo '<p>';
-echo '<img src="./img_get.php?img_type=ICON_IMAGE&img_table=ua">';
+echo '<img src="./img_get.php?user_id=' . $user_id . '&img_type=ICON_IMAGE&img_table=ua">';
 echo 'アイコン画像ファイル選択:<input type="file" name="icon_img" size="50"><BR>';
 echo '</p>';
 // 「編集を確認する」ボタン
