@@ -1,3 +1,11 @@
+<?php
+    session_start();
+    $user_id = $_SESSION['user_id'];
+    if (empty($user_id)) {
+        header("LOCATION: ../login.php");
+    }
+?>
+
 <html>
 <head>
 <meta charset = "utf-8">
@@ -32,8 +40,6 @@
 
 
 <?php
-$user_id = 1;
-
 $url = 'localhost';  //ローカル環境へのURL
 $user = 'root';    //MySQLサーバの利用者ID
 $pass = 'root';      //MySQLのパスワード
