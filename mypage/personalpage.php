@@ -6,7 +6,7 @@
     }
 ?>
 
-<!-- 利用者情報の取得 -->
+<!-- 利用者付加情報の取得 -->
 <?php
     $link = mysql_connect('localhost', 'root', 'root');
     if (!$link) {
@@ -19,28 +19,55 @@
     mysql_set_charset('utf8');
 
     //利用者情報の取得
-    $sql_UR_UA = "SELECT UR.USER_LAST_NAME, UR.USER_FIRST_NAME, UR.USER_LAST_ROMA, UR.USER_FIRST_ROMA,
-                  UR.SEX, UR.COLLEGE_NAME, UR.GRADE, UA.DEPARTMENT_NAME, UA.INTEREST, UA.PROFILE
-                  FROM UR, UA WHERE UR.USER_ID = UA.USER_ID
-                  AND UR.USER_ID = $user_id";
+    $sql_UR = "SELECT USER_LAST_NAME, USER_FIRST_NAME, USER_LAST_ROMA, USER_FIRST_ROMA,
+                  SEX, COLLEGE_NAME
+                  FROM UR WHERE USER_ID = $user_id";
 
-    $result_UR_UA = mysql_query($sql_UR_UA, $link);
+    $result_UR = mysql_query($sql_UR, $link);
 
-    if (!$result_UR_UA) {
+    if (!$result_UR) {
       die('クエリが失敗しました。'.mysql_error());
     }
 
-    while ($row_UR_UA = mysql_fetch_array($result_UR_UA)) {
-      $last_name[] = $row_UR_UA['USER_LAST_NAME'];
-      $first_name[] = $row_UR_UA['USER_FIRST_NAME'];
-      $last_roma[] = $row_UR_UA['USER_LAST_ROMA'];
-      $first_roma[] = $row_UR_UA['USER_FIRST_ROMA'];
-      $sex[] = $row_UR_UA['SEX'];
-      $college_name[] = $row_UR_UA['COLLEGE_NAME'];
-      $grade[] = $row_UR_UA['GRADE'];
-      $department_name[] = $row_UR_UA['DEPARTMENT_NAME'];
-      $profile[] = $row_UR_UA['PROFILE'];
-      $interest[]=$row_UR_UA['INTEREST'];
+    while ($row_UR = mysql_fetch_array($result_UR)) {
+      $last_name[] = $row_UR['USER_LAST_NAME'];
+      $first_name[] = $row_UR['USER_FIRST_NAME'];
+      $last_roma[] = $row_UR['USER_LAST_ROMA'];
+      $first_roma[] = $row_UR['USER_FIRST_ROMA'];
+      $sex[] = $row_UR['SEX'];
+      $college_name[] = $row_UR['COLLEGE_NAME'];
+      $grade[] = $row_UR['GRADE'];
+    }
+    mysql_close($link);
+?>
+
+<!-- 利用者付加情報の取得 -->
+<?php
+    $link = mysql_connect('localhost', 'root', 'root');
+    if (!$link) {
+      die('接続失敗です。' .mysql_error());
+    }
+    $db_selected = mysql_select_db('greenbakari', $link);
+    if (!$db_selected) {
+      die('データベース選択失敗です。'.mysql_error());
+    }
+    mysql_set_charset('utf8');
+
+    //利用者情報の取得
+    $sql_UA = "SELECT DEPARTMENT_NAME, INTEREST, PROFILE
+                  FROM UA WHERE USER_ID = USER_ID
+                  AND USER_ID = $user_id";
+
+    $result_UA = mysql_query($sql_UA, $link);
+
+    if (!$result_UA) {
+      die('クエリが失敗しました。'.mysql_error());
+    }
+
+    while ($row_UA = mysql_fetch_array($result_UA)) {
+      $department_name[] = $row_UA['DEPARTMENT_NAME'];
+      $profile[] = $row_UA['PROFILE'];
+      $interest[]=$row_UA['INTEREST'];
     }
     //興味・関心を表す値を取り出す
     //興味・関心に格納されている値の文字数を数える
@@ -336,7 +363,7 @@
             echo '学部4年';
           }else if($grade[0] == '5') {
             echo '修士1年';
-          }else{
+          }else if($grade[0] == '6') {
             echo '修士2年';
           }
       ?>
