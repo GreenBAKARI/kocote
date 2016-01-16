@@ -1,4 +1,12 @@
 <?php
+    session_start();
+    $user_id = $_SESSION['user_id'];
+    if (empty($user_id)) {
+         header("LOCATION: ../login.php");
+    }
+?>
+
+<?php
     $event_detail_image = array();
     $event_icon_image = array();
     $event_id = $_GET['event_id'];
