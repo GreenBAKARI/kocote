@@ -58,7 +58,7 @@ $imgdata = fread ( $fp, filesize ( "img_icon/uploaded_icon" . $user_id . ".jpg" 
 fclose ( $fp );
 $str = mb_convert_encoding ( $imgdata, "UTF-8" );
 $icon_imgdata = addslashes ( $imgdata );
-if (! $sql_result_ua_update = mysql_query ( 'UPDATE ua SET HEADER_IMAGE="' . $header_imgdata . '", ICON_IMAGE="' . $icon_imgdata . '"' ))
+if (! $sql_result_ua_update = mysql_query ( 'UPDATE ua SET HEADER_IMAGE="' . $header_imgdata . '", ICON_IMAGE="' . $icon_imgdata . '" WHERE USER_ID = ' . $user_id ))
 	die ( '@ua, HEADER_IMAGEテーブル UPDATE失敗' . mysql_error () );
 
 print ("登録が終了しました<BR>") ;
