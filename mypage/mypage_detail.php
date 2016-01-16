@@ -28,7 +28,10 @@
 		<!-- 本体start -->
 
 <?php
-$USER_ID = 1;
+$user_id = $_GET ['user_id'];
+if (empty ( $user_id )) {
+	header ( "LOCATION: ./mypage.php" );
+}
 
 // MySQLと接続
 $link = mysql_connect ( 'localhost', 'root' );
@@ -41,9 +44,9 @@ if (! $db_selected)
 	die ( 'データベース選択失敗' . mysql_error () );
 
 	// クエリの発行
-if (! $sql_result_ua_select = mysql_query ( 'SELECT * FROM ua WHERE USER_ID = ' . $USER_ID ))
+if (! $sql_result_ua_select = mysql_query ( 'SELECT * FROM ua WHERE USER_ID = ' . $user_id ))
 	die ( '@uaテーブル SELECT失敗' . mysql_error () );
-if (! $sql_result_ur_select = mysql_query ( 'SELECT * FROM ur WHERE USER_ID = ' . $USER_ID ))
+if (! $sql_result_ur_select = mysql_query ( 'SELECT * FROM ur WHERE USER_ID = ' . $user_id ))
 	die ( '@urテーブル SELECT失敗' . mysql_error () );
 if (! $sql_result_ev_select = mysql_query ( 'SELECT * FROM ev' ))
 	die ( '@ｅｖテーブル SELECT失敗' . mysql_error () );
@@ -56,13 +59,13 @@ if (! $sql_result_fev_select = mysql_query ( 'SELECT * FROM ev, fev WHERE ev.EVE
  * POST@out
  * header_img : ヘッダ画像
  * icon_img : アイコン画像
- * submit : 「編集を確認する」ボタン
- * hyoki : 名前の表記
  * gakka : 学科
  * interest : 興味・関心のある分野
  * jikoshokai : 自己紹介
  */
 echo '<form action="mypage_conf.php" method="post" enctype="multipart/form-data">';
+// user_id をmypage_conf.phpに伝播
+echo '<input type="hidden" name="user_id" value="' . $user_id . '">';
 // ヘッダ画像
 $ua = mysql_fetch_assoc ( $sql_result_ua_select );
 echo '<p>';
@@ -82,7 +85,11 @@ echo '<input type="submit" value="編集を確認する" name="upload" >';
 $ur = mysql_fetch_assoc ( $sql_result_ur_select );
 echo ("<p>" . $ur ['USER_LAST_NAME'] . " " . $ur ['USER_FIRST_NAME'] . "	");
 /* 性別 */
-echo ("　" . $ur ['SEX'] . "	");
+if ($ur ['SEX'] == "m")
+	$sex = "男";
+else if ($ur ['SEX'] == "f")
+	$sex = "女";
+echo ("　" . $sex);
 echo "</p>";
 
 /* ▽ 大学・学年・学科 ▽ */

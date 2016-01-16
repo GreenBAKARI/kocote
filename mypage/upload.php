@@ -27,7 +27,10 @@
 
 		<!-- 本体start -->
 <?php
-$USER_ID = 1;
+$user_id = $_GET ['user_id'];
+if (empty ( $user_id )) {
+	header ( "LOCATION: ./mypage.php" );
+}
 // MySQLと接続
 $link = mysql_connect ( 'localhost', 'root' );
 // データベースを選択
@@ -35,7 +38,7 @@ $dbLink = mysql_select_db ( 'greenbakari', $link );
 
 // データ更新
 if (isset ( $_POST ['gakka'] ) && isset ( $_POST ['interest'] ) && isset ( $_POST ['jikoshokai'] )) {
-	$sql = 'UPDATE ua SET DEPARTMENT_NAME="' . $_POST ['gakka'] . '", INTEREST="' . $_POST ['interest'] . '" , PROFILE="' . $_POST ['jikoshokai'] . '" WHERE USER_ID = ' . $USER_ID;
+	$sql = 'UPDATE ua SET DEPARTMENT_NAME="' . $_POST ['gakka'] . '", INTEREST="' . $_POST ['interest'] . '" , PROFILE="' . $_POST ['jikoshokai'] . '" WHERE USER_ID = ' . $user_id;
 	$result = mysql_query ( $sql );
 	if (! $result) {
 		print ("SQLの実行に失敗しました<BR>") ;
@@ -44,13 +47,13 @@ if (isset ( $_POST ['gakka'] ) && isset ( $_POST ['interest'] ) && isset ( $_POS
 	}
 }
 
-$fp = fopen ( "uploaded_header" . $USER_ID . ".jpg", "rb" );
-$imgdata = fread ( $fp, filesize ( "uploaded_header" . $USER_ID . ".jpg" ) );
+$fp = fopen ( "uploaded_header" . $user_id . ".jpg", "rb" );
+$imgdata = fread ( $fp, filesize ( "uploaded_header" . $user_id . ".jpg" ) );
 fclose ( $fp );
 $str = mb_convert_encoding ( $imgdata, "UTF-8" );
 $header_imgdata = addslashes ( $imgdata );
-$fp = fopen ( "uploaded_icon" . $USER_ID . ".jpg", "rb" );
-$imgdata = fread ( $fp, filesize ( "uploaded_icon" . $USER_ID . ".jpg" ) );
+$fp = fopen ( "uploaded_icon" . $user_id . ".jpg", "rb" );
+$imgdata = fread ( $fp, filesize ( "uploaded_icon" . $user_id . ".jpg" ) );
 fclose ( $fp );
 $str = mb_convert_encoding ( $imgdata, "UTF-8" );
 $icon_imgdata = addslashes ( $imgdata );

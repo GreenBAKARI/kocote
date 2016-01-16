@@ -27,12 +27,14 @@
 
 		<!-- 本体start -->
 <?php
-$USER_ID = 1;
+$user_id = $_POST ['user_id'];
+if (empty ( $user_id )) {
+	header ( "LOCATION: ./mypage.php" );
+}
 /*
  * POST@in
  * header_img : ヘッダ画像
  * icon_img : アイコン画像
- * hyoki : 名前の表記
  * gakka : 学科
  * interest : 興味・関心のある分野
  * jikoshokai : 自己紹介
@@ -64,14 +66,9 @@ echo '<form action="upload.php" method="post" enctype="multipart/form-data">';
 $ua = mysql_fetch_assoc ( $sql_result_ua_select );
 // ヘッダ画像
 echo '<p>';
-echo '<img src="./img_get.php?img_type=HEADER_IMAGE&img_table=ua"/>';
-if (move_uploaded_file ( $_FILES ['header_img'] ['tmp_name'], 'uploaded_header' . $USER_ID . '.jpg' )) {
-	echo '<img src="uploaded_header' . $USER_ID . '.jpg">';
-	$fp = fopen ( "uploaded_header" . $USER_ID . ".jpg", "rb" );
-	$imgdata = fread ( $fp, filesize ( "uploaded_header" . $USER_ID . ".jpg" ) );
-	fclose ( $fp );
-	$str = mb_convert_encoding ( $imgdata, "UTF-8" );
-	$header_imgdata = addslashes ( $imgdata );
+echo '<img src="./img_get.php?img_type=HEADER_IMAGE&img_table=ua"/>⇒';
+if (move_uploaded_file ( $_FILES ['header_img'] ['tmp_name'], 'img_header/uploaded_header' . $user_id . '.jpg' )) {
+	echo '<img src="uploaded_header' . $user_id . '.jpg">';
 } else {
 	echo "ファイルを選択してください。";
 }
@@ -79,14 +76,9 @@ echo '</p>';
 
 // アイコン画像
 echo '<p>';
-echo '<img src="./img_get.php?img_type=ICON_IMAGE&img_table=ua"/>';
-if (move_uploaded_file ( $_FILES ['icon_img'] ['tmp_name'], 'uploaded_icon' . $USER_ID . '.jpg' )) {
-	echo '<img src="uploaded_icon' . $USER_ID . '.jpg">';
-	$fp = fopen ( "uploaded_icon" . $USER_ID . ".jpg", "rb" );
-	$imgdata = fread ( $fp, filesize ( "uploaded_icon" . $USER_ID . ".jpg" ) );
-	fclose ( $fp );
-	$str = mb_convert_encoding ( $imgdata, "UTF-8" );
-	$icon_imgdata = addslashes ( $imgdata );
+echo '<img src="./img_get.php?img_type=ICON_IMAGE&img_table=ua"/>⇒';
+if (move_uploaded_file ( $_FILES ['icon_img'] ['tmp_name'], 'img_icon/uploaded_icon' . $user_id . '.jpg' )) {
+	echo '<img src="uploaded_icon' . $user_id . '.jpg">';
 } else {
 	echo "ファイルを選択してください。";
 }
@@ -103,7 +95,11 @@ $ur = mysql_fetch_assoc ( $sql_result_ur_select );
 echo ("<p>" . $ur ['USER_LAST_NAME'] . " " . $ur ['USER_FIRST_NAME'] . "	");
 
 /* 性別 */
-echo ("　" . $ur ['SEX'] . "	");
+if ($ur ['SEX'] == "m")
+	$sex = "男";
+else if ($ur ['SEX'] == "f")
+	$sex = "女";
+echo ("　" . $sex);
 
 /* ▽ 大学・学年・学科 ▽ */
 /* 大学・学年・学科 */
