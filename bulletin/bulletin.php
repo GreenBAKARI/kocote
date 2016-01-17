@@ -99,10 +99,12 @@ $last_rows = $start + $one_page - 1;
  ?>
 
 <?php
-$url = "localhost";
+//DB情報
+$db = "test_bulletin";
+$host = "localhost";
 $user = "root";
 $pass = "kappaebisen";
-$db = "test_bulletin";
+
 $table = "bb";
 $category = "category";
 
@@ -129,7 +131,7 @@ else if(isset($_POST['etc'])){
 }
 
 //MySQLへ接続
-$link = mysql_connect($url, $user, $pass) or die("MySQLへの接続に失敗しました。");
+$link = mysql_connect($host, $user, $pass) or die("MySQLへの接続に失敗しました。");
 
 //データベースの選択
 $sdb = mysql_select_db($db, $link) or die("データベースの選択に失敗しました。");

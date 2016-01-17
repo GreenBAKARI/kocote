@@ -23,5 +23,9 @@ $row = mysql_fetch_array ( $sql_result_image );
 // 画像ヘッダとしてjpegを指定
 header ( "Content-Type: image/jpeg" );
 // バイナリデータを直接表示
-echo $row [$_GET ['img_type']];
+if (!isset($_GET['raw_img'])) {
+	echo $row [$_GET ['img_type']];
+} else {
+	echo $_GET['raw_img'];
+}
 ?>

@@ -1,0 +1,25 @@
+とりあえずメモ
+
+DBに関係する変数の中身を運用環境で使用しているものに変えて、BBテーブルを作成したら他でもたぶん使えます。あとユーザ名とってくるのでURテーブルも必要です。
+（PFテーブルは掲示板作成したら作成されるのでわざわざ作らなくてもおｋ）
+変更箇所：bulletin.php,bulletin_detail.php, bulletin_add.php, bulletin_write.phpの
+//DB情報と書いてる箇所の$db, $user, $host, $pass変数
+
+今はこんな感じ
+$db = "test_bulletin";
+$host = "localhost";
+$user = "root";
+$pass = "kappaebisen";
+
+
+BBテーブル
+CREATE TABLE BB (
+BB_ID INT NOT NULL,
+USER_ID INT NOT NULL,
+BB_NAME NVARCHAR(255) NOT NULL,
+CATEGORY NVARCHAR(255) NOT NULL,
+COMMENT_COUNT INT NOT NULL,
+LAST_POSTED_DATE DATETIME NOT NULL,
+CREATED_DATE DATETIME NOT NULL,
+PRIMARY KEY (BB_ID)
+);
