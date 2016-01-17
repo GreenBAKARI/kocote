@@ -1,4 +1,6 @@
-<!-- cookieから取得する文のコメントアウト外す必要あり-->
+<?php
+session_start();
+ ?>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -54,8 +56,7 @@ $time = date('Y-m-d H:i:s');
 <?php
   $comment_count = 0;
   $next_id = $last_id + 1;
-  $user_id = 154697;
-  //$user_id = $_COOKIE["user_id"];
+  $user_id = $_SESSION['user_id'];
   $pdo = new PDO("mysql:dbname=$db", "$user", "kappaebisen");
   $st = $pdo->prepare("INSERT INTO $table VALUES(?,?,?,?,?,?,?)");
   $st->execute(array($next_id, $user_id,$_POST['bb_name'],$_POST['category'], $comment_count, $time, $time));

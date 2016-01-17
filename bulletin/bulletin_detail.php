@@ -1,3 +1,7 @@
+<?php
+session_start();
+ ?>
+
 <html>
 <head>
 <div id ="header"></div>
@@ -127,7 +131,7 @@ $st = $pdo->query("SELECT comment_num, bb_id, user_last_name, user_first_name, p
     $posted_content = nl2br($posted_content);
     $posted_content = autoLinker($posted_content);
 
-    if($user_id == 165848){
+    if($user_id == $_SESSION['user_id']){
       $url = "http:../mypage/mypage.php";
     }else{
     $url = "http:../mypage/parsonalpage.php?user_id=$user_id";
