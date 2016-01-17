@@ -1,4 +1,7 @@
-<!-- ユーザIDのコメントアウト外す必要アリ-->
+<?php
+session_start();
+ ?>
+
 <html>
 <head>
 <meta charset="UTF-8">
@@ -21,8 +24,7 @@ $user = "root";
 $pass = "kappaebisen";
 
 //ユーザ情報
-  $user_id = 165848;
-  //$user_id = $_COOKIE["user_id"];
+  $user_id = $_SESSION('user_id');
 
 //table情報
   $comment_count = 0;
