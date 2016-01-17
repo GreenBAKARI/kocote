@@ -102,10 +102,10 @@ mysql_close($link) or die("MySQL切断に失敗しました。");
   $pdo = new PDO("mysql:dbname=$db", "$user", "$pass");
 
 $roma_switch=0;
-$st = $pdo->query("SELECT comment_num, bb_id, user_last_name, user_first_name, posted_date, $table_name.user_id, posted_content FROM ur_new, $table_name WHERE ur_new.user_id = $table_name.user_id ORDER BY comment_num");
+$st = $pdo->query("SELECT comment_num, bb_id, user_last_name, user_first_name, posted_date, $table_name.user_id, posted_content FROM ur, $table_name WHERE ur.user_id = $table_name.user_id ORDER BY comment_num");
 
 //ローマ字希望か判定あり(urテーブルにroma_switchカラムが必要)
-/*$st = $pdo->query("SELECT comment_num, bb_id, user_last_name, user_first_name, user_last_name_roma, user_first_name_roma, posted_date, $table_name.user_id, posted_content, roma_switch FROM ur_new, $table_name WHERE ur_new.user_id = $table_name.user_id ORDER BY comment_num");*/
+/*$st = $pdo->query("SELECT comment_num, bb_id, user_last_name, user_first_name, user_last_name_roma, user_first_name_roma, posted_date, $table_name.user_id, posted_content, roma_switch FROM ur, $table_name WHERE ur.user_id = $table_name.user_id ORDER BY comment_num");*/
 
 
 //抽出結果を変数に格納

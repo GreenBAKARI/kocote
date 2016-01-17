@@ -1,3 +1,11 @@
+<?php
+    session_start();
+    $user_id = $_SESSION['user_id'];
+    if (empty($user_id)) {
+        header("LOCATION: ../login.php");
+    }
+?>
+
 <html>
 <head>
 <meta charset = "utf-8">

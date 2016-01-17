@@ -1,6 +1,9 @@
-<!-- セッションの開始 -->
 <?php
     session_start();
+    $user_id = $_SESSION['user_id'];
+    if (empty($user_id)) {
+         header("LOCATION: ../login.php");
+    }
 ?>
 
 <!-- イベント情報の取得 -->
@@ -9,6 +12,7 @@
     $event_title = array();
     $event_start = array();
     $event_finish = array();
+    $event_fav_id = array();
 
     $link = mysql_connect('localhost', 'root', 'root');
     if (!$link) {
@@ -23,8 +27,13 @@
     //イベントの開始日時が現在時刻から近いイベント上位5件のイベントID、イベントタイトル、開始日時を取得
     $sql = "SELECT EVENT_ID, EVENT_TITLE, EVENT_START, EVENT_FINISH FROM EV WHERE EVENT_START > NOW() ORDER BY EVENT_START ASC LIMIT 5";
 
+    ////参加者数の多いイベント上位5件のイベントIDの取得
+    $sql2 = "SELECT a.EVENT_ID, count(a.EVENT_ID) AS COUNT FROM EV a, PEV b WHERE a.EVENT_START > NOW() AND a.EVENT_ID = b.EVENT_ID GROUP BY a.EVENT_ID ORDER BY COUNT DESC LIMIT 5";
+    
     $result = mysql_query($sql, $link);
-    if (!$result) {
+    $result2 = mysql_query($sql2, $link);
+    
+    if (!$result or !$result2) {
         die('クエリが失敗しました。'.mysql_error());
     }
     
@@ -35,6 +44,10 @@
         $event_finish[] = $row['EVENT_FINISH'];
     }
 
+    while ($row2 = mysql_fetch_array($result2)) {
+        $event_fav_id[] = $row2['EVENT_ID'];
+    }
+    
     //$event_idの添字0から4にイベントIDが入っている
     //$event_titleの添字0から4にイベントタイトルが入っている
     //$event_startの添字0から4に開始日時が入っている
@@ -329,29 +342,29 @@ EOT;
    
   <!-- 各画像はSQLで人気のイベント画像を抽出-->
   <div id="photos">
-      <div id="photo0" class="pic"><img src="event_image.php?image_id=tmp5" width="400%">
+      <div id="photo0" class="pic"><a href="event_detail.php?event_id=<?php echo $event_fav_id[4]?>"><img src="event_image.php?image_id=tmp5" width="400%"></a>
       </div>
-      <div id="photo1" class="pic"><img src="event_image.php?image_id=tmp1" width="400%">
+      <div id="photo1" class="pic"><a href="event_detail.php?event_id=<?php echo $event_fav_id[0]?>"><img src="event_image.php?image_id=tmp1" width="400%"></a>
 	    <label for="back1"><div id="left1" class="b_left"><span>＜</span></div></label>
 	    <label for="next1"><div id="right1" class="b_right"><span>＞</span></div></label>
       </div>
-      <div id="photo2" class="pic"><img src="event_image.php?image_id=tmp2" width="400%">
+      <div id="photo2" class="pic"><a href="event_detail.php?event_id=<?php echo $event_fav_id[1]?>"><img src="event_image.php?image_id=tmp2" width="400%"></a>
 	    <label for="back2"><div id="left2" class="b_left"><span>＜</span></div></label>
     	<label for="next2"><div id="right2" class="b_right"><span>＞</span></div></label>
       </div>
-      <div id="photo3" class="pic"><img src="event_image.php?image_id=tmp3" width="400%">
+      <div id="photo3" class="pic"><a href="event_detail.php?event_id=<?php echo $event_fav_id[2]?>"><img src="event_image.php?image_id=tmp3" width="400%"></a>
 	    <label for="back3"><div id="left3" class="b_left"><span>＜</span></div></label>
     	<label for="next3"><div id="right3" class="b_right"><span>＞</span></div></label>
       </div>
-      <div id="photo4" class="pic"><img src="event_image.php?image_id=tmp4" width="400%">
+      <div id="photo4" class="pic"><a href="event_detail.php?event_id=<?php echo $event_fav_id[3]?>"><img src="event_image.php?image_id=tmp4" width="400%"></a>
     	<label for="back4"><div id="left4" class="b_left"><span>＜</span></div></label>
     	<label for="next4"><div id="right4" class="b_right"><span>＞</span></div></label>
       </div>
-      <div id="photo5" class="pic"><img src="event_image.php?image_id=tmp5" width="400%">
+      <div id="photo5" class="pic"><a href="event_detail.php?event_id=<?php echo $event_fav_id[4]?>"><img src="event_image.php?image_id=tmp5" width="400%"></a>
     	<label for="back5"><div id="left5" class="b_left"><span>＜</span></div></label>
     	<label for="next5"><div id="right5" class="b_right"><span>＞</span></div></label>
       </div>
-      <div id="photo6" class="pic"><img src="event_image.php?image_id=tmp1" width="400%">
+      <div id="photo6" class="pic"><a href="event_detail.php?event_id=<?php echo $event_fav_id[0]?>"><img src="event_image.php?image_id=tmp1" width="400%"></a>
       </div>
     </div>
    <div style="padding:25%;"></div>

@@ -1,4 +1,12 @@
 <?php
+    session_start();
+    $user_id = $_SESSION['user_id'];
+    if (empty($user_id)) {
+         header("LOCATION: ../login.php");
+    }
+?>
+
+<?php
     //配列の初期化
     $event_image = array();
 
@@ -39,7 +47,7 @@
     } else {
 
         //参加者数の多いイベント上位5件のイベント画像の取得
-        $sql = "SELECT a.EVENT_IMAGE, count(a.EVENT_ID) AS COUNT FROM EV a, PEV b WHERE a.EVENT_ID = b.EVENT_ID GROUP BY a.EVENT_ID ORDER BY COUNT DESC LIMIT 5";
+        $sql = "SELECT a.EVENT_IMAGE, count(a.EVENT_ID) AS COUNT FROM EV a, PEV b WHERE a.EVENT_START > NOW() AND a.EVENT_ID = b.EVENT_ID GROUP BY a.EVENT_ID ORDER BY COUNT DESC LIMIT 5";
 
         //クエリの実行
         $result = mysql_query($sql, $link);

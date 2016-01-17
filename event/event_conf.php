@@ -1,7 +1,43 @@
+<!-- セッションの開始 -->
+<?php
+    session_start();
+    $user_id = $_SESSION('user_id');
+
+ //データベース接続
+    $conn = mysql_connect('localhost', 'root', 'root');
+    if (!$conn) {
+      die("データベース接続失敗");
+    }
+    //データベース選択
+    mysql_select_db('greenbakari') or die("データベース選択失敗");
+    //文字コード指定
+    mysql_set_charset('utf8');
+
+    //名前を取得
+    $sql = "SELECT USER_NAME FROM UR WHERE USER_ID = $user_id";
+    $res = mysql_query($sql);
+    while ($new = mysql_fetch_array($res)) {
+    $user_name = $new['USER_NAME'];
+    }
+
+    //mysql切断
+    mysql_close($conn);
+
+
+if(!(isset($_SESSION["user_id"]))){
+  header("Location:login.php");
+}
+if ($_SERVER["REQUEST_METHOD"] == "POST") {//ログアウト処理
+  if (isset($_COOKIE["user_id"])){
+       setcookie("user_id", $_SESSION["user_id"], time() - 259200);
+ }
+  session_destroy();
+  header("Location: login.php");
+}
+?>
+
 <?php
   $event_id = $_POST['event_id'];
-  $user_id = $_POST['user_id'];
-  $user_name = $_POST['user_name'];
   $event_title= $_POST['event_title'];
   $host_comment = $_POST['host_comment'];
   $event_year = $_POST['event_year'];

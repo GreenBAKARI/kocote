@@ -1,13 +1,18 @@
 <?php
+    session_start();
+    $user_id = $_SESSION['user_id'];
+    if (empty($user_id)) {
+         header("LOCATION: ../login.php");
+    }
+?>
+
+<?php
     //イベントIDの取得
     //引数が空のときは自動的にevent.phpに遷移
     $event_id = $_GET['event_id'];
     if (empty($event_id)) {
         header("LOCATION: ../event/event.php");
     }
-    
-    //ログイン中の利用者の取得
-    $user_id = 1;
     
     //イベント情報の取得
     $event_user_id = array();

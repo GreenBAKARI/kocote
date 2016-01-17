@@ -12,28 +12,28 @@
 		<form id="loginForm" name="loginForm" action="" method="POST">
 			<!-- <?php echo $errorMessage ?> -->
 
+			<!-- 機能選択ボタン -->
 			<div id="box">
-				<a href="http://localhost/php/v0/event.php"><img
-					src="img/ev_home.jpg" height="7%" width="16%"></a> <a
-					href="http://localhost/php/v0/bulletin.php"><img
-					src="img/bb_home.jpg" height="7%" width="16%"></a> <a
-					href="http://localhost/php/v0/search.php"><img
-					src="img/se_home.jpg" height="7%" width="16%"></a> <a
-					href="http://localhost/php/v0/dm.php"><img src="img/dm_home.jpg"
-					height="7%" width="16%"></a> <a
-					href="http://localhost/php/v0/mypage.php"><img
-					src="img/mp_home.jpg" height="7%" width="16%"></a>
+				<a href="../event/event.php"><img src="../img/ev_home.jpg"
+					height="13%" width="16%"></a> <a href="../bulletin/bulletin.php"><img
+					src="../img/bb_home.jpg" height="13%" width="16%"></a> <a
+					href="../search/search.php"><img src="../img/se_home.jpg"
+					height="13%" width="16%"></a> <a href="../mypage/mypage.php"><img
+					src="../img/mp_home.jpg" height="13%" width="16%"></a>
 			</div>
-			<br> <br> <br>
+			<br>
 		</form>
 
 		<!-- 本体start -->
 <?php
+$user_id = $_POST ['user_id'];
+if (empty ( $user_id )) {
+	header ( "LOCATION: ./mypage.php" );
+}
 /*
  * POST@in
  * header_img : ヘッダ画像
  * icon_img : アイコン画像
- * hyoki : 名前の表記
  * gakka : 学科
  * interest : 興味・関心のある分野
  * jikoshokai : 自己紹介
@@ -49,61 +49,40 @@ if (! $db_selected)
 	die ( 'データベース選択失敗' . mysql_error () );
 
 	// クエリの発行
-if (! $sql_result_ua_select = mysql_query ( 'SELECT * FROM ua' ))
+if (! $sql_result_ua_select = mysql_query ( 'SELECT * FROM ua WHERE USER_ID=' . $user_id ))
 	die ( '@uaテーブル SELECT失敗' . mysql_error () );
-if (! $sql_result_ur_select = mysql_query ( 'SELECT * FROM ur' ))
+if (! $sql_result_ur_select = mysql_query ( 'SELECT * FROM ur WHERE USER_ID=' . $user_id ))
 	die ( '@urテーブル SELECT失敗' . mysql_error () );
-if (! $sql_result_ev_select = mysql_query ( 'SELECT * FROM ev LIMIT 5' ))
+if (! $sql_result_ev_select = mysql_query ( 'SELECT * FROM ev WHERE USER_ID=' . $user_id ))
 	die ( '@ｅｖテーブル SELECT失敗' . mysql_error () );
-if (! $sql_result_pev_select = mysql_query ( 'SELECT * FROM ev, pev WHERE ev.EVENT_ID=pev.EVENT_ID LIMIT 5' ))
+if (! $sql_result_pev_select = mysql_query ( 'SELECT * FROM ev, pev WHERE ev.EVENT_ID=pev.EVENT_ID AND pev.USER_ID=' . $user_id . ' ORDER BY ev.EVENT_START ASC LIMIT 5' ))
 	die ( '@ev, pevテーブル SELECT失敗' . mysql_error () );
-if (! $sql_result_fev_select = mysql_query ( 'SELECT * FROM ev, fev WHERE ev.EVENT_ID=fev.EVENT_ID LIMIT 5' ))
+if (! $sql_result_fev_select = mysql_query ( 'SELECT * FROM ev, fev WHERE ev.EVENT_ID=fev.EVENT_ID AND fev.USER_ID=' . $user_id . ' ORDER BY ev.EVENT_START ASC LIMIT 5' ))
 	die ( '@ev, fevテーブル SELECT失敗' . mysql_error () );
 
 echo '<form action="upload.php" method="post" enctype="multipart/form-data">';
+// user_id をmypage_conf.phpに伝播
+echo '<input type="hidden" name="user_id" value="' . $user_id . '">';
 // 画像
 $ua = mysql_fetch_assoc ( $sql_result_ua_select );
-echo '<p>';
-$header_imgdata = NULL;
-$icon_imgdata = NULL;
-if (! $sql_result_tmp_create = mysql_query ( 'CREATE TABLE IF NOT EXISTS tmp (HEADER_IMAGE BLOB, ICON_IMAGE BLOB, USER_ID INTEGER)' ))
-	die ( '@tmp, CREATE失敗' . mysql_error () );
-//if (! $sql_result_tmp_insert = mysql_query ( 'INSERT INTO TMP VALUES(NULL, NULL, 1)' ))
-//	die ( '@tmp, INSERT失敗' . mysql_error () );
-if (is_uploaded_file ( $_FILES ["header_img"]["tmp_name"])) {
-	$fp = fopen ( $_FILES ["header_img"] ["tmp_name"], "rb" );
-	$imgdata = fread ( $fp, filesize ( $_FILES ["header_img"] ["tmp_name"] ) );
-	fclose ( $fp );
-	$str = mb_convert_encoding ( $imgdata, "UTF-8" );
-	$header_imgdata = addslashes ( $imgdata );
-	//echo '<input type="hidden" name="header_imgdata" value="' . $header_imgdata . '"/>';
-	if (! $sql_result_tmp_update = mysql_query ( 'UPDATE tmp SET HEADER_IMAGE="' . $header_imgdata . '"' ))
-		die ( '@tmp, HEADER_IMAGE UPDATE失敗' . mysql_error () );
-} else {
-	echo "ファイルをアップロードできません。";
-}
-
-if (!isset ( $_FILES ["icon_img"] )) {
-	$fp = fopen ( $_FILES ["icon_img"] ["tmp_name"], "rb" );
-	$imgdata = fread ( $fp, filesize ( $_FILES ["icon_img"] ["tmp_name"] ) );
-	fclose ( $fp );
-	$str = mb_convert_encoding ( $imgdata, "UTF-8" );
-	$icon_imgdata = addslashes ( $imgdata );
-	echo '<input type="hidden" name="icon_imgdata" value="' . $icon_imgdata . '"/>';
-	if (! $sql_result_tmp_update = mysql_query ( 'UPDATE tmp SET ICON_IMAGE="' . $icon_imgdata . '"' ))
-		die ( '@tmp, ICON_IMAGEUPDATE失敗' . mysql_error () );
-}
-
 // ヘッダ画像
-echo '<img src="./img_get.php?img_type=HEADER_IMAGE&img_table=ua"/>';
-echo '<img src="./img_get.php?img_type=HEADER_IMAGE&img_table=tmp"/>';
-echo '<img src="./img_get.php?raw_img='.$header_imgdata.'"/>';
+echo '<p>';
+echo '<img src="./img_get.php?user_id=' . $user_id . '&img_type=HEADER_IMAGE&img_table=ua"/>⇒';
+if (move_uploaded_file ( $_FILES ['header_img'] ['tmp_name'], 'uploaded_header' . $user_id . '.jpg' )) {
+	echo '<img src="uploaded_header' . $user_id . '.jpg">';
+} else {
+	echo "ファイルを選択してください。";
+}
 echo '</p>';
+
 // アイコン画像
 echo '<p>';
-echo '<img src="./img_get.php?img_type=ICON_IMAGE&img_table=ua"/>';
-echo '<img src="./img_get.php?img_type=ICON_IMAGE&img_table=tmp"/>';
-echo '<img src="'.$icon_imgdata.'"/>';
+echo '<img src="./img_get.php?user_id=' . $user_id . '&img_type=ICON_IMAGE&img_table=ua"/>⇒';
+if (move_uploaded_file ( $_FILES ['icon_img'] ['tmp_name'], 'uploaded_icon' . $user_id . '.jpg' )) {
+	echo '<img src="uploaded_icon' . $user_id . '.jpg">';
+} else {
+	echo "ファイルを選択してください。";
+}
 echo '</p>';
 
 // 「確定する」ボタン
@@ -111,35 +90,21 @@ echo '<input type="submit" value="確定する" name="upload" >';
 // 「編集する」ボタン
 echo '<input type="button" value="編集する" name="upload" onClick="history.back()">';
 
-/* ▽ 名前・性別・名前の表記 ▽ */
+/* ▽ 名前・性別 ▽ */
 /* 名前 */
 $ur = mysql_fetch_assoc ( $sql_result_ur_select );
-/*
- * 名前の表記
- * 0 ⇒ 日本語
- * 1 ⇒ ローマ字
- */
-
-if ($_POST ['hyoki'] == 0) {
-	echo ("<p>" . $ur ['USER_LAST_NAME'] . " " . $ur ['USER_FIRST_NAME'] . "	");
-} else {
-	echo ("<p>" . $ur ['USER_LAST_ROMA'] . " " . $ur ['USER_FIRST_ROMA'] . "	");
-}
-echo '<input type="hidden" name="hyoki" value="' . $_POST ['hyoki'] . '">';
+echo ("<p>" . $ur ['USER_LAST_NAME'] . " " . $ur ['USER_FIRST_NAME'] . "	");
 
 /* 性別 */
-echo ("　" . $ur ['SEX'] . "	");
-
-/* 名前の表記 */
-$hyoki = array (
-		"日本語",
-		"アルファベット"
-);
-echo ' 名前の表記 : ' . $hyoki [$_POST ['hyoki']];
+if ($ur ['SEX'] == "m")
+	$sex = "男";
+else if ($ur ['SEX'] == "f")
+	$sex = "女";
+echo ("　" . $sex);
 
 /* ▽ 大学・学年・学科 ▽ */
 /* 大学・学年・学科 */
-echo "<p>" . $ur ["COLLEGE_NAME"] . "大学" . " " . $ur ["GRADE"] . "年" . " " . "学科:" . $_POST ['gakka'];
+echo "<p>" . $ur ["COLLEGE_NAME"] . " " . $_POST ['grade'] . " " . "学科:" . $_POST ['gakka'];
 echo '<input type="hidden" name="gakka" value="' . $_POST ['gakka'] . '">';
 
 /* ▽ 興味・関心のある分野 ▽ */

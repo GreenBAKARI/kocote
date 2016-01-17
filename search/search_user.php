@@ -1,3 +1,11 @@
+<?php
+    session_start();
+    $user_id = $_SESSION['user_id'];
+    if (empty($user_id)) {
+        header("LOCATION: ../login.php");
+    }
+?>
+
 <html>
 <head>
 <meta charset = "utf-8">
@@ -32,8 +40,6 @@
 
 
 <?php
-$user_id = 1;
-
 $url = 'localhost';  //ローカル環境へのURL
 $user = 'root';    //MySQLサーバの利用者ID
 $pass = 'root';      //MySQLのパスワード
@@ -90,6 +96,21 @@ $tag = $tag1.$tag2.$tag3.$tag4.$tag5.$tag6.$tag7.$tag8.$tag9.$tag10.$tag11.$tag1
 //strlen() - 与えられた文字列の長さを返す
 $count = strlen($tag);
 
+//大学名を数字から文字に変換
+switch ($college) {
+    case 1:
+        $college = '高知大学';
+        break;
+    case 2:
+        $college = '高知県立大学';
+        break;
+    case 3:
+        $college = '高知工科大学';
+        break;
+    default:
+        break;
+}
+
 //タグが選択されていない場合の検索条件の生成
 if (!$count) {
 	//名・姓・大学・学年のすべてが入力されている場合の検索条件の生成
@@ -98,13 +119,13 @@ if (!$count) {
 		$result = mysql_query("SELECT UR.USER_ID, UR.USER_FIRST_NAME, UR.USER_LAST_NAME, UA.PROFILE 
 			FROM UR LEFT JOIN UA ON (UR.USER_ID = UA.USER_ID) 
 			WHERE (UR.USER_FIRST_NAME = '$first_name' OR UR.USER_LAST_NAME = '$last_name')  
-			AND (UR.COLLEGE_NAME = $college OR UR.GRADE = $grade)");
+			AND (UR.COLLEGE_NAME = '$college' OR UR.GRADE = $grade)");
 	//名・姓・大学・学年のいずれかが入力されている場合の検索条件の生成
 	} else { 
 		$result = mysql_query("SELECT UR.USER_ID, UR.USER_FIRST_NAME, UR.USER_LAST_NAME, UA.PROFILE 
 			FROM UR LEFT JOIN UA ON (UR.USER_ID = UA.USER_ID) 
 			WHERE (UR.USER_FIRST_NAME = '$first_name' OR UR.USER_LAST_NAME = '$last_name')  
-			OR (UR.COLLEGE_NAME = $college OR UR.GRADE = $grade)");
+			OR (UR.COLLEGE_NAME = '$college' OR UR.GRADE = $grade)");
 	}
 //タグが選択されている場合の検索条件の生成と文字列分解
 } else {
@@ -118,7 +139,7 @@ if (!$count) {
         $result = mysql_query("SELECT UR.USER_ID, UR.USER_FIRST_NAME, UR.USER_LAST_NAME, UA.PROFILE 
 			FROM UR LEFT JOIN UA ON (UR.USER_ID = UA.USER_ID) 
 			WHERE (UR.USER_FIRST_NAME = '$first_name' OR UR.USER_LAST_NAME = '$last_name')  
-			AND (UR.COLLEGE_NAME = $college OR UR.GRADE = $grade) OR $interest");
+			AND (UR.COLLEGE_NAME = '$college' OR UR.GRADE = $grade) OR $interest");
 	//名が入力されており、姓・大学・学年が入力されていない場合と
 	//姓が入力されており、名・大学・学年が入力されていない場合と
 	//名・姓が入力されており、大学・学園が入力されていない場合の検索条件の生成

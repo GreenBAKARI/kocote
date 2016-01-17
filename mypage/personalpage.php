@@ -1,14 +1,12 @@
 <?php
-/*
+//表示する利用者のIDを取得
     $user_id = $_GET['user_id'];
     if (empty($user_id)) {
       header("LOCATION: ./mypage.php");
     }
-*/
-    $user_id = 1;
 ?>
 
-<!-- 利用者情報の取得 -->
+<!-- 利用者付加情報の取得 -->
 <?php
     $link = mysql_connect('localhost', 'root', 'root');
     if (!$link) {
@@ -21,28 +19,55 @@
     mysql_set_charset('utf8');
 
     //利用者情報の取得
-    $sql_UR_UA = "SELECT UR.USER_LAST_NAME, UR.USER_FIRST_NAME, UR.USER_LAST_ROMA, UR.USER_FIRST_ROMA,
-                  UR.SEX, UR.COLLEGE_NAME, UR.GRADE, UA.DEPARTMENT_NAME, UA.INTEREST, UA.PROFILE
-                  FROM UR, UA WHERE UR.USER_ID = UA.USER_ID
-                  AND UR.USER_ID = $user_id";
+    $sql_UR = "SELECT USER_LAST_NAME, USER_FIRST_NAME, USER_LAST_ROMA, USER_FIRST_ROMA,
+                  SEX, COLLEGE_NAME
+                  FROM UR WHERE USER_ID = $user_id";
 
-    $result_UR_UA = mysql_query($sql_UR_UA, $link);
+    $result_UR = mysql_query($sql_UR, $link);
 
-    if (!$result_UR_UA) {
+    if (!$result_UR) {
       die('クエリが失敗しました。'.mysql_error());
     }
 
-    while ($row_UR_UA = mysql_fetch_array($result_UR_UA)) {
-      $last_name[] = $row_UR_UA['USER_LAST_NAME'];
-      $first_name[] = $row_UR_UA['USER_FIRST_NAME'];
-      $last_roma[] = $row_UR_UA['USER_LAST_ROMA'];
-      $first_roma[] = $row_UR_UA['USER_FIRST_ROMA'];
-      $sex[] = $row_UR_UA['SEX'];
-      $college_name[] = $row_UR_UA['COLLEGE_NAME'];
-      $grade[] = $row_UR_UA['GRADE'];
-      $department_name[] = $row_UR_UA['DEPARTMENT_NAME'];
-      $profile[] = $row_UR_UA['PROFILE'];
-      $interest[]=$row_UR_UA['INTEREST'];
+    while ($row_UR = mysql_fetch_array($result_UR)) {
+      $last_name[] = $row_UR['USER_LAST_NAME'];
+      $first_name[] = $row_UR['USER_FIRST_NAME'];
+      $last_roma[] = $row_UR['USER_LAST_ROMA'];
+      $first_roma[] = $row_UR['USER_FIRST_ROMA'];
+      $sex[] = $row_UR['SEX'];
+      $college_name[] = $row_UR['COLLEGE_NAME'];
+      $grade[] = $row_UR['GRADE'];
+    }
+    mysql_close($link);
+?>
+
+<!-- 利用者付加情報の取得 -->
+<?php
+    $link = mysql_connect('localhost', 'root', 'root');
+    if (!$link) {
+      die('接続失敗です。' .mysql_error());
+    }
+    $db_selected = mysql_select_db('greenbakari', $link);
+    if (!$db_selected) {
+      die('データベース選択失敗です。'.mysql_error());
+    }
+    mysql_set_charset('utf8');
+
+    //利用者情報の取得
+    $sql_UA = "SELECT DEPARTMENT_NAME, INTEREST, PROFILE
+                  FROM UA WHERE USER_ID = USER_ID
+                  AND USER_ID = $user_id";
+
+    $result_UA = mysql_query($sql_UA, $link);
+
+    if (!$result_UA) {
+      die('クエリが失敗しました。'.mysql_error());
+    }
+
+    while ($row_UA = mysql_fetch_array($result_UA)) {
+      $department_name[] = $row_UA['DEPARTMENT_NAME'];
+      $profile[] = $row_UA['PROFILE'];
+      $interest[]=$row_UA['INTEREST'];
     }
     //興味・関心を表す値を取り出す
     //興味・関心に格納されている値の文字数を数える
@@ -294,7 +319,6 @@
   <a href="../event/event.php"><img src="../img/ev_home.jpg" height="13%" width="16%"></a>
   <a href="../bulletin/bulletin.php"><img src="../img/bb_home.jpg" height="13%" width="16%"></a>
   <a href="../search/search.php"><img src="../img/se_home.jpg" height="13%" width="16%"></a>
-  <a href="../dm/dm.php"><img src="../img/dm_home.jpg" height="13%" width="16%"></a>
   <a href="../mypage/mypage.php"><img src="../img/mp_home.jpg" height="13%" width="16%"></a></div>
 <br>
 
@@ -306,14 +330,44 @@
 
 <!-- 利用者情報の表示-->
 <table style="position:absolute;left:500px;top:450px;">
-  <!-- 利用者名の表示-->
+  <!-- 利用者名と性別の表示-->
   <tr>
-    <td class="name-size"><?php echo  $last_name[0], $first_name[0],'　', $sex[0];?></td>
+    <td class="name-size">
+      <?php
+      //利用者名の表示
+          echo  $last_name[0], $first_name[0],'　';
+      //性別の表示
+          if($sex[0] == 'm') {
+            echo '<font color="#0000ff">男性</font>';
+          }else {
+            echo '<font color="#ff0000">女性</font>';
+          }
+      ?>
+    </td>
   </tr>
   <br>
-  <!-- 利用者の大学、学部、学年を表示-->
+  <!-- 利用者の大学名、学部名、学年を表示-->
   <tr>
-    <td class="space"><?php echo $college_name[0], '　', $grade[0], '年', '　', $department_name[0];?></td>
+    <td class="space">
+      <?php
+      //大学名と学部名を表示
+          echo $college_name[0], '　', $department_name[0], '　';
+      //学年を表示
+          if($grade[0] == '1') {
+            echo '学部1年';
+          }else if($grade[0] == '2') {
+            echo '学部2年';
+          }else if($grade[0] == '3') {
+            echo '学部3年';
+          }else if($grade[0] == '4') {
+            echo '学部4年';
+          }else if($grade[0] == '5') {
+            echo '修士1年';
+          }else if($grade[0] == '6') {
+            echo '修士2年';
+          }
+      ?>
+    </td>
   </tr>
 
   <!-- 利用者の興味関心のある分野を表示-->
