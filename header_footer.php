@@ -1,7 +1,6 @@
 <!-- 以下の処理のphpの処理を追加してください -->
 
 <?php
-    $user_id = 1;
     //ログイン中の利用者の名前の取得
     $link = mysql_connect('localhost', 'root', 'root');
     if (!$link) {
