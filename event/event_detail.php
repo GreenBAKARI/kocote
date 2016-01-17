@@ -222,7 +222,15 @@ function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
 <!-- イベント主催者名の表示 -->
 <tr>
     <td class="title"><p>主催者：</p></td>
-    <td class="content"><p><a href="../mypage/personalpage.php?user_id=<?php echo $organizer_user_id ?>"><?php echo $organizer_last_name." ".$organizer_first_name ?></a></p></td>
+    <td class="content"><p>
+            <?php
+            if ($organizer_user_id == $user_id) {
+                echo '<a href="../mypage/mypage.php">'.$organizer_last_name." ".$organizer_first_name;
+            } else {
+                echo '<a href="../mypage/personalpage.php?user_id='.$organizer_user_id.'">'.$organizer_last_name." ".$organizer_first_name;
+            }
+            ?>
+    </a></p></td>
 </tr>
 
 
