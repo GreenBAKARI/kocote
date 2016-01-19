@@ -176,9 +176,9 @@ mysql_close($link) or die("MySQL切断に失敗しました。");
 <th>タイトル</th>
 <th>コメント数</th>
 <?php while (($row = mysql_fetch_array($result)) && ($first_rows <= $last_rows) && ($first_rows <= $all_rows)) { ?>
-  <tr><td align="center" style="width:150px;"><?php echo ($row["category"]); ?></td>
-  <td align="center" style="width:500px;"><a href="http:../bulletin/bulletin_detail.php?bb_id=<?php echo ($row["bb_id"]) ?>"><?php echo ($row["bb_name"]); ?></a></td>
-  <td align="center" style="width:150px;"><?php echo ($row["comment_count"]); ?></td>
+  <tr><td align="center" style="width:150px;"><?php echo ($row["CATEGORY"]); ?></td>
+  <td align="center" style="width:500px;"><a href="http:../bulletin/bulletin_detail.php?bb_id=<?php echo ($row["BB_ID"]) ?>"><?php echo ($row["BB_NAME"]); ?></a></td>
+  <td align="center" style="width:150px;"><?php echo ($row["COMMENT_COUNT"]); ?></td>
     </tr>
 <?php
 $first_rows++;

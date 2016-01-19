@@ -22,9 +22,8 @@ $db = "greenbakari";
 $host = "localhost";
 $user = "root";
 $pass = "root";
-
 //ユーザ情報
-  $user_id = $_SESSION('user_id');
+  $user_id = $_SESSION[user_id];
 
 //table情報
   $comment_count = 0;
