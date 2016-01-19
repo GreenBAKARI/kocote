@@ -22,7 +22,7 @@
 
     //利用者情報の取得
     $sql_UR = "SELECT USER_LAST_NAME, USER_FIRST_NAME, USER_LAST_ROMA, USER_FIRST_ROMA,
-                  SEX, COLLEGE_NAME
+                  SEX, COLLEGE_NAME, GRADE
                   FROM UR WHERE USER_ID = $user_id";
 
     $result_UR = mysql_query($sql_UR, $link);
@@ -415,13 +415,15 @@
       <?php echo $last_name[0], 'さんが立ち上げているイベント', '<br />';?>
     </td>
   </tr>
-  <tr>
-    <td class="space">
+</table>
+  
+  <table class="event">
       <?php
           for($i = 0; $i < count($event_id); $i++) {
-            //月の表示（先頭の0は表示されない）
+            echo '<tr class="event">';
+            echo '<td class="event1">';            //月の表示（先頭の0は表示されない）
             if (substr($event_start[$i], 5, 1) == 0) {
-            echo '&nbsp;&thinsp;',substr($event_start[$i], 6, 1).'月';
+            echo '&nbsp;&thinsp;', substr($event_start[$i], 6, 1).'月';
             } else {
             echo substr($event_start[$i], 5, 2).'月';
             }
@@ -433,18 +435,22 @@
             }
             //イベント名とイベントの参加人数の表示
             echo '　', '<a href=../event/event_detail.php?event_id='.$event_id[$i].'>'.$event_title[$i].'</a>',
-            '(', '現在の参加人数:', $EVCNT[$i], '人)',
+            '(', '現在の参加人数:', $EVCNT[$i], '人)';
+            echo '</td>';
+            echo '<td class="event2">';
             //「編集・削除」ボタンの表示
-            '<form>
-            <button class="btn" type="button" name="aaa" value="aaa" onclick="location.href=\'../event/event_edit.php?event_id='.$event_id[$i].'\'" style="position: relative; left: 370px; top: -30px;">
-            <font size="2">編集・削除</font>
-            </button>
-            </form>';
+            echo '<form>'
+            . '<button class="btn" type="button" name="aaa" value="aaa" onclick="location.href=\'../event/event_edit.php?event_id='.$event_id[$i].'\'">
+                <font size="2">編集・削除</font>
+                </button>
+                </form>';
+            echo '</td>';
+            echo '</tr>';
           }
       ?>
-    </td>
-  </tr>
+  </table>
 
+<table  class="mypage-table" style="position:absolute;left:500px;">
   <!-- 利用者が参加しているイベントの表示-->
   <tr>
     <td class="name-size">

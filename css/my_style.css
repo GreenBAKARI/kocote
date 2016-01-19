@@ -6,13 +6,22 @@ img.icon-img {
     width: 180px;
     height: 180px;
 }
-td.name-size {
+table.mypage-table td.name-size {
 font-size: 120%;
 }
 
-td.space {
+table.mypage-table td.space {
   margin-left: 100px;
   padding-left: 50px;
+}
+
+table.event {
+    margin-top: 100px;
+    margin-left: 200px;
+}
+
+table.event td.event2 {
+    padding-left: 20px;
 }
 
 button.btn {
