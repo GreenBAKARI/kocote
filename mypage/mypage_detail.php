@@ -4,7 +4,8 @@
 <title>高知県大学生用交流サイト「KoCo + Te」</title>
 </head>
 <center>
-	<link rel="stylesheet" href="style.css" 　type="text/css">
+	<link rel="stylesheet" href="../css/style.css" 　type="text/css">
+	<link rel="stylesheet" href="../css/my_style.css" 　type="text/css">
 	<body topmargin="100" bottommargin="100">
 
 		<div id="headerArea"></div>
@@ -27,7 +28,8 @@
 		<!-- 本体start -->
 
 <?php
-$user_id = $_GET ['user_id'];
+// $user_id = $_GET ['user_id'];
+$user_id = 1;
 if (empty ( $user_id )) {
 	header ( "LOCATION: ./mypage.php" );
 }
@@ -69,28 +71,30 @@ echo '<input type="hidden" name="user_id" value="' . $user_id . '">';
 $ua = mysql_fetch_assoc ( $sql_result_ua_select );
 // ヘッダ画像
 echo '<p>';
-echo '<img src="./img_get.php?user_id=' . $user_id . '&img_type=HEADER_IMAGE&img_table=ua">';
+echo '<img src="./img_get.php?user_id=' . $user_id . '&img_type=HEADER_IMAGE&img_table=ua" class="header-img">';
 echo 'ヘッダ画像ファイル選択：<input type="file" name="header_img" size="50"><BR>';
 echo '</p>';
 // アイコン画像
 echo '<p>';
-echo '<img src="./img_get.php?user_id=' . $user_id . '&img_type=ICON_IMAGE&img_table=ua">';
+echo '<img src="./img_get.php?user_id=' . $user_id . '&img_type=ICON_IMAGE&img_table=ua" class="icon-img" style="position:absolute;left:240px;top:450px;">';
 echo 'アイコン画像ファイル選択:<input type="file" name="icon_img" size="50"><BR>';
 echo '</p>';
 // 「編集を確認する」ボタン
-echo '<input type="submit" value="編集を確認する" name="upload" >';
+echo '<input type="submit" value="編集を確認する" name="upload" style="position:absolute;left:237px;top:640px;background-color:#59b1eb;color:#fff;font-size:x-large">';
 
 /* ▽ 名前・性別 ▽ */
 /* 名前 */
+echo '<table class="mypage-table" style="position:absolute;left:500px;top:450px;">';
+echo '<tr>';
 $ur = mysql_fetch_assoc ( $sql_result_ur_select );
-echo ("<p>" . $ur ['USER_LAST_NAME'] . " " . $ur ['USER_FIRST_NAME'] . "	");
+echo ("<td class=\"name-size\">" . $ur ['USER_LAST_NAME'] . " " . $ur ['USER_FIRST_NAME'] . "	");
 /* 性別 */
 if ($ur ['SEX'] == "m")
-	$sex = "男";
-else if ($ur ['SEX'] == "f")
-	$sex = "女";
+	$sex = "男性";
+else
+	$sex = "女性";
 echo ("　" . $sex);
-echo "</p>";
+echo "</td></tr><br>";
 
 /* ▽ 大学・学年・学科 ▽ */
 /* 大学・学年・学科 */
@@ -114,7 +118,7 @@ switch ($ur ['GRADE']) {
 		$grade = '修士2年';
 		break;
 }
-echo "<p>" . $ur ["COLLEGE_NAME"] . " " . $grade . " " . "学科: ";
+echo "<tr><td>" . $ur ["COLLEGE_NAME"] . " " . "学科: ";
 echo '<input type="hidden" name="grade" value="' . $grade . '">';
 $gakka_KU = array (
 		// 高知大学
@@ -164,10 +168,12 @@ if ($ur ["COLLEGE_NAME"] == "高知大学") {
 		echo '>' . $value . '</option>';
 	}
 }
-echo "</select></p>";
+echo "</select>";
+echo " " . $grade;
+echo "</td></tr>";
 
 /* ▽ 興味・関心のある分野 ▽ */
-echo ("<p>興味・関心のある分野" . "<br>");
+echo ("<tr><td class=\"name-size\">興味・関心のある分野" . "</td><br>");
 $interest = array (
 		"アニメ",
 		"映画 ",
@@ -193,6 +199,7 @@ $interest_length = mb_strlen ( $ua ['INTEREST'] );
 for($i = 0; $i < $interest_length; $i ++)
 	$interest_trueORfalse [$i] = substr ( $ua ['INTEREST'], $i, 1 );
 
+echo '<tr><td class="space">';
 foreach ( $interest as $key => $value ) {
 	echo '<input type="checkbox" name="interest[]" value="' . $key . '"';
 
@@ -208,14 +215,17 @@ foreach ( $interest as $key => $value ) {
 }
 
 echo '<input type="hidden" name="key" value="' . $key . '">';
-echo ("</p>");
+echo ("</td></tr><br>");
 
 /* ▽ 自己紹介 ▽ */
-echo "自己紹介" . "<br><p>";
-echo '<textarea name="jikoshokai" cols="50" rows="6">' . $ua ['PROFILE'] . '</textarea></p>';
+echo '<tr><td class="name-size">' . "自己紹介" . "</td></tr>";
+echo '<tr><td class="space">';
+echo '<textarea name="jikoshokai" cols="50" rows="6">' . $ua ['PROFILE'] . '</textarea>';
+echo '</td></tr>';
 
 /* ▽ 立ち上げているイベント ▽ */
-echo "立ち上げているイベント" . "<br><p>";
+echo '<tr><td class="name-size">'.'立ち上げているイベント' . '</td></tr>';
+echo '<tr><td class="space">';
 while ( $ev = mysql_fetch_assoc ( $sql_result_ev_select ) ) {
 	// このページの利用者が立ち上げているイベントの参加人数
 	$ev_count = event_count ( $ev ['EVENT_ID'] );
@@ -224,9 +234,11 @@ while ( $ev = mysql_fetch_assoc ( $sql_result_ev_select ) ) {
 	echo $date->format ( 'Y年n月j日' ) . '<a href=http://localhost/kocote/event/event_detail.php?event_id=' . $ev ['EVENT_ID'] . '>' . $ev ['EVENT_TITLE'] . '</a>', '(', '現在の参加人数:' . $ev_count . '人)', '<br>';
 	echo '</p>';
 }
+echo '</td></tr>';
 
 /* ▽ 参加しているイベント ▽ */
-echo "参加しているイベント" . "<br><p>";
+echo '<tr><td class="name-size">'.'参加しているイベント' . '</td></tr>';
+echo '<tr><td class="space">';
 while ( $pev = mysql_fetch_assoc ( $sql_result_pev_select ) ) {
 	// このページの利用者が参加しているイベントの参加人数
 	$pev_count = event_count ( $pev ['EVENT_ID'] );
@@ -235,9 +247,11 @@ while ( $pev = mysql_fetch_assoc ( $sql_result_pev_select ) ) {
 	echo $date->format ( 'Y年n月j日' ) . '<a href=http://localhost/kocote/event/event_detail.php?event_id=' . $pev ['EVENT_ID'] . '>' . $pev ['EVENT_TITLE'] . '</a>', '(', '現在の参加人数:', $pev_count, '人)', '<br>';
 	echo '</p>';
 }
+echo '</td></tr>';
 
 /* ▽ お気に入り登録しているイベント ▽ */
-echo "お気に入り登録しているイベント" . "<br><p>";
+echo '<tr><td class="name-size">'.'お気に入り登録しているイベント' . '</td></tr>';
+echo '<tr><td class="space">';
 while ( $fev = mysql_fetch_assoc ( $sql_result_fev_select ) ) {
 	// このページの利用者が参加しているイベントの参加人数
 	$fev_count = event_count ( $fev ['EVENT_ID'] );
@@ -246,6 +260,7 @@ while ( $fev = mysql_fetch_assoc ( $sql_result_fev_select ) ) {
 	echo $date->format ( 'Y年n月j日' ) . '<a href=http://localhost/kocote/event/event_detail.php?event_id=' . $fev ['EVENT_ID'] . '>' . $fev ['EVENT_TITLE'] . '</a>', '(', '現在の参加人数:', $fev_count, '人)', '<br>';
 	echo '</p>';
 }
+echo '</td></tr>';
 
 mysql_close ( $link );
 echo '</form>';
