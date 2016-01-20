@@ -99,12 +99,12 @@ $last_rows = $start + $one_page - 1;
 
 <?php
 //DB情報
-$db = "test_bulletin";
+$db = "greenbakari";
 $host = "localhost";
 $user = "root";
-$pass = "kappaebisen";
+$pass = "root";
 
-$table = "bb";
+$table = "BB";
 $category = "category";
 
 if(isset($_POST['all'])) {
@@ -138,28 +138,28 @@ $sdb = mysql_select_db($db, $link) or die("データベースの選択に失敗�
 //クエリの送信(作成が新しい順に$one_pageページずつ取得)
 switch($seq){
 case '1':
-  $sql = "SELECT * FROM $table WHERE category = $category ORDER BY comment_count DESC LIMIT $start, $one_page";
+  $sql = "SELECT * FROM $table WHERE CATEGORY = $category ORDER BY COMMENT_COUNT DESC LIMIT $start, $one_page";
   $seq_str="コメント数の多い順";
   //$table="sorted_table";
   break;
 
 case '2':
-  $sql = "SELECT * FROM $table WHERE category = $category ORDER BY last_posted_date DESC LIMIT $start, $one_page";
+  $sql = "SELECT * FROM $table WHERE CATEGORY = $category ORDER BY LAST_POSTED_DATE DESC LIMIT $start, $one_page";
   $seq_str="最新コメント投稿順";
   break;
 
 case '3':
-  $sql = "SELECT * FROM $table WHERE category = $category ORDER BY created_date DESC LIMIT $start, $one_page";
+  $sql = "SELECT * FROM $table WHERE CATEGORY = $category ORDER BY CREATED_DATE DESC LIMIT $start, $one_page";
   $seq_str="作成された順";
   break;
 
 default:
-  $sql = "SELECT * FROM $table ORDER BY bb_id DESC LIMIT $start, $one_page";
+  $sql = "SELECT * FROM $table ORDER BY BB_ID DESC LIMIT $start, $one_page";
 }
 $result = mysql_query($sql) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
 
 //全ての行数を取得しall_rowsへ格納
-$sql_all = "SELECT * FROM $table WHERE category = $category";
+$sql_all = "SELECT * FROM $table WHERE CATEGORY = $category";
 $result_all = mysql_query($sql_all, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql_all);
 $all_rows = mysql_num_rows($result_all);
 
@@ -176,9 +176,9 @@ mysql_close($link) or die("MySQL切断に失敗しました。");
 <th>タイトル</th>
 <th>コメント数</th>
 <?php while (($row = mysql_fetch_array($result)) && ($first_rows <= $last_rows) && ($first_rows <= $all_rows)) { ?>
-  <tr><td align="center" style="width:150px;"><?php echo ($row["category"]); ?></td>
-  <td align="center" style="width:500px;"><a href="http:../bulletin/bulletin_detail.php?bb_id=<?php echo ($row["bb_id"]) ?>"><?php echo ($row["bb_name"]); ?></a></td>
-  <td align="center" style="width:150px;"><?php echo ($row["comment_count"]); ?></td>
+  <tr><td align="center" style="width:150px;"><?php echo ($row["CATEGORY"]); ?></td>
+  <td align="center" style="width:500px;"><a href="http:../bulletin/bulletin_detail.php?bb_id=<?php echo ($row["BB_ID"]) ?>"><?php echo ($row["BB_NAME"]); ?></a></td>
+  <td align="center" style="width:150px;"><?php echo ($row["COMMENT_COUNT"]); ?></td>
     </tr>
 <?php
 $first_rows++;

@@ -19,17 +19,17 @@ session_start();
 <!--作成されている掲示板の総数の取得 -->
 <?php
 //DB情報
-$db = "test_bulletin";
+$db = "greenbakari";
 $host = "localhost";
 $user = "root";
-$pass = "kappaebisen";
+$pass = "root";
 
-$table = "bb";
+$table = "BB";
 $category = "category";
 ?>
 
 <?php
-$pdo = new PDO("mysql:dbname=$db", "root", "kappaebisen");
+$pdo = new PDO("mysql:dbname=$db", "root", "root");
 $st_all = $pdo->query("SELECT * FROM $table");
 $st_all -> execute();
 $all_rows = $st_all->rowCount();
@@ -45,7 +45,7 @@ $time = date('Y-m-d H:i:s');
  <?php
  $link = mysql_connect($host, $user, $pass) or die("MySQLへの接続に失敗しました。");
  $sdb = mysql_select_db("$db", $link) or die("データベースの選択に失敗しました。");
- $sql = "SELECT bb_id FROM bb WHERE bb_id = (SELECT max(bb_id) FROM bb)";
+ $sql = "SELECT BB_ID FROM BB WHERE BB_ID = (SELECT max(BB_ID) FROM BB)";
  $result_last_id = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
  $last_id = mysql_result($result_last_id, 0);
  mysql_close($link) or die("MySQL切断に失敗しました。");
@@ -57,7 +57,7 @@ $time = date('Y-m-d H:i:s');
   $comment_count = 0;
   $next_id = $last_id + 1;
   $user_id = $_SESSION['user_id'];
-  $pdo = new PDO("mysql:dbname=$db", "$user", "kappaebisen");
+  $pdo = new PDO("mysql:dbname=$db", "$user", "root");
   $st = $pdo->prepare("INSERT INTO $table VALUES(?,?,?,?,?,?,?)");
   $st->execute(array($next_id, $user_id,$_POST['bb_name'],$_POST['category'], $comment_count, $time, $time));
 ?>
@@ -65,7 +65,7 @@ $time = date('Y-m-d H:i:s');
 <!--pfテーブル作成-->
 <?php
 $dbname="$db"; // DB名
-$tbname="pf".$next_id; // テーブル名
+$tbname="PF".$next_id; // テーブル名
 
 // MYSQL接続
 $db = mysql_connect($host,$user,$pass) or die("MYSQLへの接続に失敗しました");
@@ -78,7 +78,7 @@ while($row=mysql_fetch_assoc($result)) {
 if($row["Tables_in_".$dbname]==$tbname) exit($tbname."は存在します。");
 }
 // テーブル作成
-$sql="CREATE TABLE ".$tbname." (bb_id int not null, user_id int not null, comment_num int, posted_content text, posted_date datetime)";
+$sql="CREATE TABLE ".$tbname." (BB_ID int not null, USER_ID int not null, COMMENT_NUM int, POSTED_CONTENT text, POSTED_DATE datetime)";
 mysql_query($sql,$db) or die("テーブル作成に失敗しました");
 
 //コメントinsert(pfテーブルにinsert)

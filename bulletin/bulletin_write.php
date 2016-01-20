@@ -18,19 +18,18 @@ session_start();
 <!-- コメント投稿処理 -->
 <?php
 //DB情報
-$db = "test_bulletin";
+$db = "greenbakari";
 $host = "localhost";
 $user = "root";
-$pass = "kappaebisen";
-
+$pass = "root";
 //ユーザ情報
-  $user_id = $_SESSION('user_id');
+  $user_id = $_SESSION[user_id];
 
 //table情報
   $comment_count = 0;
   $comment = $_POST['posted_content'];
   $bb_id = $_POST['id'];
-  $table = "pf".$bb_id;
+  $table = "PF".$bb_id;
 ?>
 
 <!--コメント数取得 -->
@@ -67,7 +66,7 @@ print("投稿しました。");
 <?php
 $link = mysql_connect($host, $user, $pass) or die("MySQLへの接続に失敗しました。");
 $sdb = mysql_select_db($db, $link) or die("データベースの選択に失敗しました。");
-$sql = "UPDATE bb SET comment_count = $comment_num, last_posted_date = '$time' WHERE bb_id = $bb_id";
+$sql = "UPDATE BB SET COMMENT_COUNT = $comment_num, LAST_POSTED_DATE = '$time' WHERE BB_ID = $bb_id";
 $result_comment_update = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
 mysql_close($link) or die("MySQL切断に失敗しました。");
  ?>

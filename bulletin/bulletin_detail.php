@@ -41,13 +41,13 @@ session_start();
 <!-- 投稿コメント一覧の取得&表示とDB情報-->
 <?php
 //DB情報
-$db = "test_bulletin";
+$db = "greenbakari";
 $host = "localhost";
 $user = "root";
-$pass = "kappaebisen";
+$pass = "root";
 
 $bb_id = $_GET['bb_id'];
-$table_name ="pf".$bb_id;
+$table_name ="PF".$bb_id;
  ?>
 
 <center>
@@ -55,7 +55,7 @@ $table_name ="pf".$bb_id;
 <?php
 $link = mysql_connect("$host", "$user", "$pass") or die("MySQLへの接続に失敗しました。");
 $sdb = mysql_select_db("$db", $link) or die("データベースの選択に失敗しました。");
-$sql = "SELECT bb_name FROM bb WHERE bb_id = $bb_id";
+$sql = "SELECT BB_NAME FROM BB WHERE BB_ID = $bb_id";
 $result_name = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
 $title = mysql_result($result_name, 0);
 mysql_close($link) or die("MySQL切断に失敗しました。");
@@ -79,7 +79,7 @@ mysql_close($link) or die("MySQL切断に失敗しました。");
   <?php
   $link = mysql_connect("$host", "$user", "$pass") or die("MySQLへの接続に失敗しました。");
   $sdb = mysql_select_db("$db", $link) or die("データベースの選択に失敗しました。");
-  $sql = "UPDATE bb SET comment_count = $comment_num WHERE bb_id = $bb_id";
+  $sql = "UPDATE BB SET COMMENT_COUNT = $comment_num WHERE BB_ID = $bb_id";
   $result_comment_update = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
   mysql_close($link) or die("MySQL切断に失敗しました。");
    ?>
@@ -106,7 +106,7 @@ mysql_close($link) or die("MySQL切断に失敗しました。");
   $pdo = new PDO("mysql:dbname=$db", "$user", "$pass");
 
 $roma_switch=0;
-$st = $pdo->query("SELECT comment_num, bb_id, user_last_name, user_first_name, posted_date, $table_name.user_id, posted_content FROM ur, $table_name WHERE ur.user_id = $table_name.user_id ORDER BY comment_num");
+$st = $pdo->query("SELECT COMMENT_NUM, BB_ID, USER_LAST_NAME, USER_FIRST_NAME, POSTED_DATE, $table_name.USER_ID, POSTED_CONTENT FROM UR, $table_name WHERE UR.USER_ID = $table_name.USER_ID ORDER BY COMMENT_NUM");
 
 //ローマ字希望か判定あり(urテーブルにroma_switchカラムが必要)
 /*$st = $pdo->query("SELECT comment_num, bb_id, user_last_name, user_first_name, user_last_name_roma, user_first_name_roma, posted_date, $table_name.user_id, posted_content, roma_switch FROM ur, $table_name WHERE ur.user_id = $table_name.user_id ORDER BY comment_num");*/
@@ -116,17 +116,17 @@ $st = $pdo->query("SELECT comment_num, bb_id, user_last_name, user_first_name, p
   while ($row = $st->fetch()) {
   // $roma_switch=$row['roma_switch'];
     if($roma_switch == 1){
-    $last_name = htmlspecialchars($row['user_last_name_roma']);
-    $first_name = htmlspecialchars($row['user_first_name_roma']);
+    $last_name = htmlspecialchars($row['USER_LAST_NAME_ROMA']);
+    $first_name = htmlspecialchars($row['USER_FIRST_NAME_ROMA']);
   }else{
-   $last_name = htmlspecialchars($row['user_last_name']);
-    $first_name = htmlspecialchars($row['user_first_name']);
+   $last_name = htmlspecialchars($row['USER_LAST_NAME']);
+    $first_name = htmlspecialchars($row['USER_FIRST_NAME']);
   }
-    $bb_id = htmlspecialchars($row['bb_id']);
-    $user_id = htmlspecialchars($row['user_id']);
-    $comment_num = htmlspecialchars($row['comment_num']);
-    $posted_content = htmlspecialchars($row['posted_content']);
-    $posted_date = htmlspecialchars($row['posted_date']);
+    $bb_id = htmlspecialchars($row['BB_ID']);
+    $user_id = htmlspecialchars($row['USER_ID']);
+    $comment_num = htmlspecialchars($row['COMMENT_NUM']);
+    $posted_content = htmlspecialchars($row['POSTED_CONTENT']);
+    $posted_date = htmlspecialchars($row['POSTED_DATE']);
     //コメントの改行、URL処理
     $posted_content = nl2br($posted_content);
     $posted_content = autoLinker($posted_content);
