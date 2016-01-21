@@ -1,42 +1,31 @@
-<!-- セッションの開始 -->
 <?php
     session_start();
 
-$user_id = $_SESSION('user_id');
-//ユーザidの取得
-
- //データベース接続
-    $conn = mysql_connect('localhost', 'root', 'root');
-    if (!$conn) {
-      die("データベース接続失敗");
+    $user_id = 3;//$_SESSION['user_id'];
+    
+    //ログイン中の利用者の名前の取得
+    $link = mysql_connect('localhost', 'root', 'root');
+    if (!$link) {
+        die('接続失敗です。' .mysql_error());
     }
-    //データベース選択
-    mysql_select_db('greenbakari') or die("データベース選択失敗");
-    //文字コード指定
+    $db_selected = mysql_select_db('greenbakari', $link);
+    if (!$db_selected) {
+        die('データベース選択失敗です。'.mysql_error());
+    }
     mysql_set_charset('utf8');
-
-    //名前を取得
-    $sql = "SELECT USER_NAME FROM UR WHERE USER_ID = $user_id";
-    $res = mysql_query($sql);
-    while ($new = mysql_fetch_array($res)) {
-    $user_name = $new['USER_NAME'];
+    $sql_login = "SELECT USER_LAST_NAME, USER_FIRST_NAME FROM UR WHERE USER_ID = $user_id";
+    $result_login = mysql_query($sql_login, $link);
+    if (!$result_login) {
+        die('クエリが失敗しました。'.mysql_error());
     }
-
-    //mysql切断
-    mysql_close($conn);
-
-
-if(!(isset($_SESSION["user_id"]))){
-  header("Location:login.php");
-}
-if ($_SERVER["REQUEST_METHOD"] == "POST") {//ログアウト処理
-  if (isset($_COOKIE["user_id"])){
-       setcookie("user_id", $_SESSION["user_id"], time() - 259200);
- }
-  session_destroy();
-  header("Location: login.php");
-}
+    while ($row_login = mysql_fetch_array($result_login)) {
+         $last_name_login = $row_login['USER_LAST_NAME'];
+         $first_name_login = $row_login['USER_FIRST_NAME'];
+    }
+    $name_login = $last_name_login." ".$first_name_login;
+    mysql_close($link);
 ?>
+
 
 <html>
 <head>
@@ -48,20 +37,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {//ログアウト処理
 <link rel="stylesheet" href="../css/ev_style.css" type="text/css">
   <body topmargin="100" bottommargin="100">
 
-  <div id="headerArea"></div>
-  <div id="footerArea"></div>
-
+<div id="headerArea">
+    <table>
+        <tr>
+            <td><img class="login-image" src="../img/login.jpg"></td>
+            <td><p class="login-name"><?php echo $name_login;?></p></td>
+            <td><form id="logoutForm" name="logoutForm" action="../logout.php" method="POST">
+            <input id="logout-botton" type="submit" id="logout" name="formname" value="ログアウト" >
+            </form></td>
+        </tr>
+    </table>
+</div>
   <form id="loginForm"  action="event_conf.php" method="POST" enctype="multipart/form-data" name="formDate">
-  <!-- 登録・編集確認画面に遷移 : action="conf.php" -->
+  <!-- <?php echo $errorMessage ?> -->
+ 
+<!-- 機能選択ボタン -->
+<div id="box">
+  <a href="../event/event.php"><img src="../img/ev_home.jpg" height="13%"></a>
+  <a href="../bulletin/bulletin.php"><img src="../img/bb_home.jpg" height="13%"></a>
+  <a href="../search/search.php"><img src="../img/se_home.jpg" height="13%"></a>
+  <a href="../mypage/mypage.php"><img src="../img/mp_home.jpg" height="13%"></a></div>
+  <br>
 
-  <div id = "box">
-    <a href="event.php"><img src="../img/ev_home.jpg" height="7%" width="16%"></a>
-    <a href="../bulletin/bulletin.php"><img src="../img/bb_home.jpg" height="7%" width="16%"></a>
-    <a href="../search/search.php"><img src="../img/se_home.jpg" height="7%" width="16%"></a>
-    <a href="../mypage/mypage.php"><img src="../img/mp_home.jpg" height="7%" width="16%"></a></div>
-  <br><br><br>
 
-  <a href="../mypage/mypage.php"><img src="../img/mp_home.jpg" style="margin-left:-10%" height="8%" width="5%" align="bottom"><font size="6" color="#000000"><?php echo $user_name ?></font></a>
+
+
+
+  <a href="../mypage/mypage.php"><img src="../img/mp_home.jpg" style="margin-left:-10%" height="8%" width="5%" align="bottom"><font size="6" color="#000000"><?php echo $name_login ?></font></a>
 
 <table class="data">
 <tr>
@@ -110,8 +112,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {//ログアウト処理
     function set_event_year() {
         var select = document.formDate.event_year;
         var option = select.appendChild(document.createElement('option'));
-        option.value = 0;
-        option.text = '----';
+        option.value = '';
+        option.text = '';
         for (var y = now_year; y < now_year + 5; y++) {
             var select = document.formDate.event_year;
             var option = select.appendChild(document.createElement('option'));
@@ -144,7 +146,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {//ログアウト処理
             }
         } else {
             var option = select.appendChild(document.createElement('option'));
-            option.value = 0;
+            option.value = '';
             option.text = '';
         }
         set_event_day();
@@ -166,19 +168,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {//ログアウト処理
             select.removeChild(select.options[0]);
         }
         
-        if (Month != 0) {        
+        if (Month != 0) {
             for (var d = 1; d <= days[Month - 1]; d++) {
             var option = select.appendChild(document.createElement('option'));
-            option.value = d;
+
+	    option.value = d;
             option.text = d;
             option.select =
                 (Year == now_year && Month == now_month) ?
                 ((d == now_date) ? 'selected' : false ) : 
-                ((d == 1) ? 'selected' : false ); 
+                ((d == 1) ? 'selected' : false );
             }
         } else {
             var option = select.appendChild(document.createElement('option'));
-            option.value = 0;
+            option.value = '';
             option.text = '';
         }
     }
@@ -251,12 +254,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {//ログアウト処理
             (Year % 4 == 0) ? true : false;
         return uruu;
     }
-    
+
     function set_limit_year() {
         var select = document.formDate.limit_year;
         var option = select.appendChild(document.createElement('option'));
-        option.value = 0;
-        option.text = '----';
+        option.value = '';
+        option.text = '';
         for (var y = now_year; y < now_year + 5; y++) {
             var select = document.formDate.limit_year;
             var option = select.appendChild(document.createElement('option'));
@@ -289,7 +292,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {//ログアウト処理
             }
         } else {
             var option = select.appendChild(document.createElement('option'));
-            option.value = 0;
+            //option.value = 0;
             option.text = '';
         }
         set_limit_day();
@@ -310,8 +313,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {//ログアウト処理
         while(select.options.length) {
             select.removeChild(select.options[0]);
         }
-        
-        if (Month != 0) {        
+
+        if (Month != 0) {
             for (var d = 1; d <= days[Month - 1]; d++) {
             var option = select.appendChild(document.createElement('option'));
             option.value = d;
@@ -323,7 +326,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {//ログアウト処理
             }
         } else {
             var option = select.appendChild(document.createElement('option'));
-            option.value = 0;
+            //option.value = 0;
             option.text = '';
         }
     }
@@ -370,5 +373,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {//ログアウト処理
 
 
   </form>
+
+  <div id="footerArea">
+<ul>
+<li><a href="">会社概要</a></li>
+<li><a href="../contact/contact.php">お問い合わせ</a></li>
+<li><a href="">個人情報保護方針</a></li>
+<li><a href="">採用情報</a></li>
+<li><a href="">サイトマップ</a></li>
+</ul>
+</div>
+</center>
   </body>
 </html>

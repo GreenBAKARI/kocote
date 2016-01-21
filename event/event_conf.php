@@ -1,11 +1,33 @@
-<!-- セッションの開始 -->
 <?php
     session_start();
-    $user_id = $_SESSION('user_id');
+
+    $user_id = 3;//$_SESSION['user_id'];
+    
+    //ログイン中の利用者の名前の取得
+    $link = mysql_connect('localhost', 'root', 'root');
+    if (!$link) {
+        die('接続失敗です。' .mysql_error());
+    }
+    $db_selected = mysql_select_db('greenbakari', $link);
+    if (!$db_selected) {
+        die('データベース選択失敗です。'.mysql_error());
+    }
+    mysql_set_charset('utf8');
+    $sql_login = "SELECT USER_LAST_NAME, USER_FIRST_NAME FROM UR WHERE USER_ID = $user_id";
+    $result_login = mysql_query($sql_login, $link);
+    if (!$result_login) {
+        die('クエリが失敗しました。'.mysql_error());
+    }
+    while ($row_login = mysql_fetch_array($result_login)) {
+         $last_name_login = $row_login['USER_LAST_NAME'];
+         $first_name_login = $row_login['USER_FIRST_NAME'];
+    }
+    $name_login = $last_name_login." ".$first_name_login;
+    mysql_close($link);
 
  //データベース接続
-    $conn = mysql_connect('localhost', 'root', 'root');
-    if (!$conn) {
+    $conn0 = mysql_connect('localhost', 'root', 'root');
+    if (!$conn0) {
       die("データベース接続失敗");
     }
     //データベース選択
@@ -13,31 +35,11 @@
     //文字コード指定
     mysql_set_charset('utf8');
 
-    //名前を取得
-    $sql = "SELECT USER_NAME FROM UR WHERE USER_ID = $user_id";
-    $res = mysql_query($sql);
-    while ($new = mysql_fetch_array($res)) {
-    $user_name = $new['USER_NAME'];
-    }
-
     //mysql切断
-    mysql_close($conn);
+    mysql_close($conn0);
 
 
-if(!(isset($_SESSION["user_id"]))){
-  header("Location:login.php");
-}
-if ($_SERVER["REQUEST_METHOD"] == "POST") {//ログアウト処理
-  if (isset($_COOKIE["user_id"])){
-       setcookie("user_id", $_SESSION["user_id"], time() - 259200);
- }
-  session_destroy();
-  header("Location: login.php");
-}
-?>
-
-<?php
-  $event_id = $_POST['event_id'];
+  $event_id = $_POST["event_id"];
   $event_title= $_POST['event_title'];
   $host_comment = $_POST['host_comment'];
   $event_year = $_POST['event_year'];
@@ -54,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {//ログアウト処理
   $event_detail = $_POST['event_detail'];
   $imgtmp = $_FILES['event_image']['tmp_name'];
   $imgtype = $_FILES['event_image']['type'];
-  $filepass = "img/".$_FILES['event_image']['name'];
+  $filepass = "../img/".$_FILES['event_image']['name'];
   $kaku="";
   if (is_uploaded_file($imgtmp)) {
     if ($imgtype=="image/gif") {
@@ -78,17 +80,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {//ログアウト処理
     }
   }
 
-
+//登録 
   if ($_POST["insert"] != NULL) {
     $event_id = $_POST['e_id'];
     $user_id = $_POST['u_id'];
     $event_title = $_POST['e_title'];
     $host_comment = $_POST['h_comment'];
+    $event_year = $_POST['e_year'];
     $event_month = $_POST['e_month'];
     $event_day = $_POST['e_day'];
     $start_hour = $_POST['s_hour'];
     $finish_hour = $_POST['f_hour'];
     $event_place = $_POST['e_place'];
+    $limit_year = $_POST['l_year'];
     $limit_month = $_POST['l_month'];
     $limit_day = $_POST['l_day'];
     $limit_hour = $_POST['l_hour'];
@@ -134,10 +138,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {//ログアウト処理
       $size = filesize($filepass);
       $img_file = fread($fp, $size);
       fclose($fp);
-    }
     //画像をバイナリに変換
-   $img_file = addslashes($img_file);
-   
+    //$str = mb_convert_encoding ( $imgdata, "UTF-8" );
+    //$img_binary = mysqli_real_escape_string($conn , $img_file);//addslashes($img_file);
+    $img_binary = addslashes($img_file);
+   } 
 
     //文字コード指定
     mysql_set_charset('utf8');
@@ -158,7 +163,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {//ログアウト処理
       $evt_id = ++$new_id['MAX(EVENT_ID)'];
     }
     //INSERT文発行
-    $sql = "INSERT INTO EV(EVENT_ID, USER_ID, EVENT_TITLE, CATEGORY, EVENT_START, EVENT_FINISH, HOLDING_PLACE, PARTICIPATION_DEADLINE, HOLDING_COMMENT, EVENT_DETAIL, EVENT_IMAGE, UPDATE_DATE) VALUES($evt_id, $user_id, '$event_title', $category, '$event_start', '$event_finish', '$event_place', '$participation_deadline', '$host_comment', '$event_detail', '.$img_binary.', '$update_date')";
+    $sql = "INSERT INTO EV(EVENT_ID, USER_ID, EVENT_TITLE, CATEGORY, EVENT_START, EVENT_FINISH, HOLDING_PLACE, PARTICIPATION_DEADLINE, HOLDING_COMMENT, EVENT_DETAIL, EVENT_IMAGE, UPDATE_DATE) VALUES($evt_id, $user_id, '$event_title', $category, '$event_start', '$event_finish', '$event_place', '$participation_deadline', '$host_comment', '$event_detail', '$img_binary', '$update_date')";
     } else {
     //UPDATE文発行
     $sql = "UPDATE EV 
@@ -171,11 +176,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {//ログアウト処理
     PARTICIPATION_DEADLINE = '$participation_deadline',
     HOLDING_COMMENT = '$host_comment', 
     EVENT_DETAIL = '$event_detail', 
-    EVENT_IMAGE = '.$img_binary.',
-    UPDATE_DATE = '$update_date' 
+    UPDATE_DATE = '$update_date'
     WHERE EVENT_ID = $event_id;";
-    }
 
+    if ($img_binary) {
+    $sql_img = "UPDATE EV SET EVENT_IMAGE = '$img_binary' WHERE EVENT_ID = $event_id;";
+    $res = mysql_query($sql_img);
+
+    if ($res) {
+    //成功時はコミットする
+      $sql = "COMMIT";
+      mysql_query($sql, $conn);
+      //echo "コミットしました";
+    } else {
+      //失敗時はロールバックする
+      $sql = "ROLLBACK";
+      mysql_query($sql, $conn);
+      echo "登録失敗しました";
+    }
+    }
+    
+}
 
     $res = mysql_query($sql);
 
@@ -190,13 +211,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {//ログアウト処理
       mysql_query($sql, $conn);
       echo "登録失敗しました";
     }
+
     //mysql切断
     mysql_close($conn);
 
     //ページ遷移
-    header( "Location: event.php" );
+    header("Location:event.php");
   }
 ?>
+
 
 
 <!--
@@ -214,19 +237,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {//ログアウト処理
 <link rel="stylesheet" href="../css/style.css" type="text/css">
 <link rel="stylesheet" href="../css/ev_style.css" type="text/css">
   <body topmargin="100" bottommargin="100">
+<div id="headerArea">
+    <table>
+        <tr>
+            <td><img class="login-image" src="../img/login.jpg"></td>
+            <td><p class="login-name"><?php echo $name_login;?></p></td>
+            <td><form id="logoutForm" name="logoutForm" action="../logout.php" method="POST">
+            <input id="logout-botton" type="submit" id="logout" name="formname" value="ログアウト" >
+            </form></td>
+        </tr>
+    </table>
+</div>
+  <form id="loginForm"  action="event_conf.php" method="POST" enctype="multipart/form-data" name="formDate">
+  <!-- <?php echo $errorMessage ?> -->
+ 
+<!-- 機能選択ボタン -->
+<div id="box">
+  <a href="../event/event.php"><img src="../img/ev_home.jpg" height="13%"></a>
+  <a href="../bulletin/bulletin.php"><img src="../img/bb_home.jpg" height="13%"></a>
+  <a href="../search/search.php"><img src="../img/se_home.jpg" height="13%"></a>
+  <a href="../mypage/mypage.php"><img src="../img/mp_home.jpg" height="13%"></a></div>
+  <br>
 
-  <div id="headerArea"></div>
-  <div id="footerArea"></div>
- <div id = "box">
-    <a href="event.php"><img src="../img/ev_home.jpg" height="7%" width="16%"></a>
-    <a href="../bulletin/bulletin.php"><img src="../img/bb_home.jpg" height="7%" width="16%"></a>
-    <a href="../search/search.php"><img src="../img/se_home.jpg" height="7%" width="16%"></a>
-    <a href="../mypage/mypage.php"><img src="../img/mp_home.jpg" height="7%" width="16%"></a></div>
-  <br><br><br>
 
-  <a href="../mypage/mypage.php"><img src="../img/mp_home.jpg" style="margin-left:-10%" height="8%" width="5%" align="bottom">
 
-  <font size="6" color="#000000"><?php echo $user_name ?></font></a>
+
+
+  <a href="../mypage/mypage.php"><img src="../img/mp_home.jpg" style="margin-left:-10%" height="8%" width="5%" align="bottom"><font size="6" color="#000000"><?php echo $name_login ?></font></a>
+
 
 <table class="data">
 <tr>
@@ -348,9 +386,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {//ログアウト処理
 </tr>
 </table>  
   <?php
+  if($imgtmp) {
   echo '<p>';
   echo '<img src="'.$filepass.'" size=10>';
   echo '</p>';
+  } else {
+  echo '<img src="event_detail_image.php?event_id='.$event_id.'&image_id=a">';
+  }
   ?>
   
   <form id="loginForm" name="loginForm" action="" method="POST" entype="multipart/form-data">
@@ -358,11 +400,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {//ログアウト処理
   <input type="hidden" name="u_id" value="<?php echo $user_id ?>">
   <input type="hidden" name="e_title" value="<?php echo $event_title ?>">
   <input type="hidden" name="h_comment" value="<?php echo $host_comment ?>">
+  <input type="hidden" name="e_year" value="<?php echo $event_year ?>">
   <input type="hidden" name="e_month" value="<?php echo $event_month ?>">
   <input type="hidden" name="e_day" value="<?php echo $event_day ?>">
   <input type="hidden" name="s_hour" value="<?php echo $start_hour ?>">
   <input type="hidden" name="f_hour" value="<?php echo $finish_hour ?>">
   <input type="hidden" name="e_place" value="<?php echo $event_place ?>">
+  <input type="hidden" name="l_year" value="<?php echo $limit_year ?>">
   <input type="hidden" name="l_month" value="<?php echo $limit_month ?>">
   <input type="hidden" name="l_day" value="<?php echo $limit_day ?>">
   <input type="hidden" name="l_hour" value="<?php echo $limit_hour ?>">
@@ -375,6 +419,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {//ログアウト処理
   </form>
 
 
+  <div id="footerArea">
+<ul>
+<li><a href="">会社概要</a></li>
+<li><a href="../contact/contact.php">お問い合わせ</a></li>
+<li><a href="">個人情報保護方針</a></li>
+<li><a href="">採用情報</a></li>
+<li><a href="">サイトマップ</a></li>
+</ul>
+</div>
+</center>
   </body>
 </html>
 
