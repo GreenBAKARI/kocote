@@ -1,67 +1,31 @@
-<!-- セッションの開始 -->
 <?php
     session_start();
 
-if(!(isset($_SESSION["user_id"]))){
-  header("Location:login.php");
-}
-if ($_SERVER["REQUEST_METHOD"] == "POST") {//ログアウト処理
-  if (isset($_COOKIE["user_id"])){
-       setcookie("user_id", $_SESSION["user_id"], time() - 259200);
- }
-  session_destroy();
-  header("Location: login.php");
-}
-
-
-  $user_id = $_SESSION('user_id');
-  $event_id = $_POST['event_id'];
-//ユーザidの取得
-
- //データベース接続
-    $conn = mysql_connect('localhost', 'root', 'root');
-    if (!$conn) {
-      die("データベース接続失敗");
+    $user_id = 3;//$_SESSION['user_id'];
+    $event_id = 177;//$_POST['event_id'];    
+    //ログイン中の利用者の名前の取得
+    $link = mysql_connect('localhost', 'root', 'root');
+    if (!$link) {
+        die('接続失敗です。' .mysql_error());
     }
-    //データベース選択
-    mysql_select_db('greenbakari') or die("データベース選択失敗");
-    //文字コード指定
+    $db_selected = mysql_select_db('greenbakari', $link);
+    if (!$db_selected) {
+        die('データベース選択失敗です。'.mysql_error());
+    }
     mysql_set_charset('utf8');
-
-    //名前を取得
-    $sql = "SELECT USER_NAME FROM UR WHERE USER_ID = $user_id";
-    $res = mysql_query($sql);
-    while ($new = mysql_fetch_array($res)) {
-    $user_name = $new['USER_NAME'];
+    $sql_login = "SELECT USER_LAST_NAME, USER_FIRST_NAME FROM UR WHERE USER_ID = $user_id";
+    $result_login = mysql_query($sql_login, $link);
+    if (!$result_login) {
+        die('クエリが失敗しました。'.mysql_error());
     }
-
-    //mysql切断
-    mysql_close($conn);
-
-
-
- //データベース接続
-    $conn = mysql_connect('localhost', 'root', 'root');
-    if (!$conn) {
-      die("データベース接続失敗");
+    while ($row_login = mysql_fetch_array($result_login)) {
+         $last_name_login = $row_login['USER_LAST_NAME'];
+         $first_name_login = $row_login['USER_FIRST_NAME'];
     }
-    //データベース選択
-    mysql_select_db('greenbakari') or die("データベース選択失敗");
-    //文字コード指定
-    mysql_set_charset('utf8');
+    $name_login = $last_name_login." ".$first_name_login;
+    mysql_close($link);
 
-    //最後のイベントIDを取得
-    $sql = "SELECT * FROM UR WHERE USER_ID = $user_id";
-    $res = mysql_query($sql);
-    while ($new = mysql_fetch_array($res)) {
-    $user_name = $new['USER_NAME'];
-    }
 
-    //mysql切断
-    mysql_close($conn);
-   //$event_id = $_POST['event_id'];
-   //$user_id = $_POST['user_id'];
-   //$user_name = $_POST['user_name'];
     //データベース接続
     $conn = mysql_connect('localhost', 'root', 'root');
     if (!$conn) {
@@ -99,26 +63,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {//ログアウト処理
     //mysql切断
     mysql_close($conn);
 
-    //指定したid_colを持つ画像を表示する関数
-    function CallImg($event_id){
-	echo '<img src="'.ImgSearchDB($event_id).'">';
-    }
-
-    //データベースから、指定したid_colを持つimageファイルを検索する関数。
-    function ImgSearchDB($event_id){
-		
-	//データベースへ接続する
-	$conn = mysql_connect('localhost', 'root', 'root');
-	
-	//指定したidのimgを検索
-	$serch_query = mysqli_query($conn,"SELECT * FROM `EV` WHERE `EVENT_ID` ='".$event_id."'");
-	$row = mysqli_fetch_array($serch_query);
-	
-	header( 'Content-Type: image/jpeg' );
-	echo $row['EVENT_IMAGE'];
-	
-	$close_flag = mysqli_close($conn);
-     }
 
   //イベント削除
   if ($_POST["delete"] != NULL) {
@@ -159,7 +103,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {//ログアウト処理
     //ページ遷移
     header( "Location: event.php" );
   }
-
 ?>
 
 
@@ -174,20 +117,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {//ログアウト処理
 <link rel="stylesheet" href="../css/ev_style.css" type="text/css">
 <body topmargin="100" bottommargin="100">
 
-<div id="headerArea"></div>
-<div id="footerArea"></div>
-
-<form id="loginForm" name="formDate" action="event_conf.php" method="POST" entype="multipart/form-data">
+<div id="headerArea">
+    <table>
+        <tr>
+            <td><img class="login-image" src="../img/login.jpg"></td>
+            <td><p class="login-name"><?php echo $name_login;?></p></td>
+            <td><form id="logoutForm" name="logoutForm" action="../logout.php" method="POST">
+            <input id="logout-botton" type="submit" id="logout" name="formname" value="ログアウト" >
+            </form></td>
+        </tr>
+    </table>
+</div>
+  <form id="loginForm"  action="event_conf.php" method="POST" enctype="multipart/form-data" name="formDate">
   <!-- <?php echo $errorMessage ?> -->
-
-<div id = "box">
-<a href="event.php"><img src="../img/ev_home.jpg" height="7%" width="16%"></a>
-    <a href="../bulletin/bulletin.php"><img src="../img/bb_home.jpg" height="7%" width="16%"></a>
-    <a href="../search/search.php"><img src="../img/se_home.jpg" height="7%" width="16%"></a>
-    <a href="../mypage/mypage.php"><img src="../img/mp_home.jpg" height="7%" width="16%"></a></div>
-<br><br><br>
-
-<a href="../mypage/mypage.php"><img src="../img/mp_home.jpg" style="margin-left:-10%" height="8%" width="5%" align="bottom"><font size="6" color="#000000"><?php echo $user_name ?></font></a>
+ 
+<!-- 機能選択ボタン -->
+<div id="box">
+  <a href="../event/event.php"><img src="../img/ev_home.jpg" height="13%"></a>
+  <a href="../bulletin/bulletin.php"><img src="../img/bb_home.jpg" height="13%"></a>
+  <a href="../search/search.php"><img src="../img/se_home.jpg" height="13%"></a>
+  <a href="../mypage/mypage.php"><img src="../img/mp_home.jpg" height="13%"></a></div>
+  <br>
+<a href="../mypage/mypage.php"><img src="../img/mp_home.jpg" style="margin-left:-10%" height="8%" width="5%" align="bottom"><font size="6" color="#000000"><?php echo $name_login ?></font></a>
 
 <table class="data">
 <tr>
@@ -223,7 +174,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {//ログアウト処理
     var now = new Date();
     var now_year = now.getFullYear();
     var now_month = now.getMonth() + 1;
-    var now_date = now.getDate();
+    var now_day = now.getDate();
     
     function uruu(Year) {
         var uruu = 
@@ -239,7 +190,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {//ログアウト処理
             var option = select.appendChild(document.createElement('option'));
             option.value = y;
             option.text = y;
-            option.selected = (y == <?php echo $event_year; ?>) ? 'selected' : false;
+            option.selected = (y == <?php echo $event_year ?>) ? 'selected' : false;
         }
         set_event_month();
     }
@@ -248,7 +199,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {//ログアウト処理
     function set_event_month() {
         var Year =
             document.formDate.event_year.options[
-            document.formDate.event_year.selectedIndex
+	    document.formDate.event_year.selectedIndex
             ].value;
         var select = document.formDate.event_month;
         while (select.options.length){
@@ -259,14 +210,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {//ログアウト処理
                 var option = select.appendChild(document.createElement('option'));
                 option.value = m;
                 option.text = m;
-                option.selected =
-                    (Year == now_year) ?
-                    ((m == <?php echo $event_month; ?>) ? 'selected' : false ) :
-                    ((m == <?php echo $event_month; ?>) ? 'selected' : false );
+                option.selected = (m == <?php echo $event_month; ?>) ? 'selected' : false;
             }
         } else {
             var option = select.appendChild(document.createElement('option'));
-            option.value = 0;
+            option.value = '';
             option.text = '';
         }
         set_event_day();
@@ -288,19 +236,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {//ログアウト処理
             select.removeChild(select.options[0]);
         }
         
-        if (Month != 0) {        
+        if ((Year != 0) && (Month != 0)) {        
             for (var d = 1; d <= days[Month - 1]; d++) {
             var option = select.appendChild(document.createElement('option'));
             option.value = d;
             option.text = d;
-            option.select =
-	            (Year == now_year && Month == now_month) ?
-                    ((d == <?php echo $event_day; ?>) ? 'selected' : false ) :
-                    ((d == <?php echo $event_day; ?>) ? 'selected' : false );
+            option.selected = (d == <?php echo $event_day ?>) ? 'selected' : false;
             }
         } else {
             var option = select.appendChild(document.createElement('option'));
-            option.value = 0;
+            option.value = '';
             option.text = '';
         }
     }
@@ -349,13 +294,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {//ログアウト処理
   <select required="required" name="limit_year" onchange="set_limit_month()"></select> 年
   <select required="required" name="limit_month" onchange="set_limit_day()"></select> 月
   <select required="required" name="limit_day"></select> 日
+  
   <?php
   echo '<select required="required" name="limit_hour">' . "\n";
   for ($i = 0; $i <= 23; $i++){
-      if($i == $limit_hour){echo "<OPTION value=" . $i . "selected >" . $i . "</OPTION>";}
-      else{echo "<OPTION value=" . $i . " >" . $i . "</OPTION>";}
-  }
-  echo '</select>' . "時\n";
+      if($limit_hour == $i){$selected="selected";}
+      else {$selected="";}
+      echo "<OPTION value=". $i ." ". $selected .">".$i."時</OPTION>\n";}
+  echo '</select>' . "\n";
   ?>
 </td>
 </tr>
@@ -400,14 +346,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {//ログアウト処理
                 var option = select.appendChild(document.createElement('option'));
                 option.value = m;
                 option.text = m;
-                option.selected =
-                    (Year == now_year) ?
-                    ((m == now_month) ? 'selected' : false ) :
-                    ((m == <?php echo $limit_month?>) ? 'selected' : false );
+                option.selected = (m == <?php echo $limit_month?>) ? 'selected' : false;
             }
         } else {
             var option = select.appendChild(document.createElement('option'));
-            option.value = 0;
+            option.value = '';
             option.text = '';
         }
         set_limit_day();
@@ -434,14 +377,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {//ログアウト処理
             var option = select.appendChild(document.createElement('option'));
             option.value = d;
             option.text = d;
-            option.select =
-                (Year == now_year && Month == now_month) ?
-                ((d == now_date) ? 'selected' : false ) : 
-                ((d == <?php echo $limit_day?>) ? 'selected' : false ); 
+            option.selected = (d == <?php echo $limit_day ?>) ? 'selected' : false;
             }
         } else {
             var option = select.appendChild(document.createElement('option'));
-            option.value = 0;
+            option.value = '';
             option.text = '';
         }
     }
@@ -498,24 +438,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {//ログアウト処理
   <label for="event_image" style="margin-left:-1%">イベント画像：</label>
 </td>
 <td class="context">
-  <input type="file" name="event_image" size="100" accept="image/*">
-  <!--img src="event_detail_image.php?event_id=<?php echo $event_id ?>&image_id=a"-->
-  <?php
-  CallImg($event_id);
-  ?>
+    <input type="file" name="event_image" size="100" accept="image/*">
+    <img src="event_detail_image.php?event_id=<?php echo $event_id ?>&image_id=a">
 </td>
 </tr>
+
 </table>  
-  <input type="hidden" name="event_id" value="<?php echo $event_id; ?>">
-  <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
-  <input type="hidden" name="user_name" value="<?php echo $user_name; ?>">
+
+  <input type="hidden" name="event_id" value="<?php echo $event_id ?>">
+  <input type="hidden" name="user_id" value="<?php echo $user_id ?>">
+  <input type="hidden" name="user_name" value="<?php echo $user_name ?>">
+<br><br>
   <input type="submit" id="move_conf" name="move_conf" value="確認画面へ進む">
   </form>
     
   <form id="loginForm" name="loginForm" action="" method="POST">
+<br>
   <input type="hidden" name="event_id" value="<?php echo $event_id; ?>">
   <input type="submit" id="delete" name="delete" value="削除する">
   </form>
 
   </body>
+
+
+ <div id="footerArea">
+<ul>
+<li><a href="">会社概要</a></li>
+<li><a href="../contact/contact.php">お問い合わせ</a></li>
+<li><a href="">個人情報保護方針</a></li>
+<li><a href="">採用情報</a></li>
+<li><a href="">サイトマップ</a></li>
+</ul>
+</div>
+</center>
 </html>

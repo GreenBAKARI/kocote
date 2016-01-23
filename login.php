@@ -56,7 +56,7 @@ session_start();
        header("Location: index.php");//ログインする
        }
        else{
-        echo "パスワードまたはメールアドレスが違います";
+        echo "<a class=error>パスワードまたはメールアドレスが違います</a>";
        }
 
       }
@@ -88,14 +88,14 @@ session_start();
           $romaflg=false;
         }
         if($nameflg==false&&$romaflg==false){
-          echo "姓,名,ローマ字(姓)，ローマ字(名)，";
+          echo "<a class=error2>「名前」</a>";
         }
 
         if(isset($_POST["sex"])){
           $sex = htmlspecialchars($_POST["sex"], ENT_QUOTES);
         }else{
           $flg=false;
-          echo "性別，";
+          echo "<a class=error2>「性別」</a>";
         }
         if(isset($_POST["college_name"]) && !(htmlspecialchars($_POST["college_name"], ENT_QUOTES)==0) ){
           $college_name = htmlspecialchars($_POST["college_name"], ENT_QUOTES);
@@ -110,49 +110,49 @@ session_start();
                    }
         }else{
           $flg=false;
-          echo "大学，";
+          echo "<a class=error2>「大学」</a>";
 
         }
         if(isset($_POST["grade"]) && !(htmlspecialchars($_POST["grade"], ENT_QUOTES)==0) ){
           $grade = htmlspecialchars($_POST["grade"], ENT_QUOTES);
         }else{
           $flg=false;
-          echo "学年，";
+          echo "<a class=error2>「学年」</a>";
         }
         if(isset($_POST["mail_address"])&& !(htmlspecialchars($_POST["mail_address"], ENT_QUOTES) == "")){
           $mail_address = htmlspecialchars($_POST["mail_address"], ENT_QUOTES);
         }else{
           $flg=false;
-          echo "メールアドレス，";
+          echo "<a class=error2>「メールアドレス」</a>";
         }
         if(isset($_POST["password"]) && !(htmlspecialchars($_POST["password"], ENT_QUOTES)==null)){
           $password = htmlspecialchars($_POST["password"], ENT_QUOTES);
         }else{
           $flg=false;
-          echo "パスワード，";
+          echo "<a class=error2>「パスワード」</a>";
         }
         if(isset($_POST["password_conf"]) && !(htmlspecialchars($_POST["password_conf"], ENT_QUOTES)==null)){
             $password_conf = htmlspecialchars($_POST["password_conf"], ENT_QUOTES);
         }else{
             $flg=false;
-            echo "パスワード確認用";
+            echo "<a class=error2>「パスワード確認」</a>";
         }
       }
       $mail_conf="SELECT USER_ID FROM UR WHERE MAIL_ADDRESS = '$mail_address'";
       $mail_result = mysql_query($mail_conf, $link);
 
     if($flg==false||($nameflg==false&&$romaflg==false)){//もし未入力部分があれば。。。
-        echo "が未入力です。";
+        echo "<a class=error2>が未入力です。</a>";
     }else if($password!=$password_conf){
-        echo "パスワードとパスワード確認用の入力が違います。";
+        echo "<a class=error2>パスワードとパスワード確認が異なっています。</a>";
     }else if(!preg_match(//メールアドレスが正しいか
         '/^[a-z0-9][a-z0-9_¥.¥-]*@[a-z0-9][a-z0-9_¥.¥-]+[a-z]$/i',
         $mail_address)) {
-      echo "不正なメールアドレスです。";
+      echo "<a class=error2>不正なメールアドレスです。</a>";
     }else if (strpos($mail_address,'@ugs.kochi-tech.ac.jp')===false &&strpos($mail_address,'@kochi-u.ac.jp')===false && strpos($mail_address,'@u-kochi.ac.jp')===false){
-      echo "高知県内の大学のメールアドレスではありません";
+      echo "<a class=error2>高知県内の大学のメールアドレスではありません</a>";
     }else if (mysql_num_rows($mail_result) >= 1){//既に登録されているメールアドレスか
-      echo "既に登録されているメールアドレスです。";
+      echo "<a class=error2>既に登録されているメールアドレスです。</a>";
     }
       else{//データベースに会員情報を登録
         $sql="SELECT USER_ID FROM UR";
@@ -173,87 +173,89 @@ session_start();
   <head>
   <meta charset="UTF-8">
 
-  <title>高知県大学生用交流サイト「KoCo + Te」</title>
+  <title>ログイン</title>
   </head>
     <!-- cssのパス -->
     <link rel="stylesheet" href="css/lo_style.css"　type="text/css">
-    <body topmargin="100" leftmargin="200" rightmargin="200 "bottommargin="100">
+    <body>
     <!-- <?php echo $errorMessage ?> -->
   <p>
     <!-- ロゴ画像のパス -->
   <div id =sub>
-  <img src="img/logo.jpg" id="logo" height="300" width="500">
+  <img src="img/kocote.png" id="logo">
+  <!--
   <p><font size="5" color="#ffffff">KoCo+Teとは・・・</font></p>
-  <p><font size="5" color="#ffffff"><u>K</u>ochi <u>C</u>ollege + <u>T</u>asty <u>e</u>vent</font></p>
+  <p><font size="5" color="#ffffff"><u>K</u>ochi <u>Co</u>llege + <u>T</u>asty <u>e</u>vent</font></p>
+  -->
   </div>
 
 
-  <div id=form>
+  <div id="form-login">
   <form id="loginForm" name="loginForm" action="login.php" method="POST">
-  <p id =title>ログイン</p>
-  <table id=login_table>
-  <tr>
-    <td id="title_name"><p id=moji>メールアドレス:</p></td>
-    <td id="content_name"><input type="text" id="mail_address" name="mail_address"="<?php echo $mail_address;?>"></td>
-  </tr>
-  <tr>
-  <td id="title_name"><p id=moji>パスワード:</p></td>
-  <td id="content_name"><input type="password" id="password" name="password" value=""></td>
-  <br><br>
-  </tr>
+        <table id=login_table>
+            <tr><td><p id =title>ログイン</p></td></tr>
+            
+            <tr><td id="content_name"><div class="form-item"><input type="text" id="mail_address" placeholder="Mail Address" name="mail_address"="<?php echo $mail_address;?>"></div></td></tr>
+            
+            <tr><td id="content_name"><div class="form-item"><input type="password" id="password" name="password" value="" placeholder="Password"></div></td></tr>
 
-  <tr>
-  <td  id="title_name" colspan="2"><input type="checkbox" id="loginstatus" name="loginstatus" value="true">
-  <div id=moji>ログイン状態を保存する</div></td>
-  </tr>
-  <tr>
-  <input type="hidden" name="mode" value="login">
-  <td id="title_name" colspan="2"><input type="submit" id="login" name="formname" value="ログイン" ></td>
-  </tr>
-  </table>
-  <br><br>
-  </form>
+            <tr><td  id="title_name" colspan="2"><input type="checkbox" id="loginstatus" name="loginstatus" value="true">
+            <div id=moji>ログイン状態を保持する</div></td></tr>
+            
+            <tr>
+            <input type="hidden" name="mode" value="login">
+            <td id="title_name" colspan="2"><div class="botton-panel"><input type="submit" id="login" name="formname" value="ログイン" ></div></td>
+            </tr>
+        </table>
+</form>
+</div>
+  
+<div id="form-clear">
+</div>
+  
+  <br><br><br><br><br>
+  <hr>
 
-
-  <!-- <?php echo $errorMessage ?> -->
-  <form id="acountaddForm" name="acountaddForm" action="login.php" method="POST">
-  <p id =title>会員登録</p>
+  <div id="form-reg">
+<form id="acountaddForm" name="acountaddForm" action="login.php" method="POST">
+  <p id =title>アカウント登録</p>
   <table id=add_table>
   <tr>
-    <td id=title_name><p id =moji>名前：</p></td>
-    <td id=content_name><input pattern="[^\x20-\x7E]*" type="text" id="usernamelast" name="user_last_name"="" placeholder="姓" value="<?php echo $user_last_name;?>">
-    <input pattern="[^\x20-\x7E]*" type="text" id="usernamefirst" name="user_first_name"="" placeholder="名" value="<?php echo $user_first_name;?>"></td>
+    <td id=title_name><p id =moji>名前(日本語)：</p></td>
+    <td id=content_name><div class="form-item2"><input pattern="[^\x20-\x7E]*" type="text" id="usernamelast" name="user_last_name" placeholder="日本語(姓)" value="<?php echo $user_last_name;?>">
+       <input pattern="[^\x20-\x7E]*" type="text" id="usernamefirst" name="user_first_name" placeholder="日本語(名)" value="<?php echo $user_first_name;?>"></div></td>
   </tr>
   <tr>
-    <td></td>
-    <td id =content_name><input pattern="^[0-9A-Za-z]+$" type="text" id="usernamelast1" name="user_last_roma"="" placeholder="ローマ字(姓)" value="<?php echo $user_last_roma;?>">
-    <input pattern="^[0-9A-Za-z]+$" type="text" id="usernamefirst1" name="user_first_roma"="" placeholder="ローマ字(名)" value="<?php echo $user_first_roma;?>"></td>
+    <td id=title_name><p id =moji>名前(ローマ字)：</p></td>
+    <td id =content_name><div class="form-item2"><input pattern="^[0-9A-Za-z]+$" type="text" id="usernamelast1" name="user_last_roma" placeholder="ローマ字(姓)" value="<?php echo $user_last_roma;?>">
+    <input pattern="^[0-9A-Za-z]+$" type="text" id="usernamefirst1" name="user_first_roma" placeholder="ローマ字(名)" value="<?php echo $user_first_roma;?>"></div></td>
   </tr>
   <tr>
-    <td id =content_name colspan="2"><p id=moji>姓名もしくはローマ字どちらかの入力のみで可</p></td>
+      <td></td>
+      <td id =content_name><p id="moji">日本語もしくはローマ字どちらかの入力のみで可</p></td>
   </tr>
   <tr>
     <td id =title_name><p id=moji>パスワード：</p></td>
-    <td id =content_name><input type="password" id="password" name="password" value=""></td>
+    <td id =content_name><div class="form-item2"><input type="password" id="password" name="password" value=""></div></td>
   </tr>
   <tr>
-  <td id =title_name><p id =moji>パスワード確認用：</p></td>
-  <td id =content_name><input type="password" id="passwordconf" name="password_conf" value=""></td>
+  <td id =title_name><p id =moji>パスワード確認：</p></td>
+  <td id =content_name><div class="form-item2"><input type="password" id="passwordconf" name="password_conf" value=""></div></td>
   </tr>
   <tr>
   <td id =title_name><p id=moji>メールアドレス：</p></td>
-  <td id =content_name><input type="text" id="mail_address" name="mail_address" value="<?php echo $mail_address;?>"></td>
+  <td id =content_name><div class="form-item2"><input type="text" id="mail_address" name="mail_address" value="<?php echo $mail_address;?>"></div></td>
   </tr>
 
   <tr>
     <td id = title_name> <p id =moji>性別：</p></td>
-    <td id= content_name> <input type="radio" id="sex" name="sex"value="m"><p id=moji>男性</p>
-    <input type="radio" id="sex" name="sex"value="f"><p id=moji>女性</p></td>
+    <td id= content_name> <input type="radio" id="sex" name="sex"value="m"><p id=seibetsu>男性</p>
+    <input type="radio" id="sex" name="sex"value="f"><p id=seibetsu>女性</p></td>
   </tr>
   <tr>
     <td id=title_name><p id =moji>大学：</p></td>
     <td id=content_name><select name="college_name">
-      <option value="0">-------------------</option>
+      <option value="0">---------------</option>
       <option value="1">高知大学</option>
       <option value="2">高知県立大学</option>
       <option value="3">高知工科大学</option>
@@ -262,7 +264,7 @@ session_start();
   <tr>
     <td id=title_name><p id=moji>学年：</p></td>
     <td id =content_name><select name="grade">
-      <option value="0">------------</option>
+      <option value="0">----------</option>
       <option value="1">学部1年</option>
       <option value="2">学部2年</option>
       <option value="3">学部3年</option>
@@ -272,13 +274,15 @@ session_start();
     </select></td>
   </tr>
   <tr>
-
-  	<td id=title_name colspan="2"><input type="hidden" name="mode" value="add">
+      <td></td>
+  	<td id=title_name><input type="hidden" name="mode" value="add">
     <input type="submit" id="acountadd" name="formname" value="アカウント登録"></td>
+    
   </tr>
 </table>
 </form>
-<br>
-</div>
+  </div>
+
+  
 </body>
 </html>
