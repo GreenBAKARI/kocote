@@ -26,7 +26,6 @@
 		</form>
 
 		<!-- 本体start -->
-
 <?php
 // $user_id = $_GET ['user_id'];
 $user_id = 1;
@@ -56,14 +55,6 @@ if (! $sql_result_pev_select = mysql_query ( 'SELECT * FROM ev, pev WHERE ev.EVE
 if (! $sql_result_fev_select = mysql_query ( 'SELECT * FROM ev, fev WHERE ev.EVENT_ID=fev.EVENT_ID AND fev.USER_ID=' . $user_id . ' ORDER BY ev.EVENT_START ASC LIMIT 5' ))
 	die ( '@ev, fevテーブル SELECT失敗' . mysql_error () );
 
-	/*
- * POST@out
- * header_img : ヘッダ画像
- * icon_img : アイコン画像
- * gakka : 学科
- * interest : 興味・関心のある分野
- * jikoshokai : 自己紹介
- */
 echo '<form action="mypage_conf.php" method="post" enctype="multipart/form-data">';
 // user_id をmypage_conf.phpに伝播
 echo '<input type="hidden" name="user_id" value="' . $user_id . '">';
@@ -80,7 +71,7 @@ echo '<img src="./img_get.php?user_id=' . $user_id . '&img_type=ICON_IMAGE&img_t
 echo 'アイコン画像ファイル選択:<input type="file" name="icon_img" size="50"><BR>';
 echo '</p>';
 // 「編集を確認する」ボタン
-echo '<input type="submit" value="編集を確認する" name="upload" style="position:absolute;left:237px;top:640px;background-color:#59b1eb;color:#fff;font-size:x-large">';
+echo '<input type="submit" value="編集を確認する" name="upload" style="position:absolute;left:241px;top:640px;background-color:#59b1eb;color:#fff;font-size:x-large">';
 
 /* ▽ 名前・性別 ▽ */
 /* 名前 */
@@ -118,7 +109,7 @@ switch ($ur ['GRADE']) {
 		$grade = '修士2年';
 		break;
 }
-echo "<tr><td>" . $ur ["COLLEGE_NAME"] . " " . "学科: ";
+echo "<tr><td class=\"name-size\">" . $ur ["COLLEGE_NAME"] . " " . "学科: ";
 echo '<input type="hidden" name="grade" value="' . $grade . '">';
 $gakka_KU = array (
 		// 高知大学
@@ -173,7 +164,7 @@ echo " " . $grade;
 echo "</td></tr>";
 
 /* ▽ 興味・関心のある分野 ▽ */
-echo ("<tr><td class=\"name-size\">興味・関心のある分野" . "</td><br>");
+echo ("<tr><td class=\"name-size\">興味・関心のある分野" . "</td>");
 $interest = array (
 		"アニメ",
 		"映画 ",
