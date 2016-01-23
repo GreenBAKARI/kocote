@@ -60,28 +60,26 @@ echo '<input type="hidden" name="user_id" value="' . $user_id . '">';
 $ua = mysql_fetch_assoc ( $sql_result_ua_select );
 // ヘッダ画像
 echo '<p>';
-echo '<img src="./img_get.php?user_id=' . $user_id . '&img_type=HEADER_IMAGE&img_table=ua" class="header-img">⇒';
 if (move_uploaded_file ( $_FILES ['header_img'] ['tmp_name'], 'uploaded_header' . $user_id . '.jpg' )) {
-	echo '<img src="uploaded_header' . $user_id . '.jpg">';
+	echo '<img src="uploaded_header' . $user_id . '.jpg" class="header-img">';
 } else {
-	echo "ファイルを選択してください。";
+	echo '<img src="./img_get.php?user_id=' . $user_id . '&img_type=HEADER_IMAGE&img_table=ua" class="header-img">';
 }
 echo '</p>';
 
 // アイコン画像
 echo '<p>';
-echo '<img src="./img_get.php?user_id=' . $user_id . '&img_type=ICON_IMAGE&img_table=ua" class="icon-img" style="position:absolute;left:240px;top:450px;">⇒';
 if (move_uploaded_file ( $_FILES ['icon_img'] ['tmp_name'], 'uploaded_icon' . $user_id . '.jpg' )) {
-	echo '<img src="uploaded_icon' . $user_id . '.jpg">';
+	echo '<img src="uploaded_icon' . $user_id . '.jpg" class="icon-img" style="position:absolute;left:240px;top:450px;">';
 } else {
-	echo "ファイルを選択してください。";
+	echo '<img src="./img_get.php?user_id=' . $user_id . '&img_type=ICON_IMAGE&img_table=ua" class="icon-img" style="position:absolute;left:240px;top:450px;">';
 }
 echo '</p>';
 
 // 「確定する」ボタン
 echo '<input type="submit" value="確定する" name="upload" style="position:absolute;left:221px;top:640px;background-color:#59b1eb;color:#fff;font-size:x-large">';
 // 「編集する」ボタン
-echo '<input type="button" value="編集する" name="upload" onClick="history.back()" style="position:absolute;left:331px;top:640px;background-color:#59b1eb;color:#fff;font-size:x-large">';
+echo '<input type="button" value="編集する" name="edit" onClick="history.back()" style="position:absolute;left:331px;top:640px;background-color:#59b1eb;color:#fff;font-size:x-large">';
 
 /* ▽ 名前・性別 ▽ */
 /* 名前 */
@@ -100,7 +98,7 @@ echo "</td></tr><br>";
 
 /* ▽ 大学・学年・学科 ▽ */
 /* 大学・学年・学科 */
-echo "<tr><td class=\"name-size\">" . $ur ["COLLEGE_NAME"] . " " . $_POST ['grade'] . " " . "学科:" . $_POST ['gakka']."</td></tr><br>";
+echo "<tr><td class=\"name-size\">" . $ur ["COLLEGE_NAME"] . " " . $_POST ['grade'] . " " . "学科:" . $_POST ['gakka'] . "</td></tr><br>";
 echo '<input type="hidden" name="gakka" value="' . $_POST ['gakka'] . '">';
 
 /* ▽ 興味・関心のある分野 ▽ */
@@ -150,9 +148,8 @@ echo $_POST ['jikoshokai'] . '</p>';
 echo '<input type="hidden" name="jikoshokai" value="' . $_POST ['jikoshokai'] . '">';
 echo '</td></tr>';
 
-
 /* ▽ 立ち上げているイベント ▽ */
-echo '<tr><td class="name-size">'.'立ち上げているイベント' . '</td></tr>';
+echo '<tr><td class="name-size">' . '立ち上げているイベント' . '</td></tr>';
 echo '<tr><td class="space">';
 while ( $ev = mysql_fetch_assoc ( $sql_result_ev_select ) ) {
 	// このページの利用者が立ち上げているイベントの参加人数
@@ -165,7 +162,7 @@ while ( $ev = mysql_fetch_assoc ( $sql_result_ev_select ) ) {
 echo '</td></tr>';
 
 /* ▽ 参加しているイベント ▽ */
-echo '<tr><td class="name-size">'.'参加しているイベント' . '</td></tr>';
+echo '<tr><td class="name-size">' . '参加しているイベント' . '</td></tr>';
 echo '<tr><td class="space">';
 while ( $pev = mysql_fetch_assoc ( $sql_result_pev_select ) ) {
 	// このページの利用者が参加しているイベントの参加人数
@@ -178,7 +175,7 @@ while ( $pev = mysql_fetch_assoc ( $sql_result_pev_select ) ) {
 echo '</td></tr>';
 
 /* ▽ お気に入り登録しているイベント ▽ */
-echo '<tr><td class="name-size">'.'お気に入り登録しているイベント' . '</td></tr>';
+echo '<tr><td class="name-size">' . 'お気に入り登録しているイベント' . '</td></tr>';
 echo '<tr><td class="space">';
 while ( $fev = mysql_fetch_assoc ( $sql_result_fev_select ) ) {
 	// このページの利用者が参加しているイベントの参加人数
