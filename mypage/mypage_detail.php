@@ -2,6 +2,41 @@
 <head>
 <meta charset="UTF-8">
 <title>高知県大学生用交流サイト「KoCo + Te」</title>
+<style>
+.file {
+	position: relative;
+}
+
+.file .header-button {
+	width: 64%;
+	height: 175px;
+}
+
+.file .header-upload {
+	top: 0;
+	left: 18%;
+	width: 64%;
+	height: 175px;
+	opacity: 0;
+	position: absolute;
+	cursor: pointer;
+}
+
+.file .icon-button {
+	width: 180px;
+	height: 180px;
+}
+
+.file .icon-upload {
+	top: 0;
+	left: 0;
+	width: 180px;
+	height: 180px;
+	opacity: 0;
+	position: absolute;
+	cursor: pointer;
+}
+</style>
 </head>
 <center>
 	<link rel="stylesheet" href="../css/style.css" 　type="text/css">
@@ -27,7 +62,8 @@
 
 		<!-- 本体start -->
 <?php
-$user_id = $_GET ['user_id'];
+// $user_id = $_GET ['user_id'];
+$user_id = 1;
 if (empty ( $user_id )) {
 	header ( "LOCATION: ./mypage.php" );
 }
@@ -59,22 +95,30 @@ echo '<form action="mypage_conf.php" method="post" enctype="multipart/form-data"
 echo '<input type="hidden" name="user_id" value="' . $user_id . '">';
 // 画像
 $ua = mysql_fetch_assoc ( $sql_result_ua_select );
-// ヘッダ画像
-echo '<p>';
-echo '<img src="./img_get.php?user_id=' . $user_id . '&img_type=HEADER_IMAGE&img_table=ua" class="header-img">';
-echo 'ヘッダ画像ファイル選択：<input type="file" name="header_img" size="50"><BR>';
-echo '</p>';
-// アイコン画像
-echo '<p>';
-echo '<img src="./img_get.php?user_id=' . $user_id . '&img_type=ICON_IMAGE&img_table=ua" class="icon-img" style="position:absolute;left:240px;top:450px;">';
-echo 'アイコン画像ファイル選択:<input type="file" name="icon_img" size="50"><BR>';
-echo '</p>';
+// // ヘッダ画像
+echo <<< EOM
+<div class="file">
+    <div class="header-button">
+    <img src="./img_get.php?user_id=$user_id&img_type=HEADER_IMAGE&img_table=ua" style="width:100%;height:175px;">
+    </div>
+    <input type="file" class="header-upload" name="header_img"/>
+</div>
+EOM;
+// // アイコン画像
+echo <<< EOM
+<div class="file" style="text-align:left;left:240px;top:-40px;">
+    <div class="icon-button">
+    <img src="./img_get.php?user_id=$user_id&img_type=ICON_IMAGE&img_table=ua" style="width:100%;height:180px;">
+    </div>
+    <input type="file" class="icon-upload" name="icon_img"/>
+</div>
+EOM;
 // 「編集を確認する」ボタン
-echo '<input type="submit" value="編集を確認する" name="upload" style="position:absolute;left:241px;top:640px;background-color:#59b1eb;color:#fff;font-size:x-large">';
+echo '<input type="submit" value="編集を確認する" name="upload" style="position:absolute;left:241px;top:635px;background-color:#59b1eb;color:#fff;font-size:x-large">';
 
 /* ▽ 名前・性別 ▽ */
 /* 名前 */
-echo '<table class="mypage-table" style="position:absolute;left:500px;top:450px;">';
+echo '<table class="mypage-table" style="position:absolute;left:500px;top:520px;">';
 echo '<tr>';
 $ur = mysql_fetch_assoc ( $sql_result_ur_select );
 echo ("<td class=\"name-size\">" . $ur ['USER_LAST_NAME'] . " " . $ur ['USER_FIRST_NAME'] . "	");
@@ -214,7 +258,7 @@ echo '<textarea name="jikoshokai" cols="50" rows="6">' . $ua ['PROFILE'] . '</te
 echo '</td></tr>';
 
 /* ▽ 立ち上げているイベント ▽ */
-echo '<tr><td class="name-size">'.'立ち上げているイベント' . '</td></tr>';
+echo '<tr><td class="name-size">' . '立ち上げているイベント' . '</td></tr>';
 echo '<tr><td class="space">';
 while ( $ev = mysql_fetch_assoc ( $sql_result_ev_select ) ) {
 	// このページの利用者が立ち上げているイベントの参加人数
@@ -227,7 +271,7 @@ while ( $ev = mysql_fetch_assoc ( $sql_result_ev_select ) ) {
 echo '</td></tr>';
 
 /* ▽ 参加しているイベント ▽ */
-echo '<tr><td class="name-size">'.'参加しているイベント' . '</td></tr>';
+echo '<tr><td class="name-size">' . '参加しているイベント' . '</td></tr>';
 echo '<tr><td class="space">';
 while ( $pev = mysql_fetch_assoc ( $sql_result_pev_select ) ) {
 	// このページの利用者が参加しているイベントの参加人数
@@ -240,7 +284,7 @@ while ( $pev = mysql_fetch_assoc ( $sql_result_pev_select ) ) {
 echo '</td></tr>';
 
 /* ▽ お気に入り登録しているイベント ▽ */
-echo '<tr><td class="name-size">'.'お気に入り登録しているイベント' . '</td></tr>';
+echo '<tr><td class="name-size">' . 'お気に入り登録しているイベント' . '</td></tr>';
 echo '<tr><td class="space">';
 while ( $fev = mysql_fetch_assoc ( $sql_result_fev_select ) ) {
 	// このページの利用者が参加しているイベントの参加人数

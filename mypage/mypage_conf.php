@@ -83,7 +83,7 @@ echo '<input type="button" value="編集する" name="edit" onClick="history.bac
 
 /* ▽ 名前・性別 ▽ */
 /* 名前 */
-echo '<table class="mypage-table" style="position:absolute;left:500px;top:450px;">';
+echo '<table class="mypage-table" style="position:absolute;left:500px;top:520px;">';
 echo '<tr>';
 $ur = mysql_fetch_assoc ( $sql_result_ur_select );
 echo ("<td class=\"name-size\">" . $ur ['USER_LAST_NAME'] . " " . $ur ['USER_FIRST_NAME'] . "	");
@@ -131,7 +131,7 @@ echo '<tr><td class="space">';
 if (isset ( $_POST ['interest'] )) {
 	foreach ( $_POST ['interest'] as $key => $value ) {
 		$tf [$value] = "t";
-		echo $interest [$value];
+		echo $interest [$value] . " ";
 		// 4行ごとに改行
 		if (! (($key + 1) % 4))
 			echo '<br>';
