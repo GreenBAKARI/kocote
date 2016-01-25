@@ -16,7 +16,7 @@ table.mypage-table td.name-size {
 
 table.mypage-table td.space {
     margin-left: 100px;
-    padding-left: 50px;
+    padding-left: 30px;
 }
 
 td.user-size{
@@ -31,7 +31,7 @@ td.event-size{
 }
 table.event {
     margin-top: 0px;
-    margin-left: 50px;
+    margin-left: 30px;
 }
 
 table.event td.event2 {
@@ -43,6 +43,7 @@ div.myback {
     background-position: 100px 40px;
     background-position: 30% 60%;
 }
+
 hr.style-line {
     border: 0;
     height: 1px;
@@ -51,19 +52,46 @@ hr.style-line {
     background-image:    -moz-linear-gradient(left, #ccc, #333, #ccc);
     background-image:     -ms-linear-gradient(left, #ccc, #333, #ccc);
     background-image:      -o-linear-gradient(left, #ccc, #333, #ccc);
-    margin-top: 150px;
     margin-left: 0px;
 }
 #title {
     font-size: 160%;
     font-weight: bold;
-    background: #59b1eb;
+    background: #DA70D6;
     border: none;
     color: #ffffff;
     text-align: center;
 }
-#title:hover {
-    background: #1E90FF;
+
+#title2 {
+    position:absolute;
+    left:285px;top:635px;
+    background-color:#DA70D6;
+    border: none;
+    color:#fff;
+    font-size:x-large;
+}
+
+#title3 {
+  position:absolute;
+  left:275px;top:650px;
+  background-color:#DA70D6;
+  border: none;
+  color:#fff;
+  font-size:x-large;
+  width: 100px;
+  padding: -1px 8px 4px 5px;
+}
+
+#title4 {
+  position:absolute;
+  left:380px;top:650px;
+  background-color:#DA70D6;
+  border: none;
+  color:#fff;
+  font-size:x-large;
+  width: 100px;
+  padding: 5px 8px 5px 5px;
 }
 
 #mypage {
@@ -71,6 +99,15 @@ hr.style-line {
     padding: 0 1em;
     max-width: 700px;
     height: 500px;
+    margin: -20px;
+    padding: 20px;
+}
+
+#mypage_detail {
+    background: #FFFFFF;
+    padding: 0 1em;
+    max-width: 700px;
+    height: 330px;
     margin: -20px;
     padding: 20px;
 }
