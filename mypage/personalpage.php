@@ -1,10 +1,41 @@
 <?php
+//ログイン中の利用者のIDを取得
+    session_start();
+    $my_id = $_SESSION[user_id];
+    if (empty($my_id)) {
+      header("LOCATION: ../login.php");
+    }
+    //ログイン中の利用者の名前の取得
+    $link = mysql_connect('localhost', 'root', 'root');
+    if (!$link) {
+        die('接続失敗です。' .mysql_error());
+    }
+    $db_selected = mysql_select_db('greenbakari', $link);
+    if (!$db_selected) {
+        die('データベース選択失敗です。'.mysql_error());
+    }
+    mysql_set_charset('utf8');
+    $sql_login = "SELECT USER_LAST_NAME, USER_FIRST_NAME FROM UR WHERE USER_ID = $my_id";
+    $result_login = mysql_query($sql_login, $link);
+    if (!$result_login) {
+        die('クエリが失敗しました。'.mysql_error());
+    }
+    while ($row_login = mysql_fetch_array($result_login)) {
+         $last_name_login = $row_login['USER_LAST_NAME'];
+         $first_name_login = $row_login['USER_FIRST_NAME'];
+    }
+    $name_login = $last_name_login." ".$first_name_login;
+    mysql_close($link);
+?>
+
+<?php
 //表示する利用者のIDを取得
     $user_id = $_GET['user_id'];
     if (empty($user_id)) {
       header("LOCATION: ./mypage.php");
     }
 ?>
+
 <!-- 利用者付加情報の取得 -->
 <?php
     $link = mysql_connect('localhost', 'root', 'root');
@@ -330,20 +361,18 @@ function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
 <link rel="stylesheet" href="../css/style.css"　type="text/css">
 <link rel="stylesheet" href="../css/my_style.css"　type="text/css">
 <body topmargin="100" bottommargin="100">
-
-
+<!-- ヘッダ部分 -->
 <div id="headerArea">
-  <table>
-      <tr>
-          <td><img class="login-image" src="../img/login.jpg"></td>
-          <td><p class="login-name"><?php echo $last_name." ".$first_name;?></p></td>
-          <td><form id="logoutForm" name="logoutForm" action="../logout.php" method="POST">
-          <input id="logout-botton" type="submit" id="logout" name="formname" value="ログアウト" >
-          </form></td>
-      </tr>
-  </table>
+    <table>
+        <tr>
+            <td><img class="login-image" src="../img/login.jpg"></td>
+            <td><p class="login-name"><?php echo $name_login;?></p></td>
+            <td><form id="logoutForm" name="logoutForm" action="../logout.php" method="POST">
+            <input id="logout-botton" type="submit" id="logout" name="formname" value="ログアウト" >
+            </form></td>
+        </tr>
+    </table>
 </div>
-
 
 <form id="loginForm" name="loginForm" action="" method="POST">
 <!-- <?php echo $errorMessage ?> -->
@@ -360,11 +389,11 @@ function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
 <img src="mypage_image.php?id=<?php echo $user_id ?>&image=2" class="header-img">
 </div>
 <!-- アイコン画像の表示-->
-<img src="mypage_image.php?id=<?php echo $user_id ?>&image=1" class="icon-img" style="position:absolute;left:280px;top:450px;">
+<img src="mypage_image.php?id=<?php echo $user_id ?>&image=1" class="icon-img" style="position:absolute;left:280px;top:455px;">
 
 <!-- 利用者情報の表示-->
-<div id=mypage>
-<table  class="mypage-table" style="position:absolute;left:500px;top:450px;">
+<div id="mypage">
+<table  class="mypage-table" style="position:absolute;left:500px;top:470px;">
   <!-- 利用者名と性別の表示-->
   <tr>
     <td class="user-size">
@@ -373,9 +402,9 @@ function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
           echo  $last_name, $first_name,'　';
       //性別の表示
           if($sex == 'm') {
-            echo '<font color="#0000ff" size=4>男性</font>';
+            echo '<font color="#0000ff" size=5>男性</font>';
           }else {
-            echo '<font color="#ff0000" size=4>女性</font>';
+            echo '<font color="#ff0000" size=5>女性</font>';
           }
       ?>
     </td>
@@ -383,7 +412,7 @@ function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
   <br>
   <!-- 利用者の大学名、学部名、学年を表示-->
   <tr>
-    <td class="space">
+    <td class="name-size">
       <?php
       //大学名と学部名を表示
           echo $college_name, '　', $department_name, '　';
@@ -404,7 +433,7 @@ function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
       ?>
     </td>
   </tr>
-
+  <td><hr class="style-line"></td>
   <!-- 利用者の興味関心のある分野を表示-->
   <tr>
     <td class="name-size">興味関心のある分野</td>
@@ -413,12 +442,15 @@ function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
   <tr>
     <td class="space">
       <?php
+          if (empty($count_result)) {
+            echo'登録されていません';
+          }
           for($i = 1; $i < $count_result; $i++) {
             //三つ要素を表示すると改行する
-            if( ($i % 3) == 0 ){
-              echo '・', $interest_result[$i], '　<br>';
+            if( ($i % 4) == 0 ){
+              echo '・',$interest_result[$i], '<br>';
             }else {
-              echo '・', $interest_result[$i], '　';
+              echo '・', $interest_result[$i],'　';
             }
           }
       ?>
@@ -430,10 +462,18 @@ function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
     <td class="name-size">自己紹介文</td>
   </tr>
   <tr>
-    <td class="space" ><?php echo $profile;?></td>
+    <td class="space" >
+      <?php
+        echo $profile;
+        if (empty($profile)) {
+          echo'登録されていません';
+        }
+      ?>
+    </td>
   </tr>
-  <tr height=50>　</tr>
-  <hr class="style-line">
+    <td><hr class="style-line"></td>
+
+
   <!-- 利用者が立ち上げているイベントの表示-->
   <tr>
     <td class="event-size">
@@ -444,6 +484,12 @@ function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
     <td>
       <table class="event">
           <?php
+              if (empty($event_title)) {
+                echo'<tr class="event">
+                     <td class="event1">
+                     登録されていません
+                     </td></tr>';
+              }
               for($i = 0; $i < count($event_id); $i++) {
                 echo '<tr class="event">';
                 echo '<td class="event1">';            //月の表示（先頭の0は表示されない）
@@ -463,6 +509,7 @@ function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
                 '(', '現在の参加人数:', $EVCNT[$i], '人)';
                 echo '</td>';
                 echo '<td class="event2">';
+                //「編集・削除」ボタンの表示
                 echo '</td>';
                 echo '</tr>';
               }
@@ -479,6 +526,12 @@ function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
   <tr>
     <td class="space">
       <?php
+          if (empty($event_title_join)) {
+            echo'<tr>
+                 <td class="space">
+                 登録されていません
+                 </td></tr>';
+          }
           for($i = 0; $i < count($event_id_join); $i++) {
             //月の表示（先頭の0は表示されない）
             //月の表示（先頭の0は表示されない）
@@ -510,6 +563,12 @@ function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
   <tr>
     <td class="space">
       <?php
+          if (empty($event_title_fev)) {
+            echo'<tr>
+                 <td class="space">
+                 登録されていません
+                 </td></tr>';
+          }
           for($i = 0; $i < count($event_id_fev); $i++) {
             //月の表示（先頭の0は表示されない）
             if (substr($event_start_fev[$i], 5, 1) == 0) {

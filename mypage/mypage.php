@@ -367,14 +367,10 @@ function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
 
 
 <!-- 編集ボタン-->
-<form>
-<button id=title type="button" name="aaa" value="aaa" onclick="location.href='./mypage_detail.php?user_id=<?php echo $user_id ?>'" style="position:absolute;left:320px;top:640px;">
-<font size="5" >編集する</font>
-</button>
-</form>
-
+<a href="./mypage_detail.php?user_id=<?php echo $user_id ?>">
+<img src="../img/my_editpage.jpg" height="8%" width="9%" style="position:absolute;left:310px;top:640px;"></a>
 <!-- 利用者情報の表示-->
-<div id=mypage>
+<div id="mypage">
 <table  class="mypage-table" style="position:absolute;left:500px;top:450px;">
   <!-- 利用者名と性別の表示-->
   <tr>
@@ -384,9 +380,9 @@ function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
           echo  $last_name, $first_name,'　';
       //性別の表示
           if($sex == 'm') {
-            echo '<font color="#0000ff" size=4>男性</font>';
+            echo '<font color="#0000ff" size=5>男性</font>';
           }else {
-            echo '<font color="#ff0000" size=4>女性</font>';
+            echo '<font color="#ff0000" size=5>女性</font>';
           }
       ?>
     </td>
@@ -394,7 +390,7 @@ function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
   <br>
   <!-- 利用者の大学名、学部名、学年を表示-->
   <tr>
-    <td class="space">
+    <td class="name-size">
       <?php
       //大学名と学部名を表示
           echo $college_name, '　', $department_name, '　';
@@ -415,7 +411,7 @@ function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
       ?>
     </td>
   </tr>
-
+  <td><hr class="style-line"></td>
   <!-- 利用者の興味関心のある分野を表示-->
   <tr>
     <td class="name-size">興味関心のある分野</td>
@@ -424,12 +420,15 @@ function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
   <tr>
     <td class="space">
       <?php
+          if (empty($count_result)) {
+            echo'登録されていません';
+          }
           for($i = 1; $i < $count_result; $i++) {
             //三つ要素を表示すると改行する
-            if( ($i % 3) == 0 ){
-              echo '・', $interest_result[$i], '　<br>';
+            if( ($i % 4) == 0 ){
+              echo '・',$interest_result[$i], '<br>';
             }else {
-              echo '・', $interest_result[$i], '　';
+              echo '・', $interest_result[$i],'　';
             }
           }
       ?>
@@ -441,10 +440,18 @@ function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
     <td class="name-size">自己紹介文</td>
   </tr>
   <tr>
-    <td class="space" ><?php echo $profile;?></td>
+    <td class="space" >
+      <?php
+        echo $profile;
+        if (empty($profile)) {
+          echo'登録されていません';
+        }
+      ?>
+    </td>
   </tr>
-  <tr height=50>　</tr>
-  <hr class="style-line">
+    <td><hr class="style-line"></td>
+
+
   <!-- 利用者が立ち上げているイベントの表示-->
   <tr>
     <td class="event-size">
@@ -455,6 +462,12 @@ function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
     <td>
       <table class="event">
           <?php
+              if (empty($event_title)) {
+                echo'<tr class="event">
+                     <td class="event1">
+                     登録されていません
+                     </td></tr>';
+              }
               for($i = 0; $i < count($event_id); $i++) {
                 echo '<tr class="event">';
                 echo '<td class="event1">';            //月の表示（先頭の0は表示されない）
@@ -496,6 +509,12 @@ function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
   <tr>
     <td class="space">
       <?php
+          if (empty($event_title_join)) {
+            echo'<tr>
+                 <td class="space">
+                 登録されていません
+                 </td></tr>';
+          }
           for($i = 0; $i < count($event_id_join); $i++) {
             //月の表示（先頭の0は表示されない）
             //月の表示（先頭の0は表示されない）
@@ -527,6 +546,12 @@ function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
   <tr>
     <td class="space">
       <?php
+          if (empty($event_title_fev)) {
+            echo'<tr>
+                 <td class="space">
+                 登録されていません
+                 </td></tr>';
+          }
           for($i = 0; $i < count($event_id_fev); $i++) {
             //月の表示（先頭の0は表示されない）
             if (substr($event_start_fev[$i], 5, 1) == 0) {

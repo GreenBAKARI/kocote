@@ -8,8 +8,9 @@
 }
 
 .file .header-button {
-	width: 64%;
+	width: 100%;
 	height: 175px;
+	margin: -19px;
 }
 
 .file .header-upload {
@@ -63,13 +64,14 @@
 		<!-- 本体start -->
 <?php
 $user_id = $_GET ['user_id'];
-
+//$user_id = 1;
 if (empty ( $user_id )) {
 	header ( "LOCATION: ./mypage.php" );
 }
 
 // MySQLと接続
-$link = mysql_connect ( 'localhost', 'root' );
+$link = mysql_connect ( 'localhost', 'root','root' );
+//$link = mysql_connect ( 'localhost', 'root' );
 if (! $link)
 	die ( 'データベース接続失敗' . mysql_error () );
 
@@ -79,16 +81,10 @@ if (! $db_selected)
 	die ( 'データベース選択失敗' . mysql_error () );
 
 	// クエリの発行
-if (! $sql_result_ua_select = mysql_query ( 'SELECT * FROM ua WHERE USER_ID=' . $user_id ))
+if (! $sql_result_ua_select = mysql_query ( 'SELECT * FROM UA WHERE USER_ID=' . $user_id ))
 	die ( '@uaテーブル SELECT失敗' . mysql_error () );
-if (! $sql_result_ur_select = mysql_query ( 'SELECT * FROM ur WHERE USER_ID=' . $user_id ))
+if (! $sql_result_ur_select = mysql_query ( 'SELECT * FROM UR WHERE USER_ID=' . $user_id ))
 	die ( '@urテーブル SELECT失敗' . mysql_error () );
-if (! $sql_result_ev_select = mysql_query ( 'SELECT * FROM ev WHERE USER_ID=' . $user_id ))
-	die ( '@ｅｖテーブル SELECT失敗' . mysql_error () );
-if (! $sql_result_pev_select = mysql_query ( 'SELECT * FROM ev, pev WHERE ev.EVENT_ID=pev.EVENT_ID AND pev.USER_ID=' . $user_id . ' ORDER BY ev.EVENT_START ASC LIMIT 5' ))
-	die ( '@ev, pevテーブル SELECT失敗' . mysql_error () );
-if (! $sql_result_fev_select = mysql_query ( 'SELECT * FROM ev, fev WHERE ev.EVENT_ID=fev.EVENT_ID AND fev.USER_ID=' . $user_id . ' ORDER BY ev.EVENT_START ASC LIMIT 5' ))
-	die ( '@ev, fevテーブル SELECT失敗' . mysql_error () );
 
 echo '<form action="mypage_conf.php" method="post" enctype="multipart/form-data">';
 // user_id をmypage_conf.phpに伝播
@@ -99,26 +95,27 @@ $ua = mysql_fetch_assoc ( $sql_result_ua_select );
 echo <<< EOM
 <div class="file">
     <div class="header-button">
-    <img src="./img_get.php?user_id=$user_id&img_type=HEADER_IMAGE&img_table=ua" style="width:100%;height:175px;">
+    <img src="./img_get.php?user_id=$user_id&img_type=HEADER_IMAGE&img_table=ua" class="header-img">
     </div>
     <input type="file" class="header-upload" name="header_img"/>
 </div>
 EOM;
 // // アイコン画像
 echo <<< EOM
-<div class="file" style="text-align:left;left:240px;top:-40px;">
+<div class="file" style="position:absolute;left:280px;top:450px;">
     <div class="icon-button">
-    <img src="./img_get.php?user_id=$user_id&img_type=ICON_IMAGE&img_table=ua" style="width:100%;height:180px;">
+    <img src="./img_get.php?user_id=$user_id&img_type=ICON_IMAGE&img_table=ua" class="icon-img">
     </div>
     <input type="file" class="icon-upload" name="icon_img"/>
 </div>
 EOM;
 // 「編集を確認する」ボタン
-echo '<input type="submit" value="編集を確認する" name="upload" style="position:absolute;left:241px;top:635px;background-color:#59b1eb;color:#fff;font-size:x-large">';
+echo '<input id="title2" type="submit" value="編集を確認する" name="upload">';
 
 /* ▽ 名前・性別 ▽ */
 /* 名前 */
-echo '<table class="mypage-table" style="position:absolute;left:500px;top:520px;">';
+echo '<div id="mypage_detail">';
+echo '<table class="mypage-table" style="position:absolute;left:500px;top:450px;">';
 echo '<tr>';
 $ur = mysql_fetch_assoc ( $sql_result_ur_select );
 echo ("<td class=\"name-size\">" . $ur ['USER_LAST_NAME'] . " " . $ur ['USER_FIRST_NAME'] . "	");
@@ -146,7 +143,7 @@ switch ($ur ['GRADE']) {
 		$grade = '学部4年';
 		break;
 	case 5 :
-		$grade = '修士s1年';
+		$grade = '修士1年';
 		break;
 	case 6 :
 		$grade = '修士2年';
@@ -156,25 +153,28 @@ echo "<tr><td class=\"name-size\">" . $ur ["COLLEGE_NAME"] . " " . "学科: ";
 echo '<input type="hidden" name="grade" value="' . $grade . '">';
 $gakka_KU = array (
 		// 高知大学
-		"人文社会科学",
-		"自然科学",
-		"医療学",
-		"総合化学"
+		"人文学部",
+		"教育学部",
+		"理学部",
+		"医学部",
+		"農学部",
+		"地域協働学部"
 );
 
 $gakka_UK = array (
 		// 高知県立大学
-		"文化学",
-		"看護学",
-		"社会福祉学",
-		"健康栄養学"
+		"文化学部",
+		"看護学部",
+		"社会福祉学部",
+		"健康栄養学部"
 );
 
 $gakka_KUT = array (
 		// 高知工科大学
-		"情報学",
-		"環境理工学",
-		"システム工学"
+		"情報学群",
+		"環境理工学群",
+		"システム工学群",
+		"経済・マネジメント学群"
 );
 echo '<select name="gakka">';
 if ($ur ["COLLEGE_NAME"] == "高知大学") {
@@ -256,65 +256,8 @@ echo '<tr><td class="name-size">' . "自己紹介" . "</td></tr>";
 echo '<tr><td class="space">';
 echo '<textarea name="jikoshokai" cols="50" rows="6">' . $ua ['PROFILE'] . '</textarea>';
 echo '</td></tr>';
-
-/* ▽ 立ち上げているイベント ▽ */
-echo '<tr><td class="name-size">' . '立ち上げているイベント' . '</td></tr>';
-echo '<tr><td class="space">';
-while ( $ev = mysql_fetch_assoc ( $sql_result_ev_select ) ) {
-	// このページの利用者が立ち上げているイベントの参加人数
-	$ev_count = event_count ( $ev ['EVENT_ID'] );
-
-	$date = new DateTime ( $ev ['EVENT_START'] );
-	echo $date->format ( 'Y年n月j日' ) . '<a href=http://localhost/kocote/event/event_detail.php?event_id=' . $ev ['EVENT_ID'] . '>' . $ev ['EVENT_TITLE'] . '</a>', '(', '現在の参加人数:' . $ev_count . '人)', '<br>';
-	echo '</p>';
-}
-echo '</td></tr>';
-
-/* ▽ 参加しているイベント ▽ */
-echo '<tr><td class="name-size">' . '参加しているイベント' . '</td></tr>';
-echo '<tr><td class="space">';
-while ( $pev = mysql_fetch_assoc ( $sql_result_pev_select ) ) {
-	// このページの利用者が参加しているイベントの参加人数
-	$pev_count = event_count ( $pev ['EVENT_ID'] );
-
-	$date = new DateTime ( $pev ['EVENT_START'] );
-	echo $date->format ( 'Y年n月j日' ) . '<a href=http://localhost/kocote/event/event_detail.php?event_id=' . $pev ['EVENT_ID'] . '>' . $pev ['EVENT_TITLE'] . '</a>', '(', '現在の参加人数:', $pev_count, '人)', '<br>';
-	echo '</p>';
-}
-echo '</td></tr>';
-
-/* ▽ お気に入り登録しているイベント ▽ */
-echo '<tr><td class="name-size">' . 'お気に入り登録しているイベント' . '</td></tr>';
-echo '<tr><td class="space">';
-while ( $fev = mysql_fetch_assoc ( $sql_result_fev_select ) ) {
-	// このページの利用者が参加しているイベントの参加人数
-	$fev_count = event_count ( $fev ['EVENT_ID'] );
-
-	$date = new DateTime ( $fev ['EVENT_START'] );
-	echo $date->format ( 'Y年n月j日' ) . '<a href=http://localhost/kocote/event/event_detail.php?event_id=' . $fev ['EVENT_ID'] . '>' . $fev ['EVENT_TITLE'] . '</a>', '(', '現在の参加人数:', $fev_count, '人)', '<br>';
-	echo '</p>';
-}
-echo '</td></tr>';
-
-mysql_close ( $link );
-echo '</form>';
-
-// イベントの参加人数を数える関数(参加人数を数えたいイベントのイベントIDを引数とする)
-function event_count($cnt_id) {
-	mysql_set_charset ( 'utf8' );
-	// 参加イベントテーブルから引数のイベントIDを持つレコード数をカウントする
-	$sql_evcnt = "SELECT COUNT(PEV.EVENT_ID) AS CNT FROM pev WHERE pev.EVENT_ID = $cnt_id;";
-
-	$result_evcnt = mysql_query ( $sql_evcnt );
-	if (! $result_evcnt) {
-		die ( 'クエリが失敗しました。' . mysql_error () );
-	}
-
-	while ( $row_evcnt = mysql_fetch_array ( $result_evcnt ) ) {
-		$event_evcnt = $row_evcnt ['CNT'];
-	}
-	return $event_evcnt;
-}
+echo '<br><br><br><br><br><br><br><br><br><br><br><br><br>';
+echo '</div>';
 ?>
 
 	<!-- 本体end-->

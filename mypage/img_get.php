@@ -5,7 +5,7 @@ if (empty ( $user_id )) {
 }
 // DB接続
 // MySQLと接続
-$link = mysql_connect ( 'localhost', 'root' );
+$link = mysql_connect ( 'localhost', 'root','root' );
 // データベースを選択
 $dbLink = mysql_select_db ( 'greenbakari', $link );
 
