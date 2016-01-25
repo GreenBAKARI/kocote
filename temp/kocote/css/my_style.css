@@ -2,6 +2,7 @@ img.header-img {
     width: 58%;
     max-height: 160px;
 }
+
 img.icon-img {
     width: 180px;
     height: 180px;
@@ -11,7 +12,7 @@ img.icon-img {
 }
 table.mypage-table td.name-size {
     font-size: 120%;
-    color: 	#444444;
+    color: #444444;
 }
 
 table.mypage-table td.space {
@@ -21,7 +22,7 @@ table.mypage-table td.space {
 
 td.user-size{
     font-size: 160%;
-    color: 	#444444;
+    color: #444444;
 }
 
 td.event-size{
@@ -48,9 +49,9 @@ hr.style-line {
     height: 1px;
     background: #333;
     background-image: -webkit-linear-gradient(left, #ccc, #333, #ccc);
-    background-image:    -moz-linear-gradient(left, #ccc, #333, #ccc);
-    background-image:     -ms-linear-gradient(left, #ccc, #333, #ccc);
-    background-image:      -o-linear-gradient(left, #ccc, #333, #ccc);
+    background-image: -moz-linear-gradient(left, #ccc, #333, #ccc);
+    background-image: -ms-linear-gradient(left, #ccc, #333, #ccc);
+    background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
     margin-top: 150px;
     margin-left: 0px;
 }

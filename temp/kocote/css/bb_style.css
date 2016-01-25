@@ -1,138 +1,138 @@
 .cate_all {
-  cursor:pointer;
-  width: 8%;
-  height: 25%;
-  border:none;
-  background:url("../img/bb_all.JPG") no-repeat 0 0;
-  background-size:contain;
+    cursor: pointer;
+    width: 8%;
+    height: 25%;
+    border: none;
+    background: url("../img/bb_all.JPG") no-repeat 0 0;
+    background-size: contain;
 }
 
 .cate_gf{
-  cursor:pointer;
-  width: 8%;
-  height: 25%;
-  border:none;
-  background:url("../img/bb_gf.JPG") top left no-repeat;
-  background-size:contain;
+    cursor: pointer;
+    width: 8%;
+    height: 25%;
+    border: none;
+    background: url("../img/bb_gf.JPG") top left no-repeat;
+    background-size: contain;
 }
 
 .cate_ge{
-  cursor:pointer;
-  width: 8%;
-  height: 25%;
-  border:none;
-  background:url("../img/bb_ge.JPG") top left no-repeat;
-  background-size:contain;
+    cursor: pointer;
+    width: 8%;
+    height: 25%;
+    border: none;
+    background: url("../img/bb_ge.JPG") top left no-repeat;
+    background-size: contain;
 }
 
 .cate_ks{
-  cursor:pointer;
-  width: 8%;
-  height: 25%;
-  border:none;
-  background:url("../img/bb_ks.JPG") top left no-repeat;
-  background-size:contain;
+    cursor: pointer;
+    width: 8%;
+    height: 25%;
+    border: none;
+    background: url("../img/bb_ks.JPG") top left no-repeat;
+    background-size: contain;
 }
 
 .cate_ft{
-  cursor:pointer;
-  width: 8%;
-  height: 25%;
-  border:none;
-  background:url("../img/bb_ft.JPG") top left no-repeat;
-  background-size:contain;
+    cursor: pointer;
+    width: 8%;
+    height: 25%;
+    border: none;
+    background: url("../img/bb_ft.JPG") top left no-repeat;
+    background-size: contain;
 }
 
 .cate_sc{
-  cursor:pointer;
-  width: 8%;
-  height: 25%;
-  border:none;
-  background:url("../img/bb_sc.JPG") top left no-repeat;
-  background-size:contain;
+    cursor: pointer;
+    width: 8%;
+    height: 25%;
+    border: none;
+    background: url("../img/bb_sc.JPG") top left no-repeat;
+    background-size: contain;
 }
 
 .cate_etc{
-  cursor:pointer;
-  width: 8%;
-  height: 25%;
-  border:none;
-  background:url("../img/bb_etc.JPG") top left no-repeat;
-  background-size:contain;
+    cursor: pointer;
+    width: 8%;
+    height: 25%;
+    border: none;
+    background: url("../img/bb_etc.JPG") top left no-repeat;
+    background-size: contain;
 }
 
 .bb_make{
-  cursor:pointer;
-  width:8%;
-  height:25%;
-  border:none;
-  background:url("../img/bb_mk.JPG") top left no-repeat;
-  background-size:contain;
-  margin-left: 70px;
+    cursor: pointer;
+    width: 8%;
+    height: 25%;
+    border: none;
+    background: url("../img/bb_mk.JPG") top left no-repeat;
+    background-size: contain;
+    margin-left: 70px;
 }
 
 .sort_newpost{
-  cursor:pointer;
-  width:166px;
-  height:63px;
-  border:none;
-  background:url("../img/bb_new.JPG") top left no-repeat;
-  background-size:cover;
+    cursor: pointer;
+    width: 166px;
+    height: 63px;
+    border: none;
+    background: url("../img/bb_new.JPG") top left no-repeat;
+    background-size: cover;
 }
 
 .sort_comnum{
-  cursor:pointer;
-  width:166px;
-  height:63px;
-  border:none;
-  background:url("../img/bb_many.JPG") top left no-repeat;
-  background-size:cover;
+    cursor: pointer;
+    width: 166px;
+    height: 63px;
+    border: none;
+    background: url("../img/bb_many.JPG") top left no-repeat;
+    background-size: cover;
 }
 
 
 .sort_make{
-  cursor:pointer;
-  width:166px;
-  height:63px;
-  border:none;
-  background:url("../img/bb_make.JPG") top left no-repeat;
-  background-size:cover;
+    cursor: pointer;
+    width: 166px;
+    height: 63px;
+    border: none;
+    background: url("../img/bb_make.JPG") top left no-repeat;
+    background-size: cover;
 }
 
 form.category {
-  display: inline
+    display: inline
 }
 
 .left{
-  float: left;
+    float: left;
 }
 
 .right{
-  float: right;
+    float: right;
 
 }
 
 .clear{
-  clear:both;
+    clear: both;
 }
 
 table.bb_view{
-  border-collapse: separate;
-  border-spacing: 2px;
-  margin-top: 10px;
-  border:1px solid #808080;
-  word-wrap: break-word;
+    border-collapse: separate;
+    border-spacing: 2px;
+    margin-top: 10px;
+    border: 1px solid #808080;
+    word-wrap: break-word;
 }
 
 table.bb_view a{
-  text-decoration: none;
+    text-decoration: none;
 }
 
 table.bb_view td {
-  text-align: center;
-  border: 1px solid #808080;
-  padding: 8px 0px;
-  background-color: white;
+    text-align: center;
+    border: 1px solid #808080;
+    padding: 8px 0px;
+    background-color: white;
 }
 
 table.bb_view tr {
@@ -141,112 +141,112 @@ table.bb_view tr {
 }
 
 table.bb_view th.category {
-            width: 200px;
-            background-color: #87ceeb;
-            padding: 8px 0px;
-        }
-        
+    width: 200px;
+    background-color: #87ceeb;
+    padding: 8px 0px;
+}
+
 table.bb_view th.title {
-            width: 500px;
-            background-color: #87ceeb;
-            padding: 8px 0px;
-        }
-        
+    width: 500px;
+    background-color: #87ceeb;
+    padding: 8px 0px;
+}
+
 table.bb_view th.comment {
-            width: 100px;
-            background-color: #87ceeb;
-            padding: 8px 0px;
-        }
+    width: 100px;
+    background-color: #87ceeb;
+    padding: 8px 0px;
+}
 
 table.bb_detail{
-  width:800px;
-  border:1px solid gray;
-  background-color: white;
-  word-wrap:break-word;
+    width: 800px;
+    border: 1px solid gray;
+    background-color: white;
+    word-wrap: break-word;
 }
 
 
 .top_cell{
-  height:20px;
-  font-weight:bold;
-  text-align:left;
-  vertical-align:top;
-  border-bottom-style: none;
-  padding:3px 0px 0px 5px;
+    height: 20px;
+    font-weight: bold;
+    text-align: left;
+    vertical-align: top;
+    border-bottom-style: none;
+    padding: 3px 0px 0px 5px;
 }
 
 .middle_cell{
-  height: 30px;
-  vertical-align:top;
-  padding:8px 0px 0px 15px;
-  border-bottom-style:none;
-  border-top-style:none;
+    height: 30px;
+    vertical-align: top;
+    padding: 8px 0px 0px 15px;
+    border-bottom-style: none;
+    border-top-style: none;
 }
 
 .under_cell{
-  text-align: right;
-  padding:0px 15px 17px 0px;
-  border-top-style:none;
+    text-align: right;
+    padding: 0px 15px 17px 0px;
+    border-top-style: none;
 }
 
 .pagetop {
-	    display: none;
-	    position: fixed;
-	    bottom: 30px;
-	    right: 15px;
-	}
+    display: none;
+    position: fixed;
+    bottom: 30px;
+    right: 15px;
+}
 
-	.pagetop a {
-	    display: block;
-	    background-color: #ccc;
-	    text-align: center;
-	    color: #222;
-	    font-size: 12px;
-	    text-decoration: none;
-	    padding: 5px 10px;
-	    filter:alpha(opacity=50);
-	    -moz-opacity: 0.5;
-	    opacity: 0.5;
-	}
+.pagetop a {
+    display: block;
+    background-color: #ccc;
+    text-align: center;
+    color: #222;
+    font-size: 12px;
+    text-decoration: none;
+    padding: 5px 10px;
+    filter: alpha(opacity=50);
+    -moz-opacity: 0.5;
+    opacity: 0.5;
+}
 
-	.pagetop a:hover {
-	    display: block;
-	    background-color: #b2d1fb;
-	    text-align: center;
-	    color: #fff;
-	    font-size: 12px;
-	    text-decoration: none;
-	    padding:5px 10px;
-	    filter:alpha(opacity=50);
-	    -moz-opacity: 0.5;
-	    opacity: 0.5;
-	}
-        
-        p.error {
-            color: red;
-        }
+.pagetop a:hover {
+    display: block;
+    background-color: #b2d1fb;
+    text-align: center;
+    color: #fff;
+    font-size: 12px;
+    text-decoration: none;
+    padding: 5px 10px;
+    filter: alpha(opacity=50);
+    -moz-opacity: 0.5;
+    opacity: 0.5;
+}
 
-        table.bulletin-add {
-            margin-top: -30px;
-            border-spacing: 10px 30px;
-        }
-        
-        table.bulletin-add td.title {
-            text-align: right;
-        }
-        
-        a.user {
-              text-decoration: none;
-        }
-        
-        p.category {
-            margin-right: 180px;
-        }
-        
-        table.bulletin-all td.botton {
-            padding-top: 12px;
-            padding-left: 20px;
-        }
+p.error {
+    color: red;
+}
 
-        
-        
+table.bulletin-add {
+    margin-top: -30px;
+    border-spacing: 10px 30px;
+}
+
+table.bulletin-add td.title {
+    text-align: right;
+}
+
+a.user {
+    text-decoration: none;
+}
+
+p.category {
+    margin-right: 180px;
+}
+
+table.bulletin-all td.botton {
+    padding-top: 12px;
+    padding-left: 20px;
+}
+
+
+

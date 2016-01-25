@@ -1,5 +1,5 @@
 body {
-    background-color: #EAE8E9; /* #F5F1E9; #F5F5F5; */
+    background-color: #EAE8E9;
     background-size: cover;
     margin: 0;
     padding: 150px 0 50px 0;
@@ -7,18 +7,17 @@ body {
 
 label {
     font-size: 120%;
-    font-weight:bold;
-    vertical-align:top;
+    font-weight: bold;
+    vertical-align: top;
 }
 
 div#headerArea {
-    /*position: fixed !important;*/
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 80px;
-    background-color: #4E9ABE; /*#5EBABA;*/
+    background-color: #4E9ABE;
     color: #fff;
 }
 
@@ -84,11 +83,11 @@ div#footerArea {
     left: 0;
     width: 100%;
     height: 50px;
-    background-color: #4E9ABE; /*#5EBABA;*/
+    background-color: #4E9ABE; 
 }
 
 #footerArea {
-    text-align:center;
+    text-align: center;
 }
 
 #footerArea a {
@@ -96,13 +95,13 @@ div#footerArea {
     text-decoration: none;
 }
 #footerArea li {
-    display:inline;
-    padding-left:10px;
-    padding-right:5px;
+    display: inline;
+    padding-left: 10px;
+    padding-right: 5px;
 }
 
 #footerArea li+li {
-    border-left:1px solid #EAE8E9;
+    border-left: 1px solid #EAE8E9;
 }
 
 a:link { 
@@ -128,6 +127,7 @@ a:active {
     margin: 0 auto;
     overflow: hidden;
 }
+
 /*全ての写真を水平一列に格納したdiv、#photosに,
 スライドショーの animation を設定*/
 #photos {
@@ -137,34 +137,34 @@ a:active {
     animation: imgPassToLeft0 30s infinite;
     -webkit-animation: imgPassToLeft0 30s infinite;
 }
-/*各写真の並び位置を設定
-#photo1, #photo2, #photo3, #photo4, #photo5 */
+
+/*各写真の並び位置を設定 #photo1, #photo2, #photo3, #photo4, #photo5 */
 #photo0 { 
-    left:  0%; 
+    left: 0%; 
 }
 
 #photo1 { 
-    left:100%; 
+    left: 100%; 
 }
 
 #photo2 { 
-    left:200%; 
+    left: 200%; 
 }
 
 #photo3 { 
-    left:300%; 
+    left: 300%; 
 }
 
 #photo4 { 
-    left:400%; 
+    left: 400%; 
 }
 
 #photo5 { 
-    left:500%; 
+    left: 500%; 
 }
 
 #photo6 { 
-    left:600%; 
+    left: 600%; 
 }
 
 .pic { 
@@ -183,6 +183,7 @@ a:active {
 #back1,#back2,#back3,#back4,#back5,#next1,#next2,#next3,#next4,#next5 {
     display: none;
 }
+
 /*送りボタン文字（＜、＞）の設定*/
 .b_left span, .b_right span {
     position: absolute;
@@ -191,7 +192,7 @@ a:active {
     font-weight: bold;
     opacity: 0;
     top: 150px;
-    color:#EEE;
+    color: #EEE;
 }
 
 .b_left span {
@@ -204,12 +205,12 @@ a:active {
 
 /*ボタン文字hover時の設定*/
 .pic:hover > label div span {
-    opacity:1;
-    color:#EEE;
+    opacity: 1;
+    color: #EEE;
 }
 
 .pic label div span:hover {
-    cursor:pointer;
+    cursor: pointer;
 }
 
 /* 各送りボタンクリック時のanimation設定 */

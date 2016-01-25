@@ -1,12 +1,14 @@
 <?php
-    session_start();
-    $user_id = $_SESSION['user_id'];
-    if (empty($user_id)) {
-         header("LOCATION: ../login.php");
-    }
+
+session_start();
+$user_id = $_SESSION['user_id'];
+if (empty($user_id)) {
+    header("LOCATION: ../login.php");
+}
 ?>
 
 <?php
+
 $event_id = $_POST["event_id"];
 $join_id = $_POST["join_id"];
 

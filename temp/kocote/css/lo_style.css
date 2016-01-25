@@ -1,7 +1,4 @@
 body {
-    /*background: linear-gradient(#7CC691, #6FC0D1);*/
-    /*background: #7cc691; #2fcdb4 #79D1B0*/
-    /*background: linear-gradient(#1D77EF, #81F3FD);*/
     background: #5EBABA;
     background-size: cover;
     margin-right: 100px;
@@ -94,7 +91,7 @@ form {
 }
 
 p.logo-img {
-   text-align: center; 
+    text-align: center; 
 }
 
 #logo {
@@ -103,15 +100,8 @@ p.logo-img {
 }
 
 #sub {
-    /*float: left;*/
     width: 500px;
 }
-
-/*
-#form-login {
-    float: right;
-}
-*/
 
 #under {
     float:none;
@@ -134,12 +124,12 @@ p.logo-img {
     font-size: 100%;
     font-weight: bold;
     color: #5e5e5e;
-    display:inline;
+    display: inline;
 }
 
 #add_table {
-    margin-top:0px;
-    margin-left:-175px;
+    margin-top: 0px;
+    margin-left: -175px;
 }
 
 #form-clear {
@@ -169,11 +159,6 @@ p.logo-img {
 
 hr {
     height: 1px;
-    /*background: #bbb;
-    background-image: -webkit-linear-gradient(left, #eee, #777, #eee);
-    background-image: -moz-linear-gradient(left, #eee, #777, #eee);
-    background-image: -ms-linear-gradient(left, #eee, #777, #eee);
-    background-image: -o-linear-gradient(left, #eee, #777, #eee);*/
 }
 
 #seibetsu {
@@ -188,7 +173,7 @@ hr {
     font-size: 100%;
     font-weight: bold;
     color: #5e5e5e;
-    display:inline;
+    display: inline;
     margin-left: 10px;
 }
 
@@ -197,7 +182,7 @@ select {
     -moz-appearance: button;
     appearance: button;
     text-indent: 1em;
-    background: #ffffff;/*#EEE;*/
+    background: #ffffff;
     background-size: 20px 10px;
     background-position: right center;
     height: 30px;
@@ -208,7 +193,6 @@ select {
     border: 1px solid #CCC;
     margin-bottom: 5px;
 }
-
 
 #acountadd {
     background: #f16272;

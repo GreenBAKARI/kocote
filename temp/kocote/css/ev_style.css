@@ -2,8 +2,7 @@ div#blocka {
     float: left;
     width: 500px;
     background: white;
-    /*margin-top: 20px;*/
-    margin-left: 160px;/*130px;*/
+    margin-left: 160px;
     margin-bottom: 200px;
     padding-left: 60px;
     padding-top: 30px;
@@ -20,7 +19,7 @@ div#blockb {
 }
 
 p.event-size {
-    padding-left: 170px;/*140px;*/
+    padding-left: 170px;
 }
 
 a.event-title {
@@ -45,7 +44,7 @@ table.event-table {
 table.event-table td.title {
     vertical-align: top;
     text-align: right;  
-    
+
 }
 
 table.event-table td.content {
