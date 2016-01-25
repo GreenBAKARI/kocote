@@ -64,4 +64,17 @@
 </div>
 
 
+ーーーーーーーーーーーーーーーーーーーーーーーーーー
+<div id="headerArea">
+    <table>
+        <tr>
+            <td class="logo"><a href="http://localhost/kocote/index.php"><img class="logo-image" src="../img/kocote.png"></a></td>
+            <td class="face"><img class="login-image" src="../img/login.jpg"></td>
+            <td class="name"><p class="login-name"><?php echo $name_login;?></p></td>
+            <td class="logout"><form id="logoutForm" name="logoutForm" action="../logout.php" method="POST">
+            <input id="logout-botton" type="submit" id="logout" name="formname" value="ログアウト" >
+            </form></td>
+        </tr>
+    </table>
+</div>
 
