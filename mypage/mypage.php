@@ -32,13 +32,13 @@
     }
 
     while ($row_UR = mysql_fetch_array($result_UR)) {
-      $last_name[] = $row_UR['USER_LAST_NAME'];
-      $first_name[] = $row_UR['USER_FIRST_NAME'];
-      $last_roma[] = $row_UR['USER_LAST_ROMA'];
-      $first_roma[] = $row_UR['USER_FIRST_ROMA'];
-      $sex[] = $row_UR['SEX'];
-      $college_name[] = $row_UR['COLLEGE_NAME'];
-      $grade[] = $row_UR['GRADE'];
+      $last_name = $row_UR['USER_LAST_NAME'];
+      $first_name = $row_UR['USER_FIRST_NAME'];
+      $last_roma = $row_UR['USER_LAST_ROMA'];
+      $first_roma = $row_UR['USER_FIRST_ROMA'];
+      $sex = $row_UR['SEX'];
+      $college_name = $row_UR['COLLEGE_NAME'];
+      $grade = $row_UR['GRADE'];
     }
     mysql_close($link);
 ?>
@@ -67,18 +67,18 @@
     }
 
     while ($row_UA = mysql_fetch_array($result_UA)) {
-      $department_name[] = $row_UA['DEPARTMENT_NAME'];
-      $profile[] = $row_UA['PROFILE'];
-      $interest[]=$row_UA['INTEREST'];
+      $department_name = $row_UA['DEPARTMENT_NAME'];
+      $profile = $row_UA['PROFILE'];
+      $interest=$row_UA['INTEREST'];
     }
     //興味・関心を表す値を取り出す
     //興味・関心に格納されている値の文字数を数える
-      $length = mb_strlen($interest[0]);
+      $length = mb_strlen($interest);
       $interest_user = array();
       $interest_result = array();
     //先頭の文字から1文字ずつ配列interest_userに格納する
     for ($i = 0; $i < $length; $i++) {
-              $interest_user[$i] = substr($interest[0], $i, 1);
+              $interest_user[$i] = substr($interest, $i, 1);
             }
     //for文が何回目かを表す変数
       $count_interest = 0;
@@ -153,8 +153,9 @@
         $count_result += 1;
       }
     }
-
-      mysql_close($link);
+    //自己紹介文を文字ごとに改行
+    $profile = mb_wordwrap($profile, 26, "<br>\n", true);
+    mysql_close($link);
 ?>
 
 <!-- このページの利用者が立ち上げているイベント情報の取得 -->
@@ -299,6 +300,29 @@
     }
 ?>
 
+<!-- マルチバイト対応のwordwrap -->
+<?php
+function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
+    if (!$cut) {
+        $regexp = '#^(?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){'.$width.',}\b#U';
+    } else {
+        $regexp = '#^(?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){'.$width.'}#';
+    }
+    $string_length = mb_strlen($string,'UTF-8');
+    $cut_length = ceil($string_length / $width);
+    $i = 1;
+    $return = '';
+    while ($i < $cut_length) {
+        preg_match($regexp, $string, $matches);
+        $new_string = $matches[0];
+        $return .= $new_string.$break;
+        $string = substr($string, strlen($new_string));
+        $i++;
+    }
+    return $return.$string;
+}
+?>
+
 <!-- HTML本文　-->
 <html>
 <head>
@@ -311,7 +335,17 @@
 <body topmargin="100" bottommargin="100">
 
 
-<div id="headerArea"></div>
+<div id="headerArea">
+  <table>
+      <tr>
+          <td><img class="login-image" src="../img/login.jpg"></td>
+          <td><p class="login-name"><?php echo $last_name." ".$first_name;?></p></td>
+          <td><form id="logoutForm" name="logoutForm" action="../logout.php" method="POST">
+          <input id="logout-botton" type="submit" id="logout" name="formname" value="ログアウト" >
+          </form></td>
+      </tr>
+  </table>
+</div>
 
 
 <form id="loginForm" name="loginForm" action="" method="POST">
@@ -324,34 +358,35 @@
   <a href="../search/search.php"><img src="../img/se_home.jpg" height="13%" width="16%"></a>
   <a href="../mypage/mypage.php"><img src="../img/mp_home.jpg" height="13%" width="16%"></a></div>
 <br>
-
 <!-- ヘッダ画像の表示-->
+<div>
 <img src="mypage_image.php?id=<?php echo $user_id ?>&image=2" class="header-img">
-<br>
+</div>
 <!-- アイコン画像の表示-->
-<img src="mypage_image.php?id=<?php echo $user_id ?>&image=1" class="icon-img" style="position:absolute;left:240px;top:450px;">
+<img src="mypage_image.php?id=<?php echo $user_id ?>&image=1" class="icon-img" style="position:absolute;left:280px;top:450px;">
 
 
 <!-- 編集ボタン-->
 <form>
-<button class="btn" type="button" name="aaa" value="aaa" onclick="location.href='./mypage_detail.php?user_id=<?php echo $user_id ?>'" style="position:absolute;left:278px;top:640px;">
+<button id=title type="button" name="aaa" value="aaa" onclick="location.href='./mypage_detail.php?user_id=<?php echo $user_id ?>'" style="position:absolute;left:320px;top:640px;">
 <font size="5" >編集する</font>
 </button>
 </form>
 
 <!-- 利用者情報の表示-->
+<div id=mypage>
 <table  class="mypage-table" style="position:absolute;left:500px;top:450px;">
   <!-- 利用者名と性別の表示-->
   <tr>
-    <td class="name-size">
+    <td class="user-size">
       <?php
       //利用者名の表示
-          echo  $last_name[0], $first_name[0],'　';
+          echo  $last_name, $first_name,'　';
       //性別の表示
-          if($sex[0] == 'm') {
-            echo '<font color="#0000ff">男性</font>';
+          if($sex == 'm') {
+            echo '<font color="#0000ff" size=4>男性</font>';
           }else {
-            echo '<font color="#ff0000">女性</font>';
+            echo '<font color="#ff0000" size=4>女性</font>';
           }
       ?>
     </td>
@@ -362,17 +397,17 @@
     <td class="space">
       <?php
       //大学名と学部名を表示
-          echo $college_name[0], '　', $department_name[0], '　';
+          echo $college_name, '　', $department_name, '　';
       //学年を表示
-          if($grade[0] == '1') {
+          if($grade == '1') {
             echo '学部1年';
-          }else if($grade[0] == '2') {
+          }else if($grade == '2') {
             echo '学部2年';
-          }else if($grade[0] == '3') {
+          }else if($grade == '3') {
             echo '学部3年';
-          }else if($grade[0] == '4') {
+          }else if($grade == '4') {
             echo '学部4年';
-          }else if($grade[0] == '5') {
+          }else if($grade == '5') {
             echo '修士1年';
           }else{
             echo '修士2年';
@@ -406,55 +441,56 @@
     <td class="name-size">自己紹介文</td>
   </tr>
   <tr>
-    <td class="space"><?php echo $profile[0];?></td>
+    <td class="space" ><?php echo $profile;?></td>
   </tr>
-
+  <tr height=50>　</tr>
+  <hr class="style-line">
   <!-- 利用者が立ち上げているイベントの表示-->
   <tr>
-    <td class="name-size">
-      <?php echo $last_name[0], 'さんが立ち上げているイベント', '<br />';?>
+    <td class="event-size">
+      <?php echo $last_name, 'さんが立ち上げているイベント', '<br />';?>
     </td>
   </tr>
-</table>
-  
-  <table class="event">
-      <?php
-          for($i = 0; $i < count($event_id); $i++) {
-            echo '<tr class="event">';
-            echo '<td class="event1">';            //月の表示（先頭の0は表示されない）
-            if (substr($event_start[$i], 5, 1) == 0) {
-            echo '&nbsp;&thinsp;', substr($event_start[$i], 6, 1).'月';
-            } else {
-            echo substr($event_start[$i], 5, 2).'月';
-            }
-            //日の表示（先頭の0は表示されない）
-            if (substr($event_start[$i], 8, 1) == 0) {
-            echo '&ensp;&thinsp;', substr($event_start[$i], 9, 1).'日 ';
-            } else {
-            echo substr($event_start[$i], 8, 2).'日 ';
-            }
-            //イベント名とイベントの参加人数の表示
-            echo '　', '<a href=../event/event_detail.php?event_id='.$event_id[$i].'>'.$event_title[$i].'</a>',
-            '(', '現在の参加人数:', $EVCNT[$i], '人)';
-            echo '</td>';
-            echo '<td class="event2">';
-            //「編集・削除」ボタンの表示
-            echo '<form>'
-            . '<button class="btn" type="button" name="aaa" value="aaa" onclick="location.href=\'../event/event_edit.php?event_id='.$event_id[$i].'\'">
-                <font size="2">編集・削除</font>
-                </button>
-                </form>';
-            echo '</td>';
-            echo '</tr>';
-          }
+  <tr>
+    <td>
+      <table class="event">
+          <?php
+              for($i = 0; $i < count($event_id); $i++) {
+                echo '<tr class="event">';
+                echo '<td class="event1">';            //月の表示（先頭の0は表示されない）
+                if (substr($event_start[$i], 5, 1) == 0) {
+                echo '&nbsp;&thinsp;', substr($event_start[$i], 6, 1).'月';
+                } else {
+                echo substr($event_start[$i], 5, 2).'月';
+                }
+                //日の表示（先頭の0は表示されない）
+                if (substr($event_start[$i], 8, 1) == 0) {
+                echo '&ensp;&thinsp;', substr($event_start[$i], 9, 1).'日 ';
+                } else {
+                echo substr($event_start[$i], 8, 2).'日 ';
+                }
+                //イベント名とイベントの参加人数の表示
+                echo '　', '<a href=../event/event_detail.php?event_id='.$event_id[$i].'>'.$event_title[$i].'</a>',
+                '(', '現在の参加人数:', $EVCNT[$i], '人)';
+                echo '</td>';
+                echo '<td class="event2">';
+                //「編集・削除」ボタンの表示
+                echo '<form>'
+                . '<button id=title type="button" name="aaa" value="aaa" onclick="location.href=\'../event/event_edit.php?event_id='.$event_id[$i].'\'">
+                    <font size="2">編集・削除</font>
+                    </button>
+                    </form>';
+                echo '</td>';
+                echo '</tr>';
+              }
       ?>
-  </table>
-
-<table  class="mypage-table" style="position:absolute;left:500px;">
+    </table>
+    </td>
+  </tr>
   <!-- 利用者が参加しているイベントの表示-->
   <tr>
-    <td class="name-size">
-      <?php echo $last_name[0], 'さんが参加しているイベント', '<br />'; ?>
+    <td class="event-size">
+      <?php echo $last_name, 'さんが参加しているイベント', '<br />'; ?>
     </td>
   </tr>
   <tr>
@@ -484,8 +520,8 @@
 
   <!-- 利用者がお気に入り登録しているイベントの表示-->
   <tr>
-    <td class="name-size">
-      <?php echo $last_name[0], 'さんがお気に入り登録しているイベント', '<br />'; ?>
+    <td class="event-size">
+      <?php echo $last_name, 'さんがお気に入り登録しているイベント', '<br />'; ?>
     </td>
   </tr>
   <tr>
@@ -515,7 +551,7 @@
   <tr><td>　</td></tr>
 
 </table>
-
+</div>
 <!-- 本体 -->
 
 <div id="footerArea">
