@@ -62,8 +62,8 @@
 
 		<!-- 本体start -->
 <?php
-// $user_id = $_GET ['user_id'];
-$user_id = 1;
+$user_id = $_GET ['user_id'];
+
 if (empty ( $user_id )) {
 	header ( "LOCATION: ./mypage.php" );
 }
