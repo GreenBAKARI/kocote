@@ -1,6 +1,6 @@
 img.header-img {
     width: 750px;
-    max-height: 195px;
+    height: 200px;
 }
 img.icon-img {
     width: 180px;
@@ -54,41 +54,38 @@ table.mypage-table td.space2 {
     padding-bottom:15px;
 }
 
-.user-size{
+.username-size{
     font-size: 200%;
     color: 	#FFFFFF;
 }
 
+table.event-table {
+    width:750px;
+    margin-top: 30px;
+}
+table.event-table td.white {
+    background: #FFFFFF;
+    padding-top:8px;
+    padding-bottom:8px;
+    padding-left:200px;
+}
 td.event-size{
     font-size: 120%;
     color: #FF8C00;
-
+    text-align: center;
+    padding-top:40px;
+    padding-bottom:5px;
 }
-table.event {
-    margin-top: 0px;
-    margin-left: 30px;
-}
-
-table.event td.event2 {
-    padding-left: 20px;
+.event-btn {
+    text-align: center;
+    background: #FFFFFF;
 }
 
-div.myback {
-    background-image: url(../img/my_myback.jpg);
-    background-position: 100px 40px;
-    background-position: 30% 60%;
+img.my_ed {
+    width: 75px;
+    height: 35px;
 }
 
-hr.style-line {
-    border: 0;
-    height: 1px;
-    background: #333;
-    background-image: -webkit-linear-gradient(left, #ccc, #333, #ccc);
-    background-image:    -moz-linear-gradient(left, #ccc, #333, #ccc);
-    background-image:     -ms-linear-gradient(left, #ccc, #333, #ccc);
-    background-image:      -o-linear-gradient(left, #ccc, #333, #ccc);
-    margin-left: 0px;
-}
 #title {
     font-size: 160%;
     font-weight: bold;
@@ -127,20 +124,4 @@ hr.style-line {
   font-size:x-large;
   width: 100px;
   padding: 5px 8px 5px 5px;
-}
-
-#mypage {
-    background: #FFFFFF;
-    padding: 0 1em;
-    max-width: 700px;
-    height: 250px;
-}
-
-#mypage_detail {
-    background: #FFFFFF;
-    padding: 0 1em;
-    max-width: 700px;
-    height: 330px;
-    margin: -20px;
-    padding: 20px;
 }
