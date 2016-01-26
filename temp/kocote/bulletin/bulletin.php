@@ -220,6 +220,7 @@ mysql_close($link);
     if ($start > 0) {
         ?>
         <div id = "box">
+          <div class = "str_center">
             <a href="http:../bulletin/bulletin.php?start=<?php echo ($start - $one_page) ?>"><br>[前のページ]</a>
             <?php
         } else {
@@ -239,11 +240,12 @@ mysql_close($link);
             <?php
         } else {
             ?>
+          </div>
             <!--次のページ-->
             <?php
         }
         ?>
-    </div>
+        </div>
 </form>
 
 <div id="footerArea">
