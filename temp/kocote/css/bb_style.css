@@ -71,34 +71,6 @@
     margin-left: 70px;
 }
 
-.sort_newpost{
-    cursor: pointer;
-    width: 166px;
-    height: 63px;
-    border: none;
-    background: url("../img/bb_new.JPG") top left no-repeat;
-    background-size: cover;
-}
-
-.sort_comnum{
-    cursor: pointer;
-    width: 166px;
-    height: 63px;
-    border: none;
-    background: url("../img/bb_many.JPG") top left no-repeat;
-    background-size: cover;
-}
-
-
-.sort_make{
-    cursor: pointer;
-    width: 166px;
-    height: 63px;
-    border: none;
-    background: url("../img/bb_make.JPG") top left no-repeat;
-    background-size: cover;
-}
-
 form.category {
     display: inline
 }
@@ -142,19 +114,19 @@ table.bb_view tr {
 
 table.bb_view th.category {
     width: 200px;
-    background-color: #87ceeb;
+    background-color: #79D1B0;
     padding: 8px 0px;
 }
 
 table.bb_view th.title {
     width: 500px;
-    background-color: #87ceeb;
+    background-color: #79D1B0;
     padding: 8px 0px;
 }
 
 table.bb_view th.comment {
     width: 100px;
-    background-color: #87ceeb;
+    background-color: #79D1B0;
     padding: 8px 0px;
 }
 

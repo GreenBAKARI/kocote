@@ -47,7 +47,8 @@ mysql_close($link);
                         <td class="name"><p class="login-name"><?php echo $name_login; ?></p></td>
                         <td class="logout"><form id="logoutForm" name="logoutForm" action="logout.php" method="POST">
                                 <input id="logout-botton" type="submit" id="logout" name="formname" value="ログアウト" >
-                            </form></td>
+                            </form>
+                        </td>
                     </tr>
                 </table>
             </div>
@@ -71,7 +72,7 @@ mysql_close($link);
                     <td>
                         <figure>
                             <div class="figure-bb">
-                                <div class="image"><a href="bulletin/bulletin.php"><img src="img/event.jpg" /></a></div>
+                                <div class="image"><a href="bulletin/bulletin.php"><img src="img/bulletin.jpg" /></a></div>
                                 <figcaptionbb>
                                     <center>
                                         <p class="index-title">掲示板</p><br>
@@ -90,7 +91,7 @@ mysql_close($link);
                     <td>
                         <figure>
                             <div class="figure-se">
-                                <div class="image"><a href="search/search.php"><img src="img/event.jpg" /></a></div>
+                                <div class="image"><a href="search/search.php"><img src="img/search.jpg" /></a></div>
                                 <figcaptionse>
                                     <center>
                                         <p class="index-title">検索</p><br>
@@ -104,7 +105,7 @@ mysql_close($link);
                     <td>
                         <figure>
                             <div class="figure-mp">
-                                <div class="image"><a href="mypage/mypage.php"><img src="img/event.jpg" /></a></div>
+                                <div class="image"><a href="mypage/mypage.php"><img src="img/mypage.jpg" /></a></div>
                                 <figcaptionmp>
                                     <center>
                                         <p class="index-title">マイページ</p><br>
@@ -120,7 +121,7 @@ mysql_close($link);
             <div id="footerArea">
                 <ul>
                     <li><a href="">会社概要</a></li>
-                    <li><a href="../contact/contact.php">お問い合わせ</a></li>
+                    <li><a href="contact/contact.php">お問い合わせ</a></li>
                     <li><a href="">個人情報保護方針</a></li>
                     <li><a href="">採用情報</a></li>
                     <li><a href="">サイトマップ</a></li>

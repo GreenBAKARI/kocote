@@ -64,10 +64,6 @@ mysql_close($link);
 </div>
 <br>
 
-<!-- 作成ボタン-->
-<div align="right" style="margin-right: 225px" class="right">
-    <input type="button" onClick="location.href = 'bulletin_add_front.php'" class="bb_make" />
-</div>
 <!--float解除-->
 <div class="clear"></div>
 
