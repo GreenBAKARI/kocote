@@ -370,7 +370,7 @@ function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
 <a href="./mypage_detail.php?user_id=<?php echo $user_id ?>">
 <img src="../img/my_editpage.jpg" height="8%" width="9%" style="position:absolute;left:320px;top:610px;"></a>
 <!-- 利用者情報の表示-->
-<table class="mypage-table">
+<table class="mypage-table" >
   <tr>
     <td class="user-size">
   <!-- 利用者名の表示-->
@@ -404,7 +404,7 @@ function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
   </tr>
   <!-- 利用者の興味関心のある分野を表示-->
   <tr>
-    <td class="name-size">興味関心のある分野</td>
+    <td class="name-size2">興味関心のある分野</td>
   </tr>
   <br>
   <tr>
@@ -427,7 +427,7 @@ function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
   <br>
   <!-- 利用者の自己紹介文を表示-->
   <tr>
-    <td class="name-size">自己紹介文</td>
+    <td class="name-size3">自己紹介文</td>
   </tr>
   <tr>
     <td class="space2" >
