@@ -333,7 +333,7 @@ function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
 <link rel="stylesheet" href="../css/style.css"　type="text/css">
 <link rel="stylesheet" href="../css/my_style.css"　type="text/css">
 <body topmargin="100" bottommargin="100">
-  
+
 <!-- ヘッダ部分 -->
 <div id="headerArea">
   <table>
@@ -367,7 +367,7 @@ function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
 
 <!-- 編集ボタン-->
 <a href="./mypage_detail.php?user_id=<?php echo $user_id ?>">
-<img src="../img/my_editpage.jpg" height="8%" width="9%" style="position:absolute;left:320px;top:610px;"></a>
+<img src="../img/mp_editpage.jpg" height="8%" width="9%" style="position:absolute;left:320px;top:610px;"></a>
 <!-- 利用者情報の表示-->
 <table class="mypage-table">
   <tr>
@@ -471,7 +471,7 @@ function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
             echo '</td>';
             echo '<td class="event-btn">';
             //「編集・削除」ボタンの表示
-            echo '<a href="../event/event_edit.php?event_id='.$event_id[$i].'"><img src="../img/my_ed.jpg" class="my_ed"></a>';
+            echo '<a href="../event/event_edit.php?event_id='.$event_id[$i].'"><img src="../img/mp_ed.jpg" class="mp_ed"></a>';
             echo '</td>';
             echo '</tr>';
           }
