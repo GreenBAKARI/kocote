@@ -333,8 +333,8 @@ function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
 <link rel="stylesheet" href="../css/style.css"　type="text/css">
 <link rel="stylesheet" href="../css/my_style.css"　type="text/css">
 <body topmargin="100" bottommargin="100">
-
-
+  
+<!-- ヘッダ部分 -->
 <div id="headerArea">
   <table>
       <tr>
@@ -346,7 +346,6 @@ function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
       </tr>
   </table>
 </div>
-
 
 <form id="loginForm" name="loginForm" action="" method="POST">
 <!-- <?php echo $errorMessage ?> -->
@@ -370,9 +369,9 @@ function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
 <a href="./mypage_detail.php?user_id=<?php echo $user_id ?>">
 <img src="../img/my_editpage.jpg" height="8%" width="9%" style="position:absolute;left:320px;top:610px;"></a>
 <!-- 利用者情報の表示-->
-<table class="mypage-table" >
+<table class="mypage-table">
   <tr>
-    <td class="user-size">
+    <td class="username-size">
   <!-- 利用者名の表示-->
       <?php
           echo  $last_name, $first_name,'　';
@@ -442,72 +441,56 @@ function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
 </table>
 
   <!-- 利用者が立ち上げているイベントの表示-->
-<table>
+<table class="event-table" cellspacing="0">
   <tr>
-    <td class="event-size">
-      <?php echo $last_name, 'さんが立ち上げているイベント', '<br />';?>
+    <td colspan="4" class="event-size">
+      <?php echo $last_name, 'さんが立ち上げているイベント';?>
     </td>
   </tr>
-  <tr>
-    <td>
-      <table class="event">
-          <?php
-              if (empty($event_title)) {
-                echo'<tr class="event">
-                     <td class="event1">
-                     登録されていません
-                     </td></tr>';
-              }
-              for($i = 0; $i < count($event_id); $i++) {
-                echo '<tr class="event">';
-                echo '<td class="event1">';            //月の表示（先頭の0は表示されない）
-                if (substr($event_start[$i], 5, 1) == 0) {
-                echo '&nbsp;&thinsp;', substr($event_start[$i], 6, 1).'月';
-                } else {
-                echo substr($event_start[$i], 5, 2).'月';
-                }
-                //日の表示（先頭の0は表示されない）
-                if (substr($event_start[$i], 8, 1) == 0) {
-                echo '&ensp;&thinsp;', substr($event_start[$i], 9, 1).'日 ';
-                } else {
-                echo substr($event_start[$i], 8, 2).'日 ';
-                }
-                //イベント名とイベントの参加人数の表示
-                echo '　', '<a href=../event/event_detail.php?event_id='.$event_id[$i].'>'.$event_title[$i].'</a>',
-                '(', '現在の参加人数:', $EVCNT[$i], '人)';
-                echo '</td>';
-                echo '<td class="event2">';
-                //「編集・削除」ボタンの表示
-                echo '<form>'
-                . '<button id=title type="button" name="aaa" value="aaa" onclick="location.href=\'../event/event_edit.php?event_id='.$event_id[$i].'\'">
-                    <font size="2">編集・削除</font>
-                    </button>
-                    </form>';
-                echo '</td>';
-                echo '</tr>';
-              }
+      <?php
+          if (empty($event_title)) {
+            echo'<tr><td class="white" colspan="2">登録されていません</td></tr>';
+          }
+          for($i = 0; $i < count($event_id); $i++) {
+            echo '<tr>';
+            echo '<td class="white colspan="3">';            //月の表示（先頭の0は表示されない）
+            if (substr($event_start[$i], 5, 1) == 0) {
+            echo '&nbsp;&thinsp;', substr($event_start[$i], 6, 1).'月';
+            } else {
+            echo substr($event_start[$i], 5, 2).'月';
+            }
+            //日の表示（先頭の0は表示されない）
+            if (substr($event_start[$i], 8, 1) == 0) {
+            echo '&ensp;&thinsp;', substr($event_start[$i], 9, 1).'日 ';
+            } else {
+            echo substr($event_start[$i], 8, 2).'日 ';
+            }
+            //イベント名とイベントの参加人数の表示
+            echo '　', '<a href=../event/event_detail.php?event_id='.$event_id[$i].'>'.$event_title[$i].'</a>',
+            '(', '現在の参加人数:', $EVCNT[$i], '人)';
+            echo '</td>';
+            echo '<td class="event-btn">';
+            //「編集・削除」ボタンの表示
+            echo '<a href="../event/event_edit.php?event_id='.$event_id[$i].'"><img src="../img/my_ed.jpg" class="my_ed"></a>';
+            echo '</td>';
+            echo '</tr>';
+          }
       ?>
-    </table>
-    </td>
-  </tr>
   <!-- 利用者が参加しているイベントの表示-->
   <tr>
-    <td class="event-size">
-      <?php echo $last_name, 'さんが参加しているイベント', '<br />'; ?>
+    <td class="event-size" colspan="2">
+      <?php echo $last_name, 'さんが参加しているイベント'; ?>
     </td>
   </tr>
-  <tr>
-    <td class="space">
       <?php
           if (empty($event_title_join)) {
-            echo'<tr>
-                 <td class="space">
-                 登録されていません
-                 </td></tr>';
+            echo'<tr><td class="white" colspan="2">登録されていません</td><tr>';
           }
           for($i = 0; $i < count($event_id_join); $i++) {
             //月の表示（先頭の0は表示されない）
             //月の表示（先頭の0は表示されない）
+            echo '<tr>';
+            echo '<td class="white" colspan="2">';
             if (substr($event_start_join[$i], 5, 1) == 0) {
             echo '&nbsp;&thinsp;', substr($event_start_join[$i], 6, 1).'月';
             } else {
@@ -521,29 +504,26 @@ function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
             }
             //イベント名とイベントの参加人数の表示
             echo '　', '<a href=../event/event_detail.php?event_id='.$event_id_join[$i].'>'.$event_title_join[$i].'</a>',
-            '(', '現在の参加人数:', $EVCNT_JOIN[$i], '人)', '<br />';
+            '(', '現在の参加人数:', $EVCNT_JOIN[$i], '人)';
+            echo '</td>';
+            echo '</tr>';
           }
       ?>
-    </td>
-  </tr>
 
   <!-- 利用者がお気に入り登録しているイベントの表示-->
   <tr>
-    <td class="event-size">
+    <td class="event-size" colspan="2">
       <?php echo $last_name, 'さんがお気に入り登録しているイベント', '<br />'; ?>
     </td>
   </tr>
-  <tr>
-    <td class="space">
       <?php
           if (empty($event_title_fev)) {
-            echo'<tr>
-                 <td class="space">
-                 登録されていません
-                 </td></tr>';
+            echo'<tr><td class="white"colspan="2">登録されていません</td><tr>';
           }
           for($i = 0; $i < count($event_id_fev); $i++) {
             //月の表示（先頭の0は表示されない）
+            echo '<tr>';
+            echo '<td class="white" colspan="2">';
             if (substr($event_start_fev[$i], 5, 1) == 0) {
             echo '&nbsp;&thinsp;', substr($event_start_fev[$i], 6, 1).'月';
             } else {
@@ -557,13 +537,11 @@ function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
             }
             //イベント名とイベントの参加人数の表示
             echo '　', '<a href=../event/event_detail.php?event_id='.$event_id_fev[$i].'>'.$event_title_fev[$i].'</a>',
-            '(', '現在の参加人数:', $EVCNT_FEV[$i], '人)', '<br />';
+            '(', '現在の参加人数:', $EVCNT_FEV[$i], '人)';
+            echo '</td>';
+            echo '</tr>';
           }
       ?>
-    </td>
-  </tr>
-  <tr><td>　</td></tr>
-  <tr><td>　</td></tr>
 
 </table>
 <!-- 本体 -->
