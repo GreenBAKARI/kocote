@@ -471,7 +471,7 @@ function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
             echo '</td>';
             echo '<td class="event-btn">';
             //「編集・削除」ボタンの表示
-            echo '<a href="../event/event_edit.php?event_id='.$event_id[$i].'"><img src="../img/mp_ed.jpg" class="mp_ed"></a>';
+            echo '<a href="../event/event_edit.php?event_id='.$event_id[$i].'"><img src="../img/mp_ed.jpg" class="my_ed"></a>';
             echo '</td>';
             echo '</tr>';
           }
