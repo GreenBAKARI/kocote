@@ -172,7 +172,7 @@ if ($mode == "login") {//ログイン処理
     <body>
         <!-- <?php echo $errorMessage ?> -->
 
-        <p class="logo-img"><img src="img/kocote.png" id="logo"></p>
+        <p class="logo-img"><img src="img/kocote_1.png" id="logo"></p>
 
         <div id="form-login">
             <form id="loginForm" name="loginForm" action="login.php" method="POST">
