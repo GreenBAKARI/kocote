@@ -363,31 +363,22 @@ function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
 <img src="mypage_image.php?id=<?php echo $user_id ?>&image=2" class="header-img">
 </div>
 <!-- アイコン画像の表示-->
-<img src="mypage_image.php?id=<?php echo $user_id ?>&image=1" class="icon-img" style="position:absolute;left:280px;top:450px;">
+<img src="mypage_image.php?id=<?php echo $user_id ?>&image=1" class="icon-img" style="position:absolute;left:280px;top:410px;">
 
 
 <!-- 編集ボタン-->
 <a href="./mypage_detail.php?user_id=<?php echo $user_id ?>">
-<img src="../img/my_editpage.jpg" height="8%" width="9%" style="position:absolute;left:310px;top:640px;"></a>
+<img src="../img/my_editpage.jpg" height="8%" width="9%" style="position:absolute;left:320px;top:610px;"></a>
 <!-- 利用者情報の表示-->
-<div id="mypage">
-<table  class="mypage-table" style="position:absolute;left:500px;top:450px;">
-  <!-- 利用者名と性別の表示-->
+<table class="mypage-table">
   <tr>
     <td class="user-size">
+  <!-- 利用者名の表示-->
       <?php
-      //利用者名の表示
           echo  $last_name, $first_name,'　';
-      //性別の表示
-          if($sex == 'm') {
-            echo '<font color="#0000ff" size=5>男性</font>';
-          }else {
-            echo '<font color="#ff0000" size=5>女性</font>';
-          }
       ?>
     </td>
   </tr>
-  <br>
   <!-- 利用者の大学名、学部名、学年を表示-->
   <tr>
     <td class="name-size">
@@ -411,7 +402,6 @@ function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
       ?>
     </td>
   </tr>
-  <td><hr class="style-line"></td>
   <!-- 利用者の興味関心のある分野を表示-->
   <tr>
     <td class="name-size">興味関心のある分野</td>
@@ -420,7 +410,7 @@ function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
   <tr>
     <td class="space">
       <?php
-          if (empty($count_result)) {
+          if (empty($interest_result[1])) {
             echo'登録されていません';
           }
           for($i = 1; $i < $count_result; $i++) {
@@ -440,7 +430,7 @@ function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
     <td class="name-size">自己紹介文</td>
   </tr>
   <tr>
-    <td class="space" >
+    <td class="space2" >
       <?php
         echo $profile;
         if (empty($profile)) {
@@ -449,10 +439,10 @@ function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
       ?>
     </td>
   </tr>
-    <td><hr class="style-line"></td>
-
+</table>
 
   <!-- 利用者が立ち上げているイベントの表示-->
+<table>
   <tr>
     <td class="event-size">
       <?php echo $last_name, 'さんが立ち上げているイベント', '<br />';?>
@@ -576,7 +566,6 @@ function mb_wordwrap($string, $width=75, $break="\n", $cut = false) {
   <tr><td>　</td></tr>
 
 </table>
-</div>
 <!-- 本体 -->
 
 <div id="footerArea">
