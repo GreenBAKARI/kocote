@@ -71,7 +71,7 @@ form {
 }
 
 #login {
-    background: #f16272;
+    background: #ff7f50;
     border: none;
     color: #ffffff;
     cursor: pointer;
@@ -87,7 +87,7 @@ form {
 }
 
 #login:hover {
-    background: #ee3e52;
+    background: #ff6347;
 }
 
 p.logo-img {
@@ -195,7 +195,7 @@ select {
 }
 
 #acountadd {
-    background: #f16272;
+    background: #ff7f50;
     border: none;
     color: #ffffff;
     cursor: pointer;
@@ -212,6 +212,6 @@ select {
 }
 
 #acountadd:hover {
-    background: #ee3e52;
+    background: #ff6347;
 }
 
